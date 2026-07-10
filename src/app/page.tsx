@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, animate } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
@@ -276,82 +276,113 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CountUpValue({
-  value,
-  decimals = 0,
-  prefix = "",
-  suffix = "",
-  className,
-}: {
-  value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-  className?: string;
-}) {
-  const [display, setDisplay] = useState(0);
+const heroCandles = [
+  { up: false, body: 48, wickTop: 12, wickBottom: 8 },
+  { up: false, body: 42, wickTop: 10, wickBottom: 9 },
+  { up: false, body: 36, wickTop: 11, wickBottom: 7 },
+  { up: false, body: 30, wickTop: 9, wickBottom: 10 },
+  { up: true, body: 22, wickTop: 7, wickBottom: 16 },
+  { up: true, body: 34, wickTop: 9, wickBottom: 6 },
+  { up: true, body: 44, wickTop: 10, wickBottom: 7 },
+  { up: true, body: 50, wickTop: 8, wickBottom: 6 },
+  { up: true, body: 54, wickTop: 11, wickBottom: 5 },
+  { up: true, body: 56, wickTop: 9, wickBottom: 7 },
+  { up: true, body: 24, wickTop: 6, wickBottom: 6 },
+  { up: false, body: 20, wickTop: 7, wickBottom: 5 },
+  { up: true, body: 26, wickTop: 5, wickBottom: 7 },
+  { up: false, body: 18, wickTop: 6, wickBottom: 6 },
+  { up: true, body: 60, wickTop: 13, wickBottom: 8, live: true },
+] as const;
 
-  useEffect(() => {
-    const controls = animate(0, value, {
-      duration: 1.4,
-      ease: "easeOut",
-      onUpdate: (latest) => setDisplay(latest),
-    });
-    return () => controls.stop();
-  }, [value]);
-
-  return (
-    <span className={className}>
-      {prefix}
-      {display.toFixed(decimals)}
-      {suffix}
-    </span>
-  );
+function formatGmtClock() {
+  const now = new Date();
+  const h = now.getUTCHours().toString().padStart(2, "0");
+  const m = now.getUTCMinutes().toString().padStart(2, "0");
+  const s = now.getUTCSeconds().toString().padStart(2, "0");
+  return `${h}:${m}:${s} GMT`;
 }
 
-function HeroLiveStats({
-  winRate,
-  monthlyReturn,
-  activeTraders,
+function HeroMiniChart({
   className,
+  compact = false,
 }: {
-  winRate: number;
-  monthlyReturn: number;
-  activeTraders: number;
   className?: string;
+  compact?: boolean;
 }) {
+  const [clock, setClock] = useState(formatGmtClock);
+
+  useEffect(() => {
+    const id = setInterval(() => setClock(formatGmtClock()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
       className={cn(
-        "bg-[#0A0A0A] border border-[#1A1A1A] rounded-sm p-6 w-[280px]",
+        "relative bg-[#0A0A0A] border border-[#1A1A1A] rounded-sm p-4 w-full md:w-[320px]",
+        compact ? "h-[240px]" : "h-[280px]",
         className
       )}
     >
-      <p className="text-xs uppercase tracking-widest text-[#737373]">WIN RATE</p>
-      <p className="mt-2 text-4xl font-bold text-[#D4AF37] tabular-nums">
-        <CountUpValue value={winRate} decimals={1} suffix="%" />
+      <span className="absolute top-4 right-4 flex items-center gap-1.5">
+        <span className="h-2 w-2 rounded-full bg-[#00C853] animate-pulse" />
+        <span className="text-[10px] uppercase tracking-widest text-[#00C853] font-medium">
+          LIVE
+        </span>
+      </span>
+
+      <p className="text-xs uppercase tracking-widest text-[#737373] mb-3">
+        EUR/USD • 1H
       </p>
 
-      <div className="my-4 h-px bg-[#1A1A1A]" />
+      <div
+        className={cn(
+          "relative overflow-hidden",
+          compact ? "h-[140px]" : "h-[200px]"
+        )}
+      >
+        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+          <div className="h-px bg-[#1A1A1A]/50" />
+          <div className="h-px bg-[#1A1A1A]/50" />
+          <div className="h-px bg-[#1A1A1A]/50" />
+        </div>
 
-      <p className="text-xs uppercase tracking-widest text-[#737373]">
-        AVG MONTHLY RETURN
-      </p>
-      <p className="mt-2 text-4xl font-bold text-[#00C853] tabular-nums">
-        <CountUpValue value={monthlyReturn} decimals={1} prefix="+" suffix="%" />
-      </p>
+        <div className="absolute left-0 right-0 top-[38%] h-px bg-[#D4AF37]/60 animate-hero-price-pulse" />
 
-      <div className="my-4 h-px bg-[#1A1A1A]" />
+        <div className="absolute inset-x-2 bottom-0 top-2 flex items-end justify-between">
+          {heroCandles.map((candle, i) => (
+            <div key={i} className="flex w-[8px] flex-col items-center justify-end">
+              <div
+                className="w-px bg-[#333333]"
+                style={{ height: candle.wickTop }}
+              />
+              <div
+                className={cn(
+                  "w-[8px] rounded-[1px]",
+                  candle.up ? "bg-[#2D5A3D]" : "bg-[#5C2A2A]",
+                  "live" in candle && candle.live && "animate-hero-candle-grow"
+                )}
+                style={{ height: candle.body }}
+              />
+              <div
+                className="w-px bg-[#333333]"
+                style={{ height: candle.wickBottom }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <p className="text-xs uppercase tracking-widest text-[#737373]">
-        ACTIVE CLIENTS
-      </p>
-      <p className="mt-2 text-4xl font-bold text-[#D4AF37] tabular-nums">
-        <CountUpValue value={activeTraders} decimals={0} suffix="+" />
-      </p>
+      <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="font-mono text-lg font-bold text-white tabular-nums">
+          1.0847
+        </span>
+        <span className="font-mono text-xs text-[#00C853] tabular-nums">+0.03%</span>
+        <span className="font-mono text-xs text-[#737373] tabular-nums">{clock}</span>
+      </div>
     </motion.div>
   );
 }
@@ -651,23 +682,15 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <div className="hidden lg:block relative min-h-[300px]">
+            <div className="hidden md:block relative min-h-[300px]">
               <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                <HeroLiveStats
-                  winRate={Number(stats.win_rate)}
-                  monthlyReturn={Number(stats.monthly_return)}
-                  activeTraders={Number(stats.active_traders)}
-                />
+                <HeroMiniChart />
               </div>
             </div>
           </div>
 
-          <div className="mt-10 flex justify-center lg:hidden">
-            <HeroLiveStats
-              winRate={Number(stats.win_rate)}
-              monthlyReturn={Number(stats.monthly_return)}
-              activeTraders={Number(stats.active_traders)}
-            />
+          <div className="mt-10 flex justify-center md:hidden">
+            <HeroMiniChart compact className="max-w-full" />
           </div>
         </div>
       </section>

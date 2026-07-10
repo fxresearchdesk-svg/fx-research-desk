@@ -179,6 +179,35 @@
   pointer-events: none !important;
 }
 
+@keyframes hero-candle-grow {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.18);
+  }
+}
+
+.animate-hero-candle-grow {
+  animation: hero-candle-grow 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes hero-price-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.animate-hero-price-pulse {
+  animation: hero-price-pulse 2.5s ease-in-out infinite;
+}
+
 @keyframes float-orb {
   0%,
   100% {
