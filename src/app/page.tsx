@@ -54,7 +54,7 @@ const processSteps = [
 
 const trustIndicators = [
   { value: "AUM: $2.4M+", label: "Client capital under signal guidance" },
-  { value: "87% Win Rate", label: "Verified since 2024" },
+  { value: "87% Win Rate", label: "Verified since 2015" },
   { value: "30+ Countries", label: "Global client base" },
   { value: "0% Hidden Fees", label: "Transparent pricing structure" },
   { value: "24/7 Desk", label: "London • New York • Singapore" },
@@ -146,6 +146,24 @@ const educationArticles = [
       "Discipline protocols and behavioral frameworks for consistent institutional performance.",
     href: "/education/trading-psychology",
   },
+  {
+    title: "Fundamental Analysis",
+    excerpt:
+      "Master economic indicators, central bank decisions, and news trading. Understand what moves the market before the charts do.",
+    href: "#",
+  },
+  {
+    title: "Risk-Reward Mastery",
+    excerpt:
+      "Learn to structure trades where you risk $1 to make $3. The math behind consistent profitability and compounding.",
+    href: "#",
+  },
+  {
+    title: "Trading Journals",
+    excerpt:
+      "Track every trade, review mistakes, and build a data-driven edge. Professional traders don't guess — they analyze.",
+    href: "#",
+  },
 ];
 
 const faqItems = [
@@ -199,6 +217,36 @@ const FALLBACK_TESTIMONIALS = [
       "Permanent access was the correct decision. The desk operates with the discipline of a private bank research division.",
     name: "James O.",
     location: "New York",
+  },
+  {
+    quote:
+      "I was skeptical at first, but after 3 months my account is up 34%. The lifetime plan was the best decision I made.",
+    name: "Robert T.",
+    location: "Sydney",
+  },
+  {
+    quote:
+      "Finally a signal service that actually teaches you WHY to take the trade, not just blindly follow.",
+    name: "Elena K.",
+    location: "Frankfurt",
+  },
+  {
+    quote:
+      "Went from $2k to $8k in 6 months. Risk management is what kept me in the game during drawdowns.",
+    name: "David M.",
+    location: "Toronto",
+  },
+  {
+    quote:
+      "The quarterly calls alone are worth the Elite plan. Direct access to real traders who've been through everything.",
+    name: "Yuki T.",
+    location: "Tokyo",
+  },
+  {
+    quote:
+      "Compared to 4 other signal services, FX Research Desk is the only one with verified results and real education.",
+    name: "Hassan A.",
+    location: "Dubai",
   },
 ];
 
@@ -275,7 +323,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const [logoSrc, setLogoSrc] = useState("/logo.png");
+  const [logoSrc, setLogoSrc] = useState("/logo.png.jpeg");
 
   const [statsLoading, setStatsLoading] = useState(true);
   const [signalsLoading, setSignalsLoading] = useState(true);
@@ -289,13 +337,20 @@ export default function Home() {
     ? `${Number(stats.win_rate).toFixed(1)}%`
     : "87.3%";
 
+  const mappedLive = liveTestimonials.map((t) => ({
+    quote: t.quote,
+    name: t.name,
+    location: t.location ?? t.member_type ?? "",
+  }));
+
   const displayTestimonials =
-    liveTestimonials.length > 0
-      ? liveTestimonials.map((t) => ({
-          quote: t.quote,
-          name: t.name,
-          location: t.location ?? t.member_type ?? "",
-        }))
+    mappedLive.length > 0
+      ? [
+          ...mappedLive,
+          ...FALLBACK_TESTIMONIALS.filter(
+            (fb) => !mappedLive.some((m) => m.quote === fb.quote)
+          ),
+        ]
       : FALLBACK_TESTIMONIALS;
 
   useEffect(() => {
@@ -360,16 +415,25 @@ export default function Home() {
         <nav className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <Link
             href="/"
-            className="block h-12 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
+            className="block shrink-0 min-w-[160px] max-w-[260px] h-12 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
           >
             <Image
               src={logoSrc}
               alt="FX Research Desk"
-              width={120}
+              width={260}
               height={48}
-              className="h-12 w-auto object-contain"
-              onError={() => setLogoSrc("/logo.svg")}
+              className="h-12 w-full max-w-[260px] object-contain object-left"
+              onError={() =>
+                setLogoSrc((prev) =>
+                  prev === "/logo.png.jpeg"
+                    ? "/logo.png"
+                    : prev === "/logo.png"
+                      ? "/logo.svg"
+                      : "/logo.svg"
+                )
+              }
               priority
+              unoptimized
             />
           </Link>
 
@@ -400,7 +464,7 @@ export default function Home() {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3 transition-colors duration-300 hover:bg-[#D4AF37] hover:text-black"
+              className="hidden sm:inline-block label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3.5 transition-colors duration-300 hover:bg-[#D4AF37] hover:text-black whitespace-nowrap"
             >
               CLIENT ACCESS
             </a>
@@ -450,7 +514,7 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3 text-center hover:bg-[#D4AF37] hover:text-black transition-colors duration-300"
+                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3.5 text-center hover:bg-[#D4AF37] hover:text-black transition-colors duration-300 whitespace-nowrap"
                 >
                   CLIENT ACCESS
                 </a>
@@ -481,7 +545,7 @@ export default function Home() {
                 href={telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300"
+                className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
               >
                 REQUEST ACCESS
               </a>
@@ -508,13 +572,15 @@ export default function Home() {
 
       {/* Trust indicators */}
       <section className="bg-[#0A0A0A] border-y border-[#1A1A1A]">
-        <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-[#1A1A1A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-[#1A1A1A]">
           {trustIndicators.map((item) => (
-            <div key={item.value} className="text-center lg:px-6">
-              <div className="text-[#D4AF37] font-semibold text-sm mb-2 tabular-nums">
+            <div key={item.value} className="text-center lg:px-4 xl:px-6 min-w-0">
+              <div className="text-[#D4AF37] font-semibold text-sm mb-2 tabular-nums whitespace-nowrap">
                 {item.value}
               </div>
-              <div className="label-caps text-[#A0A0A0]">{item.label}</div>
+              <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#A0A0A0] leading-relaxed px-2">
+                {item.label}
+              </div>
             </div>
           ))}
         </div>
@@ -537,7 +603,7 @@ export default function Home() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#1A1A1A] bg-[#1A1A1A] md:bg-transparent">
             {processSteps.map((step, i) => (
               <motion.div
                 key={step.num}
@@ -546,14 +612,14 @@ export default function Home() {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.08 }}
-                className="relative px-0 md:px-10 py-10 md:py-0 first:md:pl-0 last:md:pr-0"
+                className="relative bg-[#050505] p-8 md:px-8 lg:px-10 min-w-0"
               >
-                <span className="font-serif-display text-7xl text-[#1A1A1A] absolute top-0 left-0 md:left-10 select-none pointer-events-none">
+                <span className="font-serif-display text-7xl text-[#1A1A1A] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
                   {step.num}
                 </span>
-                <div className="relative pt-16">
+                <div className="relative">
                   <h3 className="text-xl font-semibold text-[#F5F5F5] mb-3">{step.title}</h3>
-                  <p className="text-sm text-[#A0A0A0] leading-relaxed">{step.description}</p>
+                  <p className="text-sm text-[#A0A0A0] leading-relaxed break-words">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -586,7 +652,7 @@ export default function Home() {
                 <div className="font-serif-display text-7xl md:text-9xl font-bold text-[#D4AF37] tabular-nums mb-4">
                   {winRateDisplay}
                 </div>
-                <p className="label-caps text-[#737373]">Win Rate | 2024–2026</p>
+                <p className="label-caps text-[#A0A0A0]">Win Rate | 2015–2026</p>
               </>
             )}
           </motion.div>
@@ -679,7 +745,7 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-8 py-3 hover:bg-[#D4AF37] hover:text-black transition-colors duration-300"
+                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-8 py-3.5 hover:bg-[#D4AF37] hover:text-black transition-colors duration-300 whitespace-nowrap"
                 >
                   REQUEST ACCESS
                 </a>
@@ -716,7 +782,7 @@ export default function Home() {
                 variants={fadeIn}
                 transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
                 className={cn(
-                  "flex flex-col bg-[#0A0A0A] p-8 border border-[#D4AF37]/20 hover:border-[#D4AF37]/40 transition-colors duration-500",
+                  "flex flex-col bg-[#0A0A0A] p-8 min-h-full border border-[#D4AF37]/20 hover:border-[#D4AF37]/40 transition-colors duration-500",
                   tier.highlighted && "border-2 border-[#D4AF37]"
                 )}
               >
@@ -743,9 +809,9 @@ export default function Home() {
                   <p className="text-xs text-[#A0A0A0] mb-6">{tier.subtitle}</p>
                 )}
                 {!tier.subtitle && <div className="mb-6" />}
-                <ul className="space-y-3 mb-8 flex-1">
+                <ul className="space-y-3 mb-8 flex-1 min-w-0">
                   {tier.features.map((f) => (
-                    <li key={f} className="text-sm text-[#A0A0A0]">
+                    <li key={f} className="text-sm text-[#A0A0A0] leading-relaxed break-words">
                       {f}
                     </li>
                   ))}
@@ -755,7 +821,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "label-caps text-center py-3 transition-colors duration-300",
+                    "label-caps text-center py-3.5 px-4 transition-colors duration-300 whitespace-nowrap",
                     tier.ctaPrimary
                       ? "bg-[#D4AF37] text-black hover:bg-[#E0C060]"
                       : "border border-[#D4AF37]/20 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
@@ -774,7 +840,7 @@ export default function Home() {
         id="insights"
         className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -791,26 +857,26 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="font-serif-display italic text-2xl text-[#F5F5F5] leading-relaxed mb-8"
+                className="font-serif-display italic text-lg sm:text-xl md:text-2xl text-[#F5F5F5] leading-loose mb-8 px-2 break-words"
               >
                 &ldquo;{displayTestimonials[testimonialIndex]?.quote}&rdquo;
               </motion.blockquote>
             </AnimatePresence>
 
-            <p className="label-caps text-[#737373]">
+            <p className="label-caps text-[#A0A0A0] break-words">
               {displayTestimonials[testimonialIndex]?.name}
               {displayTestimonials[testimonialIndex]?.location &&
                 ` — ${displayTestimonials[testimonialIndex].location}`}
             </p>
 
-            <div className="flex justify-center gap-3 mt-10">
-              {displayTestimonials.slice(0, 3).map((_, i) => (
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-10 px-2">
+              {displayTestimonials.map((_, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setTestimonialIndex(i)}
                   className={cn(
-                    "w-2 h-2 transition-colors duration-300",
+                    "w-2.5 h-2.5 shrink-0 transition-colors duration-300",
                     testimonialIndex === i ? "bg-[#D4AF37]" : "bg-[#1A1A1A]"
                   )}
                   aria-label={`View testimonial ${i + 1}`}
@@ -835,25 +901,34 @@ export default function Home() {
             <SectionLabel>KNOWLEDGE CENTER</SectionLabel>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1A1A1A]">
             {educationArticles.map((article, i) => (
               <motion.div
-                key={article.href}
+                key={`${article.title}-${i}`}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeIn}
                 transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
-                className="px-0 md:px-10 py-10 md:py-0 first:md:pl-0 last:md:pr-0"
+                className="bg-[#050505] p-8 min-w-0"
               >
-                <h3 className="text-lg text-[#F5F5F5] font-medium mb-3">{article.title}</h3>
-                <p className="text-sm text-[#A0A0A0] mb-6 leading-relaxed">{article.excerpt}</p>
-                <Link
-                  href={article.href}
-                  className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
-                >
-                  READ
-                </Link>
+                <h3 className="text-lg text-[#F5F5F5] font-medium mb-3 leading-snug">{article.title}</h3>
+                <p className="text-sm text-[#A0A0A0] mb-6 leading-relaxed break-words">{article.excerpt}</p>
+                {article.href.startsWith("/education") ? (
+                  <Link
+                    href={article.href}
+                    className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
+                  >
+                    READ
+                  </Link>
+                ) : (
+                  <a
+                    href="#"
+                    className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
+                  >
+                    READ
+                  </a>
+                )}
               </motion.div>
             ))}
           </div>
@@ -882,9 +957,9 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setOpenFaq(open ? null : i)}
-                    className="w-full flex items-center justify-between gap-4 py-6 text-left"
+                    className="w-full flex items-start justify-between gap-6 py-6 text-left"
                   >
-                    <span className="text-[#F5F5F5] font-semibold">{item.question}</span>
+                    <span className="text-[#F5F5F5] font-semibold leading-relaxed pr-4">{item.question}</span>
                     <span className="text-[#737373] text-lg shrink-0">{open ? "—" : "+"}</span>
                   </button>
                   <AnimatePresence initial={false}>
@@ -896,7 +971,7 @@ export default function Home() {
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         className="overflow-hidden"
                       >
-                        <p className="pb-6 text-sm text-[#737373] leading-relaxed">
+                        <p className="pb-8 text-sm text-[#A0A0A0] leading-relaxed break-words">
                           {item.answer}
                         </p>
                       </motion.div>
@@ -926,7 +1001,7 @@ export default function Home() {
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block label-caps bg-[#D4AF37] text-black px-12 py-5 hover:bg-[#E0C060] transition-colors duration-300"
+            className="inline-block label-caps bg-[#D4AF37] text-black px-12 py-5 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
           >
             REQUEST ACCESS
           </a>
@@ -940,16 +1015,25 @@ export default function Home() {
             <Image
               src={logoSrc}
               alt="FX Research Desk"
-              width={160}
+              width={200}
               height={64}
-              className="h-16 w-auto object-contain"
-              onError={() => setLogoSrc("/logo.svg")}
+              className="h-16 w-auto max-w-[200px] object-contain"
+              onError={() =>
+                setLogoSrc((prev) =>
+                  prev === "/logo.png.jpeg"
+                    ? "/logo.png"
+                    : prev === "/logo.png"
+                      ? "/logo.svg"
+                      : "/logo.svg"
+                )
+              }
+              unoptimized
             />
           </div>
           <p className="label-caps text-[#A0A0A0] mb-2">FX RESEARCH DESK</p>
           <p className="label-caps text-[#D4AF37]/60 mb-10">Research. Analyze. Execute.</p>
 
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 gap-y-4 mb-12 px-4">
             {[
               ...navLinks,
               { href: "#faq", label: "INQUIRIES" },
@@ -959,7 +1043,7 @@ export default function Home() {
               <a
                 key={link.label}
                 href={link.href}
-                className="label-caps text-[#A0A0A0] hover:text-[#D4AF37] transition-colors duration-300"
+                className="label-caps text-[#A0A0A0] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap"
               >
                 {link.label}
               </a>

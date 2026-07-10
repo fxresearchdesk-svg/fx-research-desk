@@ -28,10 +28,7 @@ const PAIR_CONFIG: PairConfig[] = [
   { pair: "AUD/USD", getPrice: (r) => (r.AUD > 0 ? 1 / r.AUD : null) },
   { pair: "USD/CAD", getPrice: (r) => r.CAD ?? null },
   { pair: "NZD/USD", getPrice: (r) => (r.NZD > 0 ? 1 / r.NZD : null) },
-  {
-    pair: "EUR/GBP",
-    getPrice: (r) => (r.EUR > 0 && r.GBP > 0 ? r.GBP / r.EUR : null),
-  },
+  { pair: "EUR/GBP", getPrice: (r) => (r.EUR > 0 && r.GBP > 0 ? r.GBP / r.EUR : null) },
   { pair: "XAU/USD", getPrice: (_, gold) => gold },
   { pair: "XAG/USD", getPrice: (_, __, silver) => silver },
   { pair: "US30", getPrice: () => null },
@@ -70,29 +67,32 @@ async function fetchMetalRate(pair: string): Promise<number | null> {
   }
 }
 
-function TickerItem({ item }: { item: TickerPair }) {
+function TickerItem({ item, showSeparator }: { item: TickerPair; showSeparator?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2 px-6 font-mono text-sm font-medium tabular-nums whitespace-nowrap">
-      <span className="text-[#A8A8A8]">{item.pair}</span>
-      {item.price !== null ? (
-        <>
-          <span className="text-white">{formatPrice(item.price, item.pair)}</span>
-          <span
-            className={cn(
-              item.direction === "up" && "text-[#2D5A3D]",
-              item.direction === "down" && "text-[#5C2A2A]",
-              item.direction === "flat" && "text-[#A0A0A0]"
-            )}
-          >
-            {item.direction === "up" ? "▲" : item.direction === "down" ? "▼" : "—"}{" "}
-            {item.change > 0 ? "+" : ""}
-            {item.change.toFixed(2)}%
-          </span>
-        </>
-      ) : (
-        <span className="text-[#A0A0A0]">—</span>
-      )}
-    </span>
+    <>
+      <span className="inline-flex items-center gap-2 px-6 font-mono text-sm font-medium tabular-nums whitespace-nowrap">
+        <span className="text-[#A0A0A0]">{item.pair}</span>
+        {item.price !== null ? (
+          <>
+            <span className="text-[#FFFFFF]">{formatPrice(item.price, item.pair)}</span>
+            <span
+              className={cn(
+                item.direction === "up" && "text-[#2D5A3D]",
+                item.direction === "down" && "text-[#5C2A2A]",
+                item.direction === "flat" && "text-[#A0A0A0]"
+              )}
+            >
+              {item.direction === "up" ? "▲" : item.direction === "down" ? "▼" : "—"}{" "}
+              {item.change > 0 ? "+" : ""}
+              {item.change.toFixed(2)}%
+            </span>
+          </>
+        ) : (
+          <span className="text-[#A0A0A0]">—</span>
+        )}
+      </span>
+      {showSeparator && <span className="text-[#333333] px-2">•</span>}
+    </>
   );
 }
 
@@ -150,12 +150,10 @@ export function InstitutionalTicker() {
   }, [load]);
 
   const marqueeItems =
-    status === "ready" && pairs.length > 0
-      ? [...pairs, ...pairs]
-      : null;
+    status === "ready" && pairs.length > 0 ? [...pairs, ...pairs] : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-14 bg-black border-b border-[#D4AF37]/20">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-14 bg-[#0A0A0A] border-b border-[#1A1A1A]">
       <div className="h-full flex items-stretch">
         <div className="flex-1 overflow-hidden flex items-center min-w-0">
           {status === "loading" && (
@@ -171,17 +169,21 @@ export function InstitutionalTicker() {
           {marqueeItems && (
             <div className="flex animate-ticker whitespace-nowrap items-center h-full">
               {marqueeItems.map((item, i) => (
-                <TickerItem key={`${item.pair}-${i}`} item={item} />
+                <TickerItem
+                  key={`${item.pair}-${i}`}
+                  item={item}
+                  showSeparator={i < marqueeItems.length - 1}
+                />
               ))}
             </div>
           )}
         </div>
 
-        <div className="shrink-0 flex items-center gap-2.5 px-6 border-l border-[#D4AF37]/20">
+        <div className="shrink-0 flex items-center gap-2.5 px-6 border-l border-[#1A1A1A]">
           {marketOpen && (
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[#2D5A3D] opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2D5A3D]" />
+              <span className="absolute inline-flex h-full w-full bg-[#2D5A3D] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 bg-[#2D5A3D]" />
             </span>
           )}
           <span
