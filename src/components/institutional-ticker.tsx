@@ -89,16 +89,17 @@ function TickerItem({
 }) {
   return (
     <>
-      <span className="inline-flex items-center gap-2 px-3 font-mono text-xs tabular-nums whitespace-nowrap">
-        <span className="text-[#A0A0A0]">{item.pair}</span>
-        <span className="text-white font-medium">
+      <span className="inline-flex items-center gap-2 px-3 font-mono text-sm tabular-nums whitespace-nowrap">
+        <span className="text-[#D4AF37]">{item.pair}</span>
+        <span className="text-sm font-bold text-white">
           {formatPrice(item.price, item.pair)}
         </span>
         {item.change !== null && (
           <span
             className={cn(
-              item.direction === "up" && "text-[#2D5A3D]",
-              item.direction === "down" && "text-[#5C2A2A]",
+              "text-sm font-bold",
+              item.direction === "up" && "text-[#00C853]",
+              item.direction === "down" && "text-[#FF1744]",
               item.direction === "flat" && "text-[#A0A0A0]"
             )}
           >
@@ -109,7 +110,7 @@ function TickerItem({
           </span>
         )}
       </span>
-      {showSeparator && <span className="text-[#333333] mx-2">•</span>}
+      {showSeparator && <span className="mx-2 text-[#555555]">•</span>}
     </>
   );
 }
@@ -124,7 +125,7 @@ function RefreshIcon({ spinning }: { spinning?: boolean }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("h-3.5 w-3.5", spinning && "animate-spin")}
+      className={cn("h-4 w-4", spinning && "animate-spin")}
       aria-hidden
     >
       <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
@@ -237,11 +238,11 @@ export function InstitutionalTicker() {
         : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-12 bg-[#0A0A0A] border-b border-[#1A1A1A]">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-14 border-b-2 border-[#D4AF37]/40 bg-[#111111]">
       <div className="h-full flex items-stretch">
         <div className="flex-1 overflow-hidden flex items-center min-w-0">
           {centerMessage && (
-            <span className="w-full text-center px-3 font-mono text-xs text-[#A0A0A0]">
+            <span className="w-full text-center px-3 font-mono text-sm text-[#A0A0A0]">
               {centerMessage}
             </span>
           )}
@@ -258,27 +259,27 @@ export function InstitutionalTicker() {
           )}
         </div>
 
-        <div className="shrink-0 flex items-center gap-2 px-3 border-l border-[#1A1A1A]">
+        <div className="shrink-0 flex items-center gap-2.5 px-4 border-l border-[#1A1A1A]">
           <button
             type="button"
             onClick={() => load(true)}
             disabled={refreshing}
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-[#1A1A1A] text-[#A0A0A0] transition-colors duration-300 hover:border-[#333333] hover:text-white disabled:opacity-50"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D4AF37]/50 text-[#D4AF37] transition-colors duration-300 hover:bg-[#D4AF37]/10 disabled:opacity-50"
             aria-label="Refresh market data"
           >
             <RefreshIcon spinning={refreshing} />
           </button>
 
           {marketOpen && (
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full bg-[#2D5A3D] opacity-75 animate-ping" />
-              <span className="relative inline-flex h-1.5 w-1.5 bg-[#2D5A3D]" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#00C853] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00C853] animate-pulse" />
             </span>
           )}
           <span
             className={cn(
-              "text-xs uppercase tracking-widest font-semibold whitespace-nowrap font-mono",
-              marketOpen ? "text-[#2D5A3D]" : "text-[#5C2A2A]"
+              "text-sm font-bold uppercase tracking-widest whitespace-nowrap font-mono",
+              marketOpen ? "text-[#00C853]" : "text-[#FF1744]"
             )}
           >
             {marketOpen ? "MARKETS OPEN" : "MARKETS CLOSED"}

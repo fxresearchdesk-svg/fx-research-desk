@@ -586,7 +586,7 @@ export default function Home() {
       <InstitutionalTicker />
 
       {/* Navbar */}
-      <header className="fixed top-12 left-0 right-0 z-50 h-[72px] bg-black/95 backdrop-blur border-b border-[#D4AF37]/20">
+      <header className="fixed top-14 left-0 right-0 z-50 h-20 border-b-2 border-[#D4AF37]/30 bg-[#0A0A0A] shadow-[0_1px_20px_rgba(212,175,55,0.15)]">
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link
             href="/"
@@ -610,7 +610,7 @@ export default function Home() {
               priority
               unoptimized
             />
-            <span className="hidden sm:block label-caps text-[#F5F5F5] tracking-[0.15em] whitespace-nowrap">
+            <span className="hidden sm:block text-base font-bold text-white tracking-[0.3em] uppercase whitespace-nowrap">
               FX RESEARCH DESK
             </span>
           </Link>
@@ -624,13 +624,18 @@ export default function Home() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "label-caps relative pb-1 transition-colors duration-300",
-                    active ? "text-[#D4AF37]" : "text-[#A8A8A8] hover:text-[#D4AF37]"
+                    "group relative pb-2 text-sm font-semibold uppercase tracking-[0.15em] transition-colors duration-300",
+                    active ? "text-white" : "text-[#D4AF37] hover:text-white"
                   )}
                 >
-                  {link.label}
                   {active && (
+                    <span className="absolute -top-2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[#D4AF37]" />
+                  )}
+                  {link.label}
+                  {active ? (
                     <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D4AF37]" />
+                  ) : (
+                    <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-white transition-transform duration-300 group-hover:scale-x-100" />
                   )}
                 </a>
               );
@@ -642,13 +647,13 @@ export default function Home() {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3.5 transition-colors duration-300 hover:bg-[#D4AF37] hover:text-black whitespace-nowrap"
+              className="hidden sm:inline-block rounded-sm bg-[#D4AF37] px-6 py-3 text-sm font-bold text-black shadow-lg shadow-[#D4AF37]/20 transition-colors duration-300 hover:bg-[#E5C158] whitespace-nowrap"
             >
               CLIENT ACCESS
             </a>
             <button
               type="button"
-              className="lg:hidden label-caps text-[#A8A8A8] hover:text-[#D4AF37] px-2 py-1"
+              className="lg:hidden text-sm font-semibold uppercase tracking-[0.15em] text-[#D4AF37] hover:text-white px-2 py-1 transition-colors duration-300"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
             >
@@ -675,7 +680,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 40 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#0A0A0A] border-l border-[#1A1A1A] p-8 pt-24 lg:hidden"
+              className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#0A0A0A] border-l border-[#1A1A1A] p-8 pt-36 lg:hidden"
             >
               <div className="flex flex-col gap-6">
                 {navLinks.map((link) => (
@@ -683,7 +688,7 @@ export default function Home() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="label-caps text-[#A8A8A8] hover:text-[#D4AF37] transition-colors duration-300"
+                    className="text-sm font-semibold uppercase tracking-[0.15em] text-[#D4AF37] hover:text-white transition-colors duration-300"
                   >
                     {link.label}
                   </a>
@@ -692,7 +697,7 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3.5 text-center hover:bg-[#D4AF37] hover:text-black transition-colors duration-300 whitespace-nowrap"
+                  className="rounded-sm bg-[#D4AF37] px-6 py-3 text-center text-sm font-bold text-black shadow-lg shadow-[#D4AF37]/20 transition-colors duration-300 hover:bg-[#E5C158] whitespace-nowrap"
                 >
                   CLIENT ACCESS
                 </a>
@@ -703,7 +708,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="pt-[120px] min-h-[calc(100vh-120px)] flex items-center">
+      <section className="pt-[136px] min-h-[calc(100vh-136px)] flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
           <motion.div
             initial="hidden"
@@ -765,7 +770,7 @@ export default function Home() {
       </section>
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[120px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[136px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -808,7 +813,7 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[136px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -864,7 +869,7 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeIn}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="scroll-mt-[120px]"
+            className="scroll-mt-[136px]"
           >
             {signalsLoading ? (
               <div className="space-y-2">
@@ -934,7 +939,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[120px] py-24 px-6">
+      <section id="pricing" className="scroll-mt-[136px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -1016,7 +1021,7 @@ export default function Home() {
       {/* Testimonials / Insights */}
       <section
         id="insights"
-        className="scroll-mt-[120px] bg-[#050505] py-24 px-6"
+        className="scroll-mt-[136px] bg-[#050505] py-24 px-6"
       >
         <div className="max-w-6xl mx-auto md:px-[60px]">
           <motion.div
@@ -1033,7 +1038,7 @@ export default function Home() {
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[120px] py-24 px-6">
+      <section id="education" className="scroll-mt-[136px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -1081,7 +1086,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
+      <section id="faq" className="scroll-mt-[136px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial="hidden"
