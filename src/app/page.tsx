@@ -5,6 +5,13 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { LiveTicker } from "@/components/live-ticker";
 import {
+  fetchSignals,
+  fetchStats,
+  fetchTestimonials,
+  isSupabaseConfigured,
+} from "@/lib/supabase";
+import type { Signal, Stats, Testimonial } from "@/lib/types";
+import {
   ArrowRight,
   BarChart3,
   BookOpen,
@@ -68,64 +75,11 @@ const steps = [
   },
 ];
 
-const statCards = [
+const FALLBACK_STAT_CARDS = [
   { value: "87%", label: "Win Rate" },
   { value: "+2,450", label: "Pips This Month" },
   { value: "+14.2%", label: "Avg Monthly Return" },
   { value: "500+", label: "Active Members" },
-];
-
-const latestSignals = [
-  {
-    pair: "EUR/USD",
-    direction: "BUY" as const,
-    entry: "1.0850",
-    stopLoss: "1.0820",
-    takeProfit: "1.0900",
-    result: "WIN +45 pips",
-    isWin: true,
-    date: "Jul 9, 2026",
-  },
-  {
-    pair: "GBP/USD",
-    direction: "SELL" as const,
-    entry: "1.2740",
-    stopLoss: "1.2780",
-    takeProfit: "1.2680",
-    result: "WIN +60 pips",
-    isWin: true,
-    date: "Jul 8, 2026",
-  },
-  {
-    pair: "USD/JPY",
-    direction: "BUY" as const,
-    entry: "151.20",
-    stopLoss: "150.80",
-    takeProfit: "152.00",
-    result: "LOSS -12 pips",
-    isWin: false,
-    date: "Jul 8, 2026",
-  },
-  {
-    pair: "XAU/USD",
-    direction: "BUY" as const,
-    entry: "2320.00",
-    stopLoss: "2305.00",
-    takeProfit: "2350.00",
-    result: "WIN +85 pips",
-    isWin: true,
-    date: "Jul 7, 2026",
-  },
-  {
-    pair: "AUD/USD",
-    direction: "SELL" as const,
-    entry: "0.6640",
-    stopLoss: "0.6680",
-    takeProfit: "0.6580",
-    result: "WIN +35 pips",
-    isWin: true,
-    date: "Jul 6, 2026",
-  },
 ];
 
 const pricingTiers = [
@@ -199,7 +153,7 @@ const pricingTiers = [
   },
 ];
 
-const testimonials = [
+const FALLBACK_TESTIMONIALS = [
   {
     quote:
       "FX Research Desk completely changed how I trade. The signals are precise and the risk management alone saved my account.",
@@ -294,11 +248,75 @@ const fadeIn = {
   visible: { opacity: 1, y: 0 },
 };
 
+function statsToCards(stats: Stats) {
+  return [
+    { value: `${stats.win_rate}%`, label: "Win Rate" },
+    { value: `+${stats.pips_month.toLocaleString()}`, label: "Pips This Month" },
+    { value: `+${stats.monthly_return}%`, label: "Avg Monthly Return" },
+    { value: `${stats.active_traders}+`, label: "Active Members" },
+  ];
+}
+
+function formatSignalDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function formatPrice(value: number) {
+  return Number(value).toFixed(4);
+}
+
+function getSignalResultLabel(signal: Signal) {
+  if (signal.result === "PENDING") return "OPEN";
+  if (signal.result === "WIN") {
+    return signal.pips != null ? `WIN +${signal.pips} pips` : "WIN";
+  }
+  if (signal.result === "LOSS") {
+    return signal.pips != null ? `LOSS ${signal.pips} pips` : "LOSS";
+  }
+  return "OPEN";
+}
+
+function StatSkeleton() {
+  return (
+    <div className="bg-slate-900/30 border border-slate-800/50 rounded-2xl p-8 text-center animate-pulse">
+      <div className="h-12 bg-slate-800 rounded-lg mb-3 mx-auto w-24" />
+      <div className="h-4 bg-slate-800 rounded w-28 mx-auto" />
+    </div>
+  );
+}
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [yearlyBilling, setYearlyBilling] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [activeSection, setActiveSection] = useState("");
+
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [signalsLoading, setSignalsLoading] = useState(true);
+  const [testimonialsLoading, setTestimonialsLoading] = useState(true);
+
+  const [liveStats, setLiveStats] = useState<Stats | null>(null);
+  const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
+  const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
+
+  const [usingStaticStats, setUsingStaticStats] = useState(false);
+  const [dbConfigured, setDbConfigured] = useState(false);
+
+  const statCards = liveStats ? statsToCards(liveStats) : FALLBACK_STAT_CARDS;
+  const displayTestimonials =
+    liveTestimonials.length > 0
+      ? liveTestimonials.map((t) => ({
+          quote: t.quote,
+          name: t.name,
+          location: t.location ?? t.member_type ?? "",
+          imageUrl: t.image_url,
+        }))
+      : FALLBACK_TESTIMONIALS.map((t) => ({ ...t, imageUrl: null as string | null }));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -313,6 +331,64 @@ export default function Home() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const configured = isSupabaseConfigured();
+    setDbConfigured(configured);
+
+    if (!configured) {
+      setUsingStaticStats(true);
+      setStatsLoading(false);
+      setSignalsLoading(false);
+      setTestimonialsLoading(false);
+      return;
+    }
+
+    async function loadSiteData() {
+      const [stats, signals, testimonialsData] = await Promise.all([
+        fetchStats(),
+        fetchSignals(5),
+        fetchTestimonials(),
+      ]);
+
+      if (stats) {
+        setLiveStats(stats);
+        setUsingStaticStats(false);
+      } else {
+        setUsingStaticStats(true);
+      }
+
+      setLiveSignals(signals);
+      setLiveTestimonials(testimonialsData);
+      setStatsLoading(false);
+      setSignalsLoading(false);
+      setTestimonialsLoading(false);
+    }
+
+    loadSiteData();
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
       <LiveTicker />
@@ -320,28 +396,52 @@ export default function Home() {
       {/* Navbar */}
       <header
         className={cn(
-          "fixed top-10 left-0 right-0 z-50 h-16 transition-all duration-300",
-          "bg-[#0a0a0a]/90 backdrop-blur-xl",
-          scrolled && "border-b border-slate-800/50"
+          "fixed top-10 left-0 right-0 z-50 transition-all duration-300 shadow-lg shadow-black/20",
+          scrolled ? "h-[4.5rem]" : "h-20",
+          "bg-[#0a0a0a]/95 backdrop-blur-xl",
+          scrolled && "border-b border-emerald-500/20"
         )}
       >
-        <nav className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-wider text-white">
+        <nav
+          className={cn(
+            "max-w-7xl mx-auto px-6 h-full flex items-center justify-between transition-all duration-300",
+            scrolled ? "py-3" : "py-4"
+          )}
+        >
+          <Link
+            href="/"
+            className={cn(
+              "flex items-center gap-2 font-black tracking-widest text-white transition-all duration-300",
+              scrolled ? "text-xl" : "text-2xl"
+            )}
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
             FX RESEARCH DESK
           </Link>
 
           <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="group relative text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-emerald-400 transition-all group-hover:w-full" />
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const sectionId = link.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "group relative text-base font-semibold transition-colors pb-2",
+                    isActive ? "text-emerald-400" : "text-slate-400 hover:text-white"
+                  )}
+                >
+                  {link.label}
+                  <span
+                    className={cn(
+                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500 transition-opacity",
+                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                    )}
+                  />
+                </a>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-3">
@@ -349,7 +449,7 @@ export default function Home() {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-bold px-5 py-2 rounded-full transition shadow-lg shadow-emerald-500/20"
+              className="hidden sm:inline-flex bg-emerald-500 hover:bg-emerald-400 text-black text-base font-bold px-6 py-3 rounded-full transition shadow-lg shadow-emerald-500/20"
             >
               Join Telegram
             </a>
@@ -363,6 +463,7 @@ export default function Home() {
             </button>
           </div>
         </nav>
+        <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
       </header>
 
       {/* Mobile menu */}
@@ -418,7 +519,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="relative min-h-[calc(100vh-6.5rem)] flex flex-col items-center justify-center px-6 pt-[6.5rem]">
+      <section className="relative min-h-[calc(100vh-7.5rem)] flex flex-col items-center justify-center px-6 pt-[7.5rem]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.05)_0%,_transparent_65%)]" />
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -475,8 +576,8 @@ export default function Home() {
 
           <div className="mt-16 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {[
-              { icon: TrendingUp, label: "87% Win Rate" },
-              { icon: Target, label: "2,450+ Pips/Month" },
+              { icon: TrendingUp, label: `${statCards[0]?.value ?? "87%"} Win Rate` },
+              { icon: Target, label: `${statCards[1]?.value ?? "+2,450"} Pips/Month` },
               { icon: Clock, label: "24/7 Market Coverage" },
               { icon: Zap, label: "Instant Telegram Alerts" },
             ].map((item) => (
@@ -583,10 +684,17 @@ export default function Home() {
           >
             <h2 className="text-4xl font-bold text-white mb-4">Verified Performance</h2>
             <p className="text-slate-400">Every trade is logged and verified. No fake results.</p>
+            {usingStaticStats && (
+              <span className="inline-block mt-4 text-xs font-medium text-slate-500 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full">
+                Connect database for live updates
+              </span>
+            )}
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {statCards.map((stat, i) => (
+            {statsLoading
+              ? Array.from({ length: 4 }).map((_, i) => <StatSkeleton key={i} />)
+              : statCards.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial="hidden"
@@ -614,40 +722,79 @@ export default function Home() {
             <div className="px-6 py-5 border-b border-slate-800/30">
               <h3 className="text-lg font-semibold text-white">Recent Trades</h3>
             </div>
-            <div className="hidden lg:grid grid-cols-7 gap-4 px-6 py-3 text-xs uppercase tracking-wider text-slate-500 font-medium">
-              <span>Pair</span>
-              <span>Direction</span>
-              <span>Entry</span>
-              <span>SL</span>
-              <span>TP</span>
-              <span>Result</span>
-              <span>Date</span>
-            </div>
-            {latestSignals.map((trade) => (
-              <div
-                key={`${trade.pair}-${trade.date}`}
-                className="grid grid-cols-2 lg:grid-cols-7 gap-2 lg:gap-4 px-6 py-4 border-b border-slate-800/30 last:border-0 hover:bg-slate-800/20 transition-colors"
-              >
-                <div className="text-white font-semibold">{trade.pair}</div>
-                <div className="text-emerald-400 font-medium text-sm">{trade.direction}</div>
-                <div className="text-slate-300 text-sm hidden lg:block">{trade.entry}</div>
-                <div className="text-slate-500 text-sm hidden lg:block">{trade.stopLoss}</div>
-                <div className="text-slate-300 text-sm hidden lg:block">{trade.takeProfit}</div>
-                <div>
-                  <span
-                    className={cn(
-                      "inline-block px-2 py-1 rounded text-xs font-bold",
-                      trade.isWin
-                        ? "bg-emerald-500/10 text-emerald-400"
-                        : "bg-red-500/10 text-red-400"
-                    )}
-                  >
-                    {trade.result}
-                  </span>
-                </div>
-                <div className="text-slate-500 text-sm hidden lg:block">{trade.date}</div>
+
+            {signalsLoading ? (
+              <div className="px-6 py-8 space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="h-12 bg-slate-800/50 rounded-lg animate-pulse" />
+                ))}
               </div>
-            ))}
+            ) : dbConfigured && liveSignals.length > 0 ? (
+              <>
+                <div className="hidden lg:grid grid-cols-7 gap-4 px-6 py-3 text-xs uppercase tracking-wider text-slate-500 font-medium">
+                  <span>Pair</span>
+                  <span>Direction</span>
+                  <span>Entry</span>
+                  <span>SL</span>
+                  <span>TP</span>
+                  <span>Result</span>
+                  <span>Date</span>
+                </div>
+                {liveSignals.map((signal) => {
+                  const resultLabel = getSignalResultLabel(signal);
+                  const isPending = signal.result === "PENDING" || signal.result === null;
+                  const isWin = signal.result === "WIN";
+                  return (
+                    <div
+                      key={signal.id}
+                      className="grid grid-cols-2 lg:grid-cols-7 gap-2 lg:gap-4 px-6 py-4 border-b border-slate-800/30 last:border-0 hover:bg-slate-800/20 transition-colors"
+                    >
+                      <div className="text-white font-semibold">{signal.pair}</div>
+                      <div className="text-emerald-400 font-medium text-sm">{signal.direction}</div>
+                      <div className="text-slate-300 text-sm hidden lg:block">
+                        {formatPrice(signal.entry_price)}
+                      </div>
+                      <div className="text-slate-500 text-sm hidden lg:block">
+                        {formatPrice(signal.stop_loss)}
+                      </div>
+                      <div className="text-slate-300 text-sm hidden lg:block">
+                        {formatPrice(signal.take_profit)}
+                      </div>
+                      <div>
+                        <span
+                          className={cn(
+                            "inline-block px-2 py-1 rounded text-xs font-bold",
+                            isPending && "bg-yellow-500/10 text-yellow-400",
+                            isWin && "bg-emerald-500/10 text-emerald-400",
+                            signal.result === "LOSS" && "bg-red-500/10 text-red-400"
+                          )}
+                        >
+                          {resultLabel}
+                        </span>
+                      </div>
+                      <div className="text-slate-500 text-sm hidden lg:block">
+                        {formatSignalDate(signal.created_at)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className="px-6 py-12 text-center">
+                <p className="text-slate-400 mb-6">
+                  Live signals available in our Telegram channel
+                </p>
+                <a
+                  href={telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-3 rounded-full transition"
+                >
+                  Join Telegram Channel
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
@@ -789,9 +936,16 @@ export default function Home() {
           </motion.h2>
 
           <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-6 px-6">
-            {testimonials.map((t, i) => (
+            {testimonialsLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="min-w-[320px] h-48 bg-slate-900/50 border border-slate-800 rounded-2xl animate-pulse flex-shrink-0"
+                  />
+                ))
+              : displayTestimonials.map((t, i) => (
               <motion.div
-                key={t.name}
+                key={`${t.name}-${i}`}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -799,6 +953,14 @@ export default function Home() {
                 transition={{ delay: i * 0.08 }}
                 className="min-w-[320px] snap-center flex-shrink-0 bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:border-emerald-500/20 transition-all"
               >
+                {t.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={t.imageUrl}
+                    alt={t.name}
+                    className="w-10 h-10 rounded-full object-cover mb-4"
+                  />
+                )}
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, j) => (
                     <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
