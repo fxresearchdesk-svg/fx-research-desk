@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { LiveTicker } from "@/components/live-ticker";
+import { InstitutionalTicker } from "@/components/institutional-ticker";
 import {
   fetchSignals,
   fetchStats,
@@ -11,317 +12,336 @@ import {
   isSupabaseConfigured,
 } from "@/lib/supabase";
 import type { Signal, Stats, Testimonial } from "@/lib/types";
-import {
-  ArrowRight,
-  BarChart3,
-  BookOpen,
-  Brain,
-  Clock,
-  Copy,
-  Globe,
-  Menu,
-  Plus,
-  Send,
-  Share2,
-  Star,
-  Target,
-  TrendingUp,
-  Video,
-  Wallet,
-  X,
-  Zap,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const telegramUrl = "https://t.me/fxresearchdesk";
 
 const navLinks = [
-  { href: "#signals", label: "Signals" },
-  { href: "#performance", label: "Performance" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#education", label: "Education" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#signals", label: "SIGNALS" },
+  { href: "#performance", label: "PERFORMANCE" },
+  { href: "#pricing", label: "PRICING" },
+  { href: "#education", label: "EDUCATION" },
+  { href: "#insights", label: "INSIGHTS" },
 ];
 
-const socialMarquee = [
-  "500+ ACTIVE TRADERS",
-  "4.9/5 RATING",
-  "FEATURED ON TRADINGVIEW",
-  "SINCE 2024",
-  "30+ COUNTRIES",
-];
+const FALLBACK_STATS = {
+  win_rate: 87.3,
+  pips_month: 2450,
+  monthly_return: 14.2,
+  active_traders: 500,
+};
 
-const steps = [
+const processSteps = [
   {
     num: "01",
-    icon: Send,
-    title: "Join Telegram",
+    title: "Macro Analysis",
     description:
-      "Subscribe to our channel and get instant access to signals and community.",
+      "Top-down assessment of central bank policy, institutional flows, and geopolitical risk.",
   },
   {
     num: "02",
-    icon: Copy,
-    title: "Copy Signals",
+    title: "Technical Confluence",
     description:
-      "Every alert includes entry, stop loss, take profit, and lot size. Just copy to your broker.",
+      "Multi-timeframe analysis identifying high-probability entry zones with defined risk parameters.",
   },
   {
     num: "03",
-    icon: Wallet,
-    title: "Withdraw Profits",
+    title: "Execution Protocol",
     description:
-      "Follow our risk rules, grow your account, and withdraw consistently.",
+      "Precise entry, stop-loss, and take-profit levels delivered via secure channels.",
   },
 ];
 
-const FALLBACK_STAT_CARDS = [
-  { value: "87%", label: "Win Rate" },
-  { value: "+2,450", label: "Pips This Month" },
-  { value: "+14.2%", label: "Avg Monthly Return" },
-  { value: "500+", label: "Active Members" },
+const trustIndicators = [
+  { value: "AUM: $2.4M+", label: "Client capital under signal guidance" },
+  { value: "87% Win Rate", label: "Verified since 2024" },
+  { value: "30+ Countries", label: "Global client base" },
+  { value: "0% Hidden Fees", label: "Transparent pricing structure" },
+  { value: "24/7 Desk", label: "London • New York • Singapore" },
 ];
 
 const pricingTiers = [
   {
-    name: "Starter",
+    name: "STANDARD",
     price: "$49",
-    period: "/month",
-    badge: "MONTHLY",
-    badgeStyle: "text-slate-500",
+    period: "/ month",
+    subtitle: "Monthly commitment",
+    badge: null as string | null,
     highlighted: false,
     features: [
       "10–15 signals per week",
-      "Real-time Telegram alerts",
-      "Basic market analysis",
+      "Telegram delivery",
+      "Basic commentary",
       "Community access",
-      "Email support",
     ],
-    cta: "Get Started",
-    ctaStyle: "outline" as const,
+    cta: "SELECT",
+    ctaPrimary: false,
   },
   {
-    name: "Pro",
+    name: "PROFESSIONAL",
     price: "$99",
-    period: "/quarter",
+    period: "/ quarter",
+    subtitle: null,
     badge: "SAVE 33%",
-    badgeStyle: "bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded",
     highlighted: false,
     features: [
       "20–25 signals per week",
-      "Advanced technical analysis",
-      "Risk management guides",
+      "Advanced analysis",
+      "Risk framework",
       "Priority support",
-      "Weekly market outlook",
     ],
-    cta: "Get Pro",
-    ctaStyle: "primary" as const,
+    cta: "SELECT",
+    ctaPrimary: true,
   },
   {
-    name: "Elite",
+    name: "ELITE",
     price: "$150",
-    period: "/year",
+    period: "/ year",
+    subtitle: null,
     badge: "SAVE 75%",
-    badgeStyle: "bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded",
     highlighted: false,
     features: [
       "Unlimited signals",
-      "1-on-1 strategy calls (monthly)",
-      "Custom risk profile setup",
-      "Early access to new features",
-      "Direct WhatsApp support",
+      "Monthly consultation",
+      "Custom risk profile",
+      "Direct support line",
     ],
-    cta: "Get Elite",
-    ctaStyle: "primary" as const,
+    cta: "SELECT",
+    ctaPrimary: true,
   },
   {
-    name: "Lifetime",
+    name: "PERMANENT",
     price: "$209",
     period: "one-time",
-    badge: "BEST VALUE",
-    badgeStyle: "bg-emerald-500 text-black px-2 py-1 rounded",
+    subtitle: null,
+    badge: "LIFETIME ACCESS",
     highlighted: true,
     features: [
-      "Lifetime access to all signals",
-      "Lifetime education content",
-      "Lifetime community access",
-      "All future updates included",
-      "Personal onboarding call",
+      "Lifetime signal access",
+      "Lifetime education",
+      "All future updates",
+      "Personal onboarding",
     ],
-    cta: "Get Lifetime Access",
-    ctaStyle: "primary-lg" as const,
-  },
-];
-
-const FALLBACK_TESTIMONIALS = [
-  {
-    quote:
-      "FX Research Desk completely changed how I trade. The signals are precise and the risk management alone saved my account.",
-    name: "Ahmed K.",
-    location: "Dubai",
-  },
-  {
-    quote:
-      "Went from consistent losses to 12% monthly gains. The quarterly plan paid for itself in the first week.",
-    name: "Maria S.",
-    location: "London",
-  },
-  {
-    quote:
-      "Best investment I've made. The lifetime plan is a no-brainer if you're serious about forex.",
-    name: "James O.",
-    location: "New York",
-  },
-  {
-    quote:
-      "The 1-on-1 calls in the Elite plan are worth 10x the price. My trading psychology improved massively.",
-    name: "Chen W.",
-    location: "Singapore",
-  },
-  {
-    quote:
-      "I started with the free signals, upgraded to Pro, then Lifetime. Never looked back.",
-    name: "Priya R.",
-    location: "Mumbai",
+    cta: "SECURE ACCESS",
+    ctaPrimary: true,
   },
 ];
 
 const educationArticles = [
   {
-    icon: BookOpen,
-    title: "Risk Management",
-    description:
-      "Learn how to protect your capital with position sizing, stop-loss strategies, and risk-reward ratios.",
+    title: "Risk Management Framework",
+    excerpt:
+      "Position sizing, drawdown limits, and capital preservation protocols for institutional execution.",
     href: "/education/risk-management",
   },
   {
-    icon: BarChart3,
     title: "Technical Analysis",
-    description:
-      "Master support/resistance, trendlines, candlestick patterns, and key indicators like RSI and MACD.",
+    excerpt:
+      "Multi-timeframe confluence, liquidity mapping, and precision entry methodology.",
     href: "/education/technical-analysis",
   },
   {
-    icon: Brain,
     title: "Trading Psychology",
-    description:
-      "Control emotions, build discipline, and develop the mindset of a consistently profitable trader.",
+    excerpt:
+      "Discipline protocols and behavioral frameworks for consistent institutional performance.",
     href: "/education/trading-psychology",
   },
 ];
 
 const faqItems = [
   {
-    question: "What's included in the free signals?",
+    question: "What is included in standard membership?",
     answer:
-      "Our free Telegram channel includes 3–5 signals per week with delayed alerts. You get basic market updates and community access.",
+      "Standard membership provides 10–15 signals per week via secure Telegram delivery, basic market commentary, and access to our client community.",
   },
   {
-    question: "How do I receive the signals?",
+    question: "How are signals delivered?",
     answer:
-      "All signals are sent via Telegram in real-time. Each alert includes currency pair, direction (BUY/SELL), entry price, stop loss, take profit, and recommended lot size.",
+      "All signals are transmitted in real-time through encrypted Telegram channels. Each alert includes pair, direction, entry, stop-loss, take-profit, and position sizing guidance.",
   },
   {
-    question: "Can I cancel my subscription?",
+    question: "What is the cancellation policy?",
     answer:
-      "Yes, absolutely. Monthly and quarterly plans can be cancelled anytime with no penalties. Yearly plans are non-refundable but you keep access until the end of your billing period.",
+      "Monthly and quarterly memberships may be cancelled at any time without penalty. Annual memberships remain active through the billing period.",
   },
   {
-    question: "What brokers do you recommend?",
+    question: "Which brokers are compatible?",
     answer:
-      "Our signals work with any forex broker — MT4, MT5, cTrader, or prop firms. We don't have affiliate deals, so our recommendations are unbiased.",
+      "Our execution parameters are broker-agnostic. Signals are compatible with MT4, MT5, cTrader, and institutional prime brokerage platforms.",
   },
   {
-    question: "Do you offer refunds?",
+    question: "Is there a refund policy?",
     answer:
-      "Due to the digital nature of our service, we don't offer refunds. However, you can start with our free signals to evaluate quality before upgrading.",
+      "Due to the proprietary nature of our research, refunds are not offered. Prospective clients may evaluate our methodology through published performance data.",
   },
   {
-    question: "How is the Lifetime plan different?",
+    question: "What distinguishes Permanent membership?",
     answer:
-      "Lifetime gives you permanent access to all current and future features. Pay once, profit forever. Includes personal onboarding and all future updates at no extra cost.",
+      "Permanent membership grants lifetime access to all current and future research, education, and signal delivery at a single capital commitment.",
+  },
+];
+
+const FALLBACK_TESTIMONIALS = [
+  {
+    quote:
+      "The precision of these signals transformed my approach to forex. This is not retail trading — this is institutional execution.",
+    name: "Ahmed K.",
+    location: "Dubai",
+  },
+  {
+    quote:
+      "Went from inconsistent returns to structured monthly gains. The risk framework alone justified the membership.",
+    name: "Maria S.",
+    location: "London",
+  },
+  {
+    quote:
+      "Permanent access was the correct decision. The desk operates with the discipline of a private bank research division.",
+    name: "James O.",
+    location: "New York",
   },
 ];
 
 const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
 };
-
-function statsToCards(stats: Stats) {
-  return [
-    { value: `${stats.win_rate}%`, label: "Win Rate" },
-    { value: `+${stats.pips_month.toLocaleString()}`, label: "Pips This Month" },
-    { value: `+${stats.monthly_return}%`, label: "Avg Monthly Return" },
-    { value: `${stats.active_traders}+`, label: "Active Members" },
-  ];
-}
-
-function formatSignalDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
 
 function formatPrice(value: number) {
   return Number(value).toFixed(4);
 }
 
-function getSignalResultLabel(signal: Signal) {
-  if (signal.result === "PENDING") return "OPEN";
-  if (signal.result === "WIN") {
-    return signal.pips != null ? `WIN +${signal.pips} pips` : "WIN";
-  }
-  if (signal.result === "LOSS") {
-    return signal.pips != null ? `LOSS ${signal.pips} pips` : "LOSS";
-  }
-  return "OPEN";
+function formatSignalDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
-function StatSkeleton() {
+function getResultLabel(signal: Signal) {
+  if (signal.result === "WIN") {
+    return signal.pips != null ? `WIN +${signal.pips}` : "WIN";
+  }
+  if (signal.result === "LOSS") {
+    return signal.pips != null ? `LOSS ${signal.pips}` : "LOSS";
+  }
+  return "PENDING";
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-slate-900/30 border border-slate-800/50 rounded-2xl p-8 text-center animate-pulse">
-      <div className="h-12 bg-slate-800 rounded-lg mb-3 mx-auto w-24" />
-      <div className="h-4 bg-slate-800 rounded w-28 mx-auto" />
+    <p className="label-caps text-[#B8956A]/60 mb-4">{children}</p>
+  );
+}
+
+function CandlestickChart() {
+  const candles = [
+    { h: 72, body: 28, up: true, wickTop: 12, wickBottom: 8 },
+    { h: 56, body: 22, up: false, wickTop: 10, wickBottom: 14 },
+    { h: 88, body: 32, up: true, wickTop: 16, wickBottom: 6 },
+    { h: 64, body: 20, up: true, wickTop: 8, wickBottom: 12 },
+    { h: 48, body: 18, up: false, wickTop: 14, wickBottom: 10 },
+    { h: 76, body: 26, up: true, wickTop: 10, wickBottom: 8 },
+  ];
+
+  return (
+    <div className="flex items-end justify-center gap-3 h-64 opacity-40">
+      {candles.map((c, i) => (
+        <div key={i} className="flex flex-col items-center" style={{ height: c.h }}>
+          <div
+            className="w-px bg-[#737373]"
+            style={{ height: c.wickTop }}
+          />
+          <div
+            className={cn(
+              "w-4",
+              c.up ? "bg-[#2D5A3D]" : "bg-[#5C2A2A]"
+            )}
+            style={{ height: c.body }}
+          />
+          <div
+            className="w-px bg-[#737373] flex-1"
+            style={{ minHeight: c.wickBottom }}
+          />
+        </div>
+      ))}
     </div>
   );
 }
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [yearlyBilling, setYearlyBilling] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [activeSection, setActiveSection] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [logoSrc, setLogoSrc] = useState("/logo.png");
 
   const [statsLoading, setStatsLoading] = useState(true);
   const [signalsLoading, setSignalsLoading] = useState(true);
-  const [testimonialsLoading, setTestimonialsLoading] = useState(true);
-
   const [liveStats, setLiveStats] = useState<Stats | null>(null);
   const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
   const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
-
-  const [usingStaticStats, setUsingStaticStats] = useState(false);
   const [dbConfigured, setDbConfigured] = useState(false);
 
-  const statCards = liveStats ? statsToCards(liveStats) : FALLBACK_STAT_CARDS;
+  const stats = liveStats ?? FALLBACK_STATS;
+  const winRateDisplay = liveStats
+    ? `${Number(stats.win_rate).toFixed(1)}%`
+    : "87.3%";
+
   const displayTestimonials =
     liveTestimonials.length > 0
       ? liveTestimonials.map((t) => ({
           quote: t.quote,
           name: t.name,
           location: t.location ?? t.member_type ?? "",
-          imageUrl: t.image_url,
         }))
-      : FALLBACK_TESTIMONIALS.map((t) => ({ ...t, imageUrl: null as string | null }));
+      : FALLBACK_TESTIMONIALS;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const configured = isSupabaseConfigured();
+    setDbConfigured(configured);
+
+    if (!configured) {
+      setStatsLoading(false);
+      setSignalsLoading(false);
+      return;
+    }
+
+    async function load() {
+      const [statsData, signals, testimonials] = await Promise.all([
+        fetchStats(),
+        fetchSignals(5),
+        fetchTestimonials(),
+      ]);
+      if (statsData) setLiveStats(statsData);
+      setLiveSignals(signals);
+      setLiveTestimonials(testimonials);
+      setStatsLoading(false);
+      setSignalsLoading(false);
+    }
+
+    load();
+  }, []);
+
+  useEffect(() => {
+    const ids = navLinks.map((l) => l.href.replace("#", ""));
+    const observers: IntersectionObserver[] = [];
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   useEffect(() => {
@@ -331,139 +351,69 @@ export default function Home() {
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    const configured = isSupabaseConfigured();
-    setDbConfigured(configured);
-
-    if (!configured) {
-      setUsingStaticStats(true);
-      setStatsLoading(false);
-      setSignalsLoading(false);
-      setTestimonialsLoading(false);
-      return;
-    }
-
-    async function loadSiteData() {
-      const [stats, signals, testimonialsData] = await Promise.all([
-        fetchStats(),
-        fetchSignals(5),
-        fetchTestimonials(),
-      ]);
-
-      if (stats) {
-        setLiveStats(stats);
-        setUsingStaticStats(false);
-      } else {
-        setUsingStaticStats(true);
-      }
-
-      setLiveSignals(signals);
-      setLiveTestimonials(testimonialsData);
-      setStatsLoading(false);
-      setSignalsLoading(false);
-      setTestimonialsLoading(false);
-    }
-
-    loadSiteData();
-  }, []);
-
-  useEffect(() => {
-    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
-      );
-
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <LiveTicker />
+    <main className="min-h-screen bg-[#050505] text-[#F5F5F5] overflow-x-hidden">
+      <InstitutionalTicker />
 
       {/* Navbar */}
-      <header
-        className={cn(
-          "fixed top-10 left-0 right-0 z-50 transition-all duration-300 shadow-lg shadow-black/20",
-          scrolled ? "h-[4.5rem]" : "h-20",
-          "bg-[#0a0a0a]/95 backdrop-blur-xl",
-          scrolled && "border-b border-emerald-500/20"
-        )}
-      >
-        <nav
-          className={cn(
-            "max-w-7xl mx-auto px-6 h-full flex items-center justify-between transition-all duration-300",
-            scrolled ? "py-3" : "py-4"
-          )}
-        >
+      <header className="fixed top-8 left-0 right-0 z-50 h-[72px] bg-[#050505]/95 backdrop-blur border-b border-[#1A1A1A]">
+        <nav className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <Link
             href="/"
-            className={cn(
-              "flex items-center gap-2 font-black tracking-widest text-white transition-all duration-300",
-              scrolled ? "text-xl" : "text-2xl"
-            )}
+            className="block h-12 transition-shadow hover:shadow-[0_0_24px_rgba(184,149,106,0.25)]"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-            FX RESEARCH DESK
+            <Image
+              src={logoSrc}
+              alt="FX Research Desk"
+              width={120}
+              height={48}
+              className="h-12 w-auto object-contain"
+              onError={() => setLogoSrc("/logo.svg")}
+              priority
+            />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => {
-              const sectionId = link.href.replace("#", "");
-              const isActive = activeSection === sectionId;
+              const id = link.href.replace("#", "");
+              const active = activeSection === id;
               return (
                 <a
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "group relative text-base font-semibold transition-colors pb-2",
-                    isActive ? "text-emerald-400" : "text-slate-400 hover:text-white"
+                    "label-caps relative pb-1 transition-colors duration-300",
+                    active ? "text-[#B8956A]" : "text-[#737373] hover:text-[#B8956A]"
                   )}
                 >
                   {link.label}
-                  <span
-                    className={cn(
-                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500 transition-opacity",
-                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                    )}
-                  />
+                  {active && (
+                    <span className="absolute bottom-0 left-0 right-0 h-px bg-[#B8956A]" />
+                  )}
                 </a>
               );
             })}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <a
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex bg-emerald-500 hover:bg-emerald-400 text-black text-base font-bold px-6 py-3 rounded-full transition shadow-lg shadow-emerald-500/20"
+              className="hidden sm:inline-block label-caps border border-[#B8956A]/40 text-[#B8956A] px-6 py-3 transition-colors duration-300 hover:bg-[#B8956A] hover:text-[#050505]"
             >
-              Join Telegram
+              CLIENT ACCESS
             </a>
             <button
               type="button"
-              className="lg:hidden p-2 text-slate-400 hover:text-white"
+              className="lg:hidden label-caps text-[#737373] hover:text-[#B8956A] px-2 py-1"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
             >
-              <Menu className="w-6 h-6" />
+              MENU
             </button>
           </div>
         </nav>
-        <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
       </header>
 
       {/* Mobile menu */}
@@ -474,194 +424,136 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm lg:hidden"
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="fixed inset-0 z-[70] bg-[#050505]/90 lg:hidden"
               onClick={() => setMenuOpen(false)}
             />
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 z-[80] w-80 max-w-[85vw] bg-[#0a0a0a]/95 backdrop-blur-xl border-l border-slate-800/50 p-6 pt-20 lg:hidden"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#0A0A0A] border-l border-[#1A1A1A] p-8 pt-24 lg:hidden"
             >
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="absolute top-14 right-6 p-2 text-slate-400 hover:text-white"
-                aria-label="Close menu"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-6">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="py-3 px-4 text-slate-300 hover:text-emerald-400 hover:bg-white/5 rounded-xl transition"
+                    className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
                   >
                     {link.label}
                   </a>
                 ))}
+                <a
+                  href={telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label-caps border border-[#B8956A]/40 text-[#B8956A] px-6 py-3 text-center hover:bg-[#B8956A] hover:text-[#050505] transition-colors duration-300"
+                >
+                  CLIENT ACCESS
+                </a>
               </div>
-              <a
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-full transition"
-              >
-                Join Telegram
-                <ArrowRight className="w-4 h-4" />
-              </a>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="relative min-h-[calc(100vh-7.5rem)] flex flex-col items-center justify-center px-6 pt-[7.5rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.05)_0%,_transparent_65%)]" />
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          }}
-        />
+      <section className="pt-[104px] min-h-[calc(100vh-104px)] flex items-center">
+        <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <SectionLabel>INSTITUTIONAL FOREX INTELLIGENCE</SectionLabel>
+            <h1 className="font-serif-display text-6xl md:text-8xl text-[#F5F5F5] leading-[1.1] mb-8">
+              Precision in Every Position
+            </h1>
+            <p className="text-lg text-[#737373] max-w-md mb-10 leading-relaxed">
+              Macro-driven signals for investors who demand institutional-grade execution.
+            </p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
+              <a
+                href={telegramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label-caps bg-[#B8956A] text-[#050505] px-10 py-4 hover:bg-[#C4A57A] transition-colors duration-300"
+              >
+                REQUEST ACCESS
+              </a>
+              <a
+                href="#performance"
+                className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
+              >
+                VIEW PERFORMANCE →
+              </a>
+            </div>
+          </motion.div>
 
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-float-orb pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-float-orb-delayed pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl animate-float-orb-slow pointer-events-none" />
-
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          transition={{ duration: 0.7 }}
-          className="relative z-10 text-center max-w-5xl mx-auto"
-        >
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-8">
-            🔥 Trusted by 500+ Traders in 30+ Countries
-          </div>
-
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight tracking-tight mb-6">
-            Trade Forex Like a Professional
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
-              With Data-Driven Signals
-            </span>
-          </h1>
-
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10">
-            Get real-time alerts, verified performance metrics, and proven strategies from traders
-            who&apos;ve been in the markets for 10+ years.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-500 text-black font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-all shadow-xl shadow-emerald-500/25"
-            >
-              Start Free Trial
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <a
-              href="#performance"
-              className="inline-flex items-center gap-2 border-2 border-slate-700 text-white text-lg px-8 py-4 rounded-full hover:bg-slate-800 hover:border-slate-600 transition-all"
-            >
-              View Performance
-            </a>
-          </div>
-
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {[
-              { icon: TrendingUp, label: `${statCards[0]?.value ?? "87%"} Win Rate` },
-              { icon: Target, label: `${statCards[1]?.value ?? "+2,450"} Pips/Month` },
-              { icon: Clock, label: "24/7 Market Coverage" },
-              { icon: Zap, label: "Instant Telegram Alerts" },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-sm text-slate-500">
-                <item.icon className="w-4 h-4 text-emerald-500" />
-                {item.label}
-              </div>
-            ))}
-          </div>
-        </motion.div>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            className="hidden lg:block"
+          >
+            <CandlestickChart />
+          </motion.div>
+        </div>
       </section>
 
-      {/* Social proof marquee */}
-      <div className="border-y border-slate-800/30 bg-slate-900/30 py-4 overflow-hidden">
-        <div className="hidden md:flex animate-marquee whitespace-nowrap">
-          {[...socialMarquee, ...socialMarquee].map((item, i) => (
-            <span
-              key={`${item}-${i}`}
-              className="mx-10 text-xs font-bold tracking-widest text-slate-600 uppercase"
-            >
-              {item} •
-            </span>
+      {/* Trust indicators */}
+      <section className="bg-[#0A0A0A] border-y border-[#1A1A1A]">
+        <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-[#1A1A1A]">
+          {trustIndicators.map((item) => (
+            <div key={item.value} className="text-center lg:px-6">
+              <div className="text-[#B8956A] font-semibold text-sm mb-2 tabular-nums">
+                {item.value}
+              </div>
+              <div className="label-caps text-[#737373]">{item.label}</div>
+            </div>
           ))}
         </div>
-        <div className="flex md:hidden flex-wrap justify-center gap-x-6 gap-y-2 px-6">
-          {socialMarquee.map((item) => (
-            <span
-              key={item}
-              className="text-xs font-bold tracking-widest text-slate-600 uppercase"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="scroll-mt-28 py-24 px-6">
+      {/* Methodology */}
+      <section id="methodology" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={fadeIn}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-16"
           >
-            <h2 className="text-4xl font-bold text-white mb-4">Start Profiting in 3 Steps</h2>
-            <p className="text-slate-400">
-              No complicated setups. Just follow the signals and trade.
-            </p>
+            <SectionLabel>METHODOLOGY</SectionLabel>
+            <h2 className="font-serif-display text-4xl text-[#F5F5F5]">
+              How We Generate Alpha
+            </h2>
           </motion.div>
 
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="hidden md:block absolute top-1/2 left-[16.67%] right-[16.67%] h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent -translate-y-1/2" />
-            <div className="hidden md:flex absolute top-1/2 left-[16.67%] right-[16.67%] -translate-y-1/2 justify-between px-[8%]">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="w-2.5 h-2.5 rounded-full bg-emerald-500/40 border border-emerald-500/60"
-                />
-              ))}
-            </div>
-
-            {steps.map((step, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]">
+            {processSteps.map((step, i) => (
               <motion.div
                 key={step.num}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true }}
                 variants={fadeIn}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                whileHover={{ y: -4 }}
-                className="relative bg-slate-900/30 border border-slate-800/50 rounded-2xl p-8 overflow-hidden hover:border-emerald-500/30 transition-all"
+                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.08 }}
+                className="relative px-0 md:px-10 py-10 md:py-0 first:md:pl-0 last:md:pr-0"
               >
-                <span className="absolute -top-4 -right-2 text-[120px] font-bold text-slate-800/30 leading-none select-none pointer-events-none">
+                <span className="font-serif-display text-7xl text-[#1A1A1A] absolute top-0 left-0 md:left-10 select-none pointer-events-none">
                   {step.num}
                 </span>
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                    <step.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mt-6">{step.title}</h3>
-                  <p className="text-slate-400 text-sm mt-2 leading-relaxed">{step.description}</p>
+                <div className="relative pt-16">
+                  <h3 className="text-xl font-semibold text-[#F5F5F5] mb-3">{step.title}</h3>
+                  <p className="text-sm text-[#737373] leading-relaxed">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -672,126 +564,124 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-28 py-24 px-6 bg-gradient-to-b from-transparent via-emerald-500/[0.02] to-transparent"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true }}
             variants={fadeIn}
-            className="text-center mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-white mb-4">Verified Performance</h2>
-            <p className="text-slate-400">Every trade is logged and verified. No fake results.</p>
-            {usingStaticStats && (
-              <span className="inline-block mt-4 text-xs font-medium text-slate-500 bg-slate-800/50 border border-slate-700/50 px-3 py-1 rounded-full">
-                Connect database for live updates
-              </span>
+            <SectionLabel>TRACK RECORD</SectionLabel>
+            <h2 className="font-serif-display text-4xl text-[#F5F5F5] mb-12">
+              Verified. Audited. Consistent.
+            </h2>
+            {statsLoading ? (
+              <div className="h-32 bg-[#111111] animate-pulse max-w-xs mx-auto" />
+            ) : (
+              <>
+                <div className="font-serif-display text-7xl md:text-9xl font-bold text-[#B8956A] tabular-nums mb-4">
+                  {winRateDisplay}
+                </div>
+                <p className="label-caps text-[#737373]">Win Rate | 2024–2026</p>
+              </>
             )}
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {statsLoading
-              ? Array.from({ length: 4 }).map((_, i) => <StatSkeleton key={i} />)
-              : statCards.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="bg-slate-900/30 border border-slate-800/50 rounded-2xl p-8 text-center hover:border-emerald-500/20 transition-all"
-              >
-                <div className="text-5xl font-bold text-emerald-400 mb-2">{stat.value}</div>
-                <div className="text-sm text-slate-400">{stat.label}</div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#1A1A1A] py-10">
+            <div>
+              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+                +{stats.monthly_return}%
+              </div>
+              <div className="label-caps text-[#737373]">Monthly Return</div>
+            </div>
+            <div>
+              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+                {stats.pips_month.toLocaleString()}
+              </div>
+              <div className="label-caps text-[#737373]">Pips/Month Average</div>
+            </div>
+            <div>
+              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+                {stats.active_traders}+
+              </div>
+              <div className="label-caps text-[#737373]">Active Accounts</div>
+            </div>
           </div>
 
+          {/* Signals table */}
           <motion.div
             id="signals"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={{ once: true }}
             variants={fadeIn}
-            className="scroll-mt-28 rounded-2xl border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm overflow-hidden"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="scroll-mt-[104px]"
           >
-            <div className="px-6 py-5 border-b border-slate-800/30">
-              <h3 className="text-lg font-semibold text-white">Recent Trades</h3>
-            </div>
-
             {signalsLoading ? (
-              <div className="px-6 py-8 space-y-3">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="h-12 bg-slate-800/50 rounded-lg animate-pulse" />
+              <div className="space-y-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-12 bg-[#111111] animate-pulse" />
                 ))}
               </div>
             ) : dbConfigured && liveSignals.length > 0 ? (
               <>
-                <div className="hidden lg:grid grid-cols-7 gap-4 px-6 py-3 text-xs uppercase tracking-wider text-slate-500 font-medium">
-                  <span>Pair</span>
-                  <span>Direction</span>
-                  <span>Entry</span>
-                  <span>SL</span>
-                  <span>TP</span>
-                  <span>Result</span>
-                  <span>Date</span>
+                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-caps text-[#737373] border-b border-[#1A1A1A]">
+                  <span>PAIR</span>
+                  <span>TYPE</span>
+                  <span>ENTRY</span>
+                  <span>S/L</span>
+                  <span>T/P</span>
+                  <span>RESULT</span>
+                  <span>DATE</span>
                 </div>
-                {liveSignals.map((signal) => {
-                  const resultLabel = getSignalResultLabel(signal);
-                  const isPending = signal.result === "PENDING" || signal.result === null;
-                  const isWin = signal.result === "WIN";
-                  return (
-                    <div
-                      key={signal.id}
-                      className="grid grid-cols-2 lg:grid-cols-7 gap-2 lg:gap-4 px-6 py-4 border-b border-slate-800/30 last:border-0 hover:bg-slate-800/20 transition-colors"
+                {liveSignals.map((signal) => (
+                  <div
+                    key={signal.id}
+                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#1A1A1A] font-mono text-[13px] tabular-nums hover:bg-[#111111] transition-colors duration-300"
+                  >
+                    <span className="text-[#F5F5F5]">{signal.pair}</span>
+                    <span className="text-[#A8A8A8]">{signal.direction}</span>
+                    <span className="text-[#737373] hidden md:block">
+                      {formatPrice(signal.entry_price)}
+                    </span>
+                    <span className="text-[#737373] hidden md:block">
+                      {formatPrice(signal.stop_loss)}
+                    </span>
+                    <span className="text-[#737373] hidden md:block">
+                      {formatPrice(signal.take_profit)}
+                    </span>
+                    <span
+                      className={cn(
+                        signal.result === "WIN" && "text-[#2D5A3D]",
+                        signal.result === "LOSS" && "text-[#5C2A2A]",
+                        (signal.result === "PENDING" || !signal.result) && "text-[#737373]"
+                      )}
                     >
-                      <div className="text-white font-semibold">{signal.pair}</div>
-                      <div className="text-emerald-400 font-medium text-sm">{signal.direction}</div>
-                      <div className="text-slate-300 text-sm hidden lg:block">
-                        {formatPrice(signal.entry_price)}
-                      </div>
-                      <div className="text-slate-500 text-sm hidden lg:block">
-                        {formatPrice(signal.stop_loss)}
-                      </div>
-                      <div className="text-slate-300 text-sm hidden lg:block">
-                        {formatPrice(signal.take_profit)}
-                      </div>
-                      <div>
-                        <span
-                          className={cn(
-                            "inline-block px-2 py-1 rounded text-xs font-bold",
-                            isPending && "bg-yellow-500/10 text-yellow-400",
-                            isWin && "bg-emerald-500/10 text-emerald-400",
-                            signal.result === "LOSS" && "bg-red-500/10 text-red-400"
-                          )}
-                        >
-                          {resultLabel}
-                        </span>
-                      </div>
-                      <div className="text-slate-500 text-sm hidden lg:block">
-                        {formatSignalDate(signal.created_at)}
-                      </div>
-                    </div>
-                  );
-                })}
+                      {getResultLabel(signal)}
+                    </span>
+                    <span className="text-[#737373] hidden md:block">
+                      {formatSignalDate(signal.created_at)}
+                    </span>
+                  </div>
+                ))}
               </>
             ) : (
-              <div className="px-6 py-12 text-center">
-                <p className="text-slate-400 mb-6">
-                  Live signals available in our Telegram channel
+              <div className="text-center py-16 border border-[#1A1A1A] bg-[#0A0A0A]">
+                <p className="text-[#737373] mb-8">
+                  Live signals available through secure client channels.
                 </p>
                 <a
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-3 rounded-full transition"
+                  className="label-caps border border-[#B8956A]/40 text-[#B8956A] px-8 py-3 hover:bg-[#B8956A] hover:text-[#050505] transition-colors duration-300"
                 >
-                  Join Telegram Channel
-                  <ArrowRight className="w-4 h-4" />
+                  REQUEST ACCESS
                 </a>
               </div>
             )}
@@ -800,51 +690,23 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-28 py-24 px-6">
+      <section id="pricing" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={fadeIn}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-white mb-4">Choose Your Plan</h2>
-            <p className="text-slate-400">Upgrade anytime. Cancel anytime. No hidden fees.</p>
-          </motion.div>
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="flex items-center justify-center gap-4 mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-center mb-16"
           >
-            <span className={cn("text-sm font-medium", !yearlyBilling ? "text-white" : "text-slate-500")}>
-              Monthly
-            </span>
-            <button
-              type="button"
-              onClick={() => setYearlyBilling((v) => !v)}
-              className={cn(
-                "relative w-14 h-7 rounded-full transition-colors",
-                yearlyBilling ? "bg-emerald-500" : "bg-slate-700"
-              )}
-              aria-label="Toggle billing period"
-            >
-              <span
-                className={cn(
-                  "absolute top-1 left-1 w-5 h-5 rounded-full bg-white transition-transform",
-                  yearlyBilling && "translate-x-7"
-                )}
-              />
-            </button>
-            <span className={cn("text-sm font-medium", yearlyBilling ? "text-white" : "text-slate-500")}>
-              Yearly
-            </span>
+            <SectionLabel>MEMBERSHIP</SectionLabel>
+            <h2 className="font-serif-display text-4xl text-[#F5F5F5]">
+              Select Your Level of Access
+            </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-[#1A1A1A]">
             {pricingTiers.map((tier, i) => (
               <motion.div
                 key={tier.name}
@@ -852,42 +714,39 @@ export default function Home() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeIn}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
                 className={cn(
-                  "flex flex-col bg-slate-900/30 backdrop-blur rounded-2xl p-8",
-                  tier.highlighted
-                    ? "border-2 border-emerald-500 shadow-xl shadow-emerald-500/10"
-                    : "border border-slate-800/50 hover:border-emerald-500/20"
+                  "flex flex-col bg-[#0A0A0A] p-8 hover:border-[#B8956A]/30 transition-colors duration-500",
+                  tier.highlighted && "border-2 border-[#B8956A]"
                 )}
               >
-                <div className="mb-4">
+                {tier.badge && (
                   <span
                     className={cn(
-                      "text-xs font-bold tracking-wider",
-                      tier.badgeStyle
+                      "label-caps inline-block w-fit mb-4 text-[10px]",
+                      tier.highlighted
+                        ? "bg-[#B8956A] text-[#050505] font-bold px-2 py-1"
+                        : "bg-[#B8956A]/10 text-[#B8956A] px-2 py-1"
                     )}
                   >
                     {tier.badge}
                   </span>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-1">{tier.name}</h3>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span
-                    className={cn(
-                      "text-4xl font-bold",
-                      tier.highlighted ? "text-emerald-400" : "text-white"
-                    )}
-                  >
+                )}
+                <h3 className="label-caps text-[#F5F5F5] mb-4">{tier.name}</h3>
+                <div className="mb-2">
+                  <span className="font-serif-display text-4xl text-[#F5F5F5] tabular-nums">
                     {tier.price}
                   </span>
-                  <span className="text-slate-500 text-sm">{tier.period}</span>
+                  <span className="text-sm text-[#737373] ml-1">{tier.period}</span>
                 </div>
+                {tier.subtitle && (
+                  <p className="text-xs text-[#737373] mb-6">{tier.subtitle}</p>
+                )}
+                {!tier.subtitle && <div className="mb-6" />}
                 <ul className="space-y-3 mb-8 flex-1">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-slate-400">
-                      <span className="text-emerald-500 mt-0.5">✓</span>
-                      {feature}
+                  {tier.features.map((f) => (
+                    <li key={f} className="text-sm text-[#737373]">
+                      {f}
                     </li>
                   ))}
                 </ul>
@@ -896,13 +755,10 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "mt-auto text-center rounded-full font-semibold transition-all",
-                    tier.ctaStyle === "outline" &&
-                      "border border-slate-700 text-white hover:bg-slate-800 px-6 py-3",
-                    tier.ctaStyle === "primary" &&
-                      "bg-emerald-500 text-black hover:bg-emerald-400 font-bold px-6 py-3 shadow-lg shadow-emerald-500/20",
-                    tier.ctaStyle === "primary-lg" &&
-                      "bg-emerald-500 text-black hover:bg-emerald-400 font-bold px-6 py-3 text-lg shadow-xl shadow-emerald-500/30"
+                    "label-caps text-center py-3 transition-colors duration-300",
+                    tier.ctaPrimary
+                      ? "bg-[#B8956A] text-[#050505] hover:bg-[#C4A57A]"
+                      : "border border-[#B8956A]/40 text-[#B8956A] hover:bg-[#B8956A] hover:text-[#050505]"
                   )}
                 >
                   {tier.cta}
@@ -910,88 +766,76 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-
-          <p className="text-center mt-8">
-            <a href="#pricing" className="text-emerald-400 hover:underline text-sm">
-              Compare all features
-            </a>
-          </p>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials / Insights */}
       <section
-        id="testimonials"
-        className="scroll-mt-28 py-24 px-6 bg-gradient-to-b from-transparent via-white/[0.01] to-transparent"
+        id="insights"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-4xl font-bold text-white text-center mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            Trusted by Traders Worldwide
-          </motion.h2>
+            <SectionLabel>CLIENT PERSPECTIVES</SectionLabel>
 
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-6 px-6">
-            {testimonialsLoading
-              ? Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="min-w-[320px] h-48 bg-slate-900/50 border border-slate-800 rounded-2xl animate-pulse flex-shrink-0"
-                  />
-                ))
-              : displayTestimonials.map((t, i) => (
-              <motion.div
-                key={`${t.name}-${i}`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ delay: i * 0.08 }}
-                className="min-w-[320px] snap-center flex-shrink-0 bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:border-emerald-500/20 transition-all"
+            <AnimatePresence mode="wait">
+              <motion.blockquote
+                key={testimonialIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="font-serif-display italic text-2xl text-[#F5F5F5] leading-relaxed mb-8"
               >
-                {t.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={t.imageUrl}
-                    alt={t.name}
-                    className="w-10 h-10 rounded-full object-cover mb-4"
-                  />
-                )}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-slate-300 italic leading-relaxed mb-6">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="text-white font-semibold text-sm">{t.name}</div>
-                <div className="text-slate-500 text-xs">{t.location}</div>
-              </motion.div>
-            ))}
-          </div>
+                &ldquo;{displayTestimonials[testimonialIndex]?.quote}&rdquo;
+              </motion.blockquote>
+            </AnimatePresence>
+
+            <p className="label-caps text-[#737373]">
+              {displayTestimonials[testimonialIndex]?.name}
+              {displayTestimonials[testimonialIndex]?.location &&
+                ` — ${displayTestimonials[testimonialIndex].location}`}
+            </p>
+
+            <div className="flex justify-center gap-3 mt-10">
+              {displayTestimonials.slice(0, 3).map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setTestimonialIndex(i)}
+                  className={cn(
+                    "w-2 h-2 transition-colors duration-300",
+                    testimonialIndex === i ? "bg-[#B8956A]" : "bg-[#1A1A1A]"
+                  )}
+                  aria-label={`View testimonial ${i + 1}`}
+                />
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-28 py-24 px-6">
+      <section id="education" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true }}
             variants={fadeIn}
-            className="text-center mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-16"
           >
-            <h2 className="text-4xl font-bold text-white mb-4">Master Forex Trading</h2>
-            <p className="text-slate-400">Free guides to level up your trading skills</p>
+            <SectionLabel>KNOWLEDGE CENTER</SectionLabel>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]">
             {educationArticles.map((article, i) => (
               <motion.div
                 key={article.href}
@@ -999,18 +843,16 @@ export default function Home() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeIn}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="group bg-slate-900/30 border border-slate-800/50 rounded-2xl p-8 hover:border-emerald-500/30 transition-all"
+                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
+                className="px-0 md:px-10 py-10 md:py-0 first:md:pl-0 last:md:pr-0"
               >
-                <article.icon className="w-10 h-10 text-emerald-500 group-hover:text-emerald-400 transition mb-5" />
-                <h3 className="text-xl font-bold text-white mb-3">{article.title}</h3>
-                <p className="text-slate-400 text-sm mb-5 leading-relaxed">{article.description}</p>
+                <h3 className="text-lg text-[#F5F5F5] font-medium mb-3">{article.title}</h3>
+                <p className="text-sm text-[#737373] mb-6 leading-relaxed">{article.excerpt}</p>
                 <Link
                   href={article.href}
-                  className="text-emerald-400 text-sm font-medium group-hover:underline"
+                  className="label-caps text-[#B8956A] hover:underline transition-colors duration-300"
                 >
-                  Read More →
+                  READ
                 </Link>
               </motion.div>
             ))}
@@ -1019,211 +861,113 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-28 py-24 px-6">
+      <section id="faq" className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
         <div className="max-w-3xl mx-auto">
-          <motion.h2
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-4xl font-bold text-white text-center mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-12"
           >
-            Frequently Asked Questions
-          </motion.h2>
+            <SectionLabel>INQUIRIES</SectionLabel>
+          </motion.div>
 
           <div>
             {faqItems.map((item, i) => {
-              const isOpen = openFaq === i;
+              const open = openFaq === i;
               return (
-                <motion.div
-                  key={item.question}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeIn}
-                  transition={{ delay: i * 0.04 }}
-                  className="bg-slate-900/30 border border-slate-800/50 rounded-xl mb-3 overflow-hidden"
-                >
+                <div key={item.question} className="border-b border-[#1A1A1A]">
                   <button
                     type="button"
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between gap-4 p-6 text-left hover:bg-white/[0.02] transition"
+                    onClick={() => setOpenFaq(open ? null : i)}
+                    className="w-full flex items-center justify-between gap-4 py-6 text-left"
                   >
-                    <span className="text-white font-medium">{item.question}</span>
-                    <Plus
-                      className={cn(
-                        "w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300",
-                        isOpen && "rotate-45"
-                      )}
-                    />
+                    <span className="text-[#F5F5F5] font-semibold">{item.question}</span>
+                    <span className="text-[#737373] text-lg shrink-0">{open ? "—" : "+"}</span>
                   </button>
                   <AnimatePresence initial={false}>
-                    {isOpen && (
+                    {open && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                         className="overflow-hidden"
                       >
-                        <p className="px-6 pb-6 pt-0 text-slate-400 leading-relaxed">{item.answer}</p>
+                        <p className="pb-6 text-sm text-[#737373] leading-relaxed">
+                          {item.answer}
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-24 px-6 bg-gradient-to-b from-slate-900 to-[#0a0a0a] overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-20 pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-
+      {/* CTA */}
+      <section className="bg-[#0A0A0A] border-y border-[#1A1A1A] py-24 px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeIn}
-          className="relative z-10 max-w-4xl mx-auto text-center"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Ready to Transform Your Trading?
+          <h2 className="font-serif-display text-4xl text-[#F5F5F5] mb-10">
+            Ready for Institutional-Grade Execution?
           </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
-            Join 500+ traders who&apos;ve already made the switch. Your first profitable trade could
-            be today.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-500 text-black font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-all shadow-xl shadow-emerald-500/25"
-            >
-              Start Free Trial
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <a
-              href="#pricing"
-              className="inline-flex items-center gap-2 border-2 border-slate-700 text-white text-lg px-8 py-4 rounded-full hover:bg-slate-800 transition-all"
-            >
-              View Pricing
-            </a>
-          </div>
-          <p className="text-slate-600 text-sm mt-6">No credit card required. Cancel anytime.</p>
+          <a
+            href={telegramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block label-caps bg-[#B8956A] text-[#050505] px-12 py-5 hover:bg-[#C4A57A] transition-colors duration-300"
+          >
+            REQUEST ACCESS
+          </a>
         </motion.div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0a0a0a] border-t border-slate-800/50 pt-16 pb-8 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            <div>
-              <div className="flex items-center gap-2 text-lg font-bold tracking-wider text-white mb-4">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                FX RESEARCH DESK
-              </div>
-              <p className="text-slate-500 text-sm leading-relaxed mb-5">
-                Professional forex signals and education for serious traders.
-              </p>
-              <div className="flex gap-3">
-                {[
-                  { icon: Share2, label: "X" },
-                  { icon: Send, label: "Telegram" },
-                  { icon: Video, label: "YouTube" },
-                  { icon: Globe, label: "Instagram" },
-                ].map(({ icon: Icon, label }) => (
-                  <a
-                    key={label}
-                    href={telegramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:border-emerald-500/30 transition"
-                    aria-label={label}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-            </div>
+      <footer className="bg-[#050505] border-t border-[#1A1A1A] py-16 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <Image
+              src={logoSrc}
+              alt="FX Research Desk"
+              width={160}
+              height={64}
+              className="h-16 w-auto object-contain"
+              onError={() => setLogoSrc("/logo.svg")}
+            />
+          </div>
+          <p className="label-caps text-[#737373] mb-2">FX RESEARCH DESK</p>
+          <p className="label-caps text-[#B8956A]/40 mb-10">Research. Analyze. Execute.</p>
 
-            <div>
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Quick Links
-              </h3>
-              <ul className="space-y-2.5">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-slate-500 text-sm hover:text-emerald-400 transition"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Legal
-              </h3>
-              <ul className="space-y-2.5">
-                {[
-                  "Terms of Service",
-                  "Privacy Policy",
-                  "Refund Policy",
-                  "Risk Disclosure",
-                ].map((item) => (
-                  <li key={item}>
-                    <span className="text-slate-500 text-sm cursor-default">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Connect
-              </h3>
-              <ul className="space-y-2.5">
-                <li>
-                  <a
-                    href={telegramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-500 text-sm hover:text-emerald-400 transition"
-                  >
-                    Telegram Channel
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={telegramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-500 text-sm hover:text-emerald-400 transition"
-                  >
-                    Telegram Support
-                  </a>
-                </li>
-                <li className="text-slate-500 text-sm">Email: contact@fxresearchdesk.com</li>
-              </ul>
-            </div>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-12">
+            {[
+              ...navLinks,
+              { href: "#faq", label: "INQUIRIES" },
+              { href: "#", label: "TERMS" },
+              { href: "#", label: "PRIVACY" },
+            ].map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
 
-          <p className="text-slate-600 text-sm text-center mt-12 pt-8 border-t border-slate-800/30">
-            © 2026 FX Research Desk. All rights reserved.
+          <p className="text-[11px] text-[#333333] tracking-wide">
+            © 2026 FX Research Desk. All Rights Reserved.
           </p>
         </div>
       </footer>
