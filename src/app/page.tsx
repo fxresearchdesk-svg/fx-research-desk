@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import {
   fetchSignals,
@@ -318,11 +319,248 @@ function CandlestickChart() {
   );
 }
 
+type CarouselTestimonial = {
+  quote: string;
+  name: string;
+  location: string;
+};
+
+const testimonialSlideVariants = {
+  enter: (direction: number) => ({
+    opacity: 0,
+    x: direction > 0 ? 20 : -20,
+    scale: 0.98,
+  }),
+  center: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    x: direction > 0 ? -20 : 20,
+    scale: 0.98,
+  }),
+};
+
+function TestimonialCard({
+  testimonial,
+  className,
+}: {
+  testimonial: CarouselTestimonial;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "relative bg-[#0A0A0A] border-l-2 border-[#D4AF37]/40 px-8 py-10 md:px-12 md:py-12 text-left",
+        className
+      )}
+    >
+      <span
+        className="pointer-events-none absolute -top-2 left-4 font-serif-display text-[7rem] md:text-[9rem] leading-none text-[#D4AF37]/10 select-none"
+        aria-hidden
+      >
+        &ldquo;
+      </span>
+      <blockquote className="relative z-10 font-serif-display italic text-2xl md:text-3xl text-[#F5F5F5] leading-relaxed break-words">
+        {testimonial.quote}
+      </blockquote>
+      <p className="relative z-10 mt-8 text-sm text-[#A0A0A0] tracking-widest uppercase">
+        {testimonial.name}
+      </p>
+      {testimonial.location && (
+        <p className="relative z-10 mt-1 text-xs text-[#737373] tracking-wide">
+          {testimonial.location}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function TestimonialsCarousel({
+  testimonials,
+}: {
+  testimonials: CarouselTestimonial[];
+}) {
+  const count = testimonials.length;
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const goTo = useCallback(
+    (nextIndex: number) => {
+      if (count === 0) return;
+      const normalized = ((nextIndex % count) + count) % count;
+      if (normalized === index) return;
+
+      let dir = normalized > index ? 1 : -1;
+      if (index === count - 1 && normalized === 0) dir = 1;
+      if (index === 0 && normalized === count - 1) dir = -1;
+
+      setDirection(dir);
+      setIndex(normalized);
+    },
+    [count, index]
+  );
+
+  const goNext = useCallback(() => {
+    if (count === 0) return;
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % count);
+  }, [count]);
+
+  const goPrev = useCallback(() => {
+    if (count === 0) return;
+    setDirection(-1);
+    setIndex((prev) => (prev - 1 + count) % count);
+  }, [count]);
+
+  useEffect(() => {
+    if (index >= count && count > 0) {
+      setIndex(0);
+    }
+  }, [count, index]);
+
+  useEffect(() => {
+    if (isHovered || isDragging || count <= 1) return;
+    const timer = setInterval(goNext, 6000);
+    return () => clearInterval(timer);
+  }, [isHovered, isDragging, count, goNext]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      goPrev();
+    }
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      goNext();
+    }
+  };
+
+  if (count === 0) return null;
+
+  const prevIndex = (index - 1 + count) % count;
+  const nextIndex = (index + 1) % count;
+  const current = testimonials[index];
+  const prev = testimonials[prevIndex];
+  const next = testimonials[nextIndex];
+
+  return (
+    <div
+      ref={carouselRef}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Client testimonials"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative pb-20 outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] rounded-sm"
+    >
+      <button
+        type="button"
+        onClick={goPrev}
+        aria-label="Previous testimonial"
+        className="absolute left-4 top-1/2 z-20 hidden md:flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#D4AF37]/30 text-[#D4AF37] transition-colors duration-300 hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60"
+      >
+        <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
+      </button>
+
+      <button
+        type="button"
+        onClick={goNext}
+        aria-label="Next testimonial"
+        className="absolute right-4 top-1/2 z-20 hidden md:flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#D4AF37]/30 text-[#D4AF37] transition-colors duration-300 hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60"
+      >
+        <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
+      </button>
+
+      <div className="relative mx-auto max-w-4xl overflow-hidden px-2 md:px-20">
+        {count > 1 && (
+          <>
+            <motion.div
+              key={`peek-prev-${prevIndex}`}
+              initial={false}
+              animate={{ opacity: 0.3, scale: 0.95 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="pointer-events-none absolute left-0 top-1/2 z-0 hidden w-[72%] -translate-x-[58%] -translate-y-1/2 sm:block"
+              aria-hidden
+            >
+              <TestimonialCard testimonial={prev} className="opacity-100" />
+            </motion.div>
+            <motion.div
+              key={`peek-next-${nextIndex}`}
+              initial={false}
+              animate={{ opacity: 0.3, scale: 0.95 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="pointer-events-none absolute right-0 top-1/2 z-0 hidden w-[72%] translate-x-[58%] -translate-y-1/2 sm:block"
+              aria-hidden
+            >
+              <TestimonialCard testimonial={next} className="opacity-100" />
+            </motion.div>
+          </>
+        )}
+
+        <motion.div
+          drag={count > 1 ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.35}
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={(_, info) => {
+            setIsDragging(false);
+            const threshold = 60;
+            if (info.offset.x < -threshold) goNext();
+            else if (info.offset.x > threshold) goPrev();
+          }}
+          className="relative z-10 touch-pan-y"
+        >
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={index}
+              custom={direction}
+              variants={testimonialSlideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <TestimonialCard testimonial={current} />
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </div>
+
+      {count > 1 && (
+        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-3">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+              aria-current={index === i ? "true" : undefined}
+              className={cn(
+                "h-3 shrink-0 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60",
+                index === i
+                  ? "w-8 bg-[#D4AF37]"
+                  : "w-3 bg-[#333333] hover:bg-[#444444]"
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [logoSrc, setLogoSrc] = useState("/logo.png.jpeg");
 
   const [statsLoading, setStatsLoading] = useState(true);
@@ -843,7 +1081,7 @@ export default function Home() {
         id="insights"
         className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
-        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -852,40 +1090,7 @@ export default function Home() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <SectionLabel>CLIENT PERSPECTIVES</SectionLabel>
-
-            <AnimatePresence mode="wait">
-              <motion.blockquote
-                key={testimonialIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="font-serif-display italic text-lg sm:text-xl md:text-2xl text-[#F5F5F5] leading-loose mb-8 px-2 break-words"
-              >
-                &ldquo;{displayTestimonials[testimonialIndex]?.quote}&rdquo;
-              </motion.blockquote>
-            </AnimatePresence>
-
-            <p className="label-caps text-[#A0A0A0] break-words">
-              {displayTestimonials[testimonialIndex]?.name}
-              {displayTestimonials[testimonialIndex]?.location &&
-                ` — ${displayTestimonials[testimonialIndex].location}`}
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-10 px-2">
-              {displayTestimonials.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setTestimonialIndex(i)}
-                  className={cn(
-                    "w-2.5 h-2.5 shrink-0 transition-colors duration-300",
-                    testimonialIndex === i ? "bg-[#D4AF37]" : "bg-[#1A1A1A]"
-                  )}
-                  aria-label={`View testimonial ${i + 1}`}
-                />
-              ))}
-            </div>
+            <TestimonialsCarousel testimonials={displayTestimonials} />
           </motion.div>
         </div>
       </section>
