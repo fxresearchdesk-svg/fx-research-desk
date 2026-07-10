@@ -15,16 +15,33 @@ type TickerPair = {
   direction: "up" | "down" | "flat";
 };
 
-const DISPLAY_PAIRS = ["EUR/USD", "GBP/USD", "XAU/USD"] as const;
+type PairConfig = {
+  pair: string;
+  getPrice: (rates: Record<string, number>, gold: number | null, silver: number | null) => number | null;
+};
 
-const PAIR_CONFIG = [
-  { pair: "EUR/USD", code: "EUR", compute: (r: Record<string, number>) => 1 / r.EUR },
-  { pair: "GBP/USD", code: "GBP", compute: (r: Record<string, number>) => 1 / r.GBP },
-  { pair: "XAU/USD", code: "XAU", compute: (r: Record<string, number>) => (r.XAU > 0 ? 1 / r.XAU : null) },
-] as const;
+const PAIR_CONFIG: PairConfig[] = [
+  { pair: "EUR/USD", getPrice: (r) => (r.EUR > 0 ? 1 / r.EUR : null) },
+  { pair: "GBP/USD", getPrice: (r) => (r.GBP > 0 ? 1 / r.GBP : null) },
+  { pair: "USD/JPY", getPrice: (r) => r.JPY ?? null },
+  { pair: "USD/CHF", getPrice: (r) => r.CHF ?? null },
+  { pair: "AUD/USD", getPrice: (r) => (r.AUD > 0 ? 1 / r.AUD : null) },
+  { pair: "USD/CAD", getPrice: (r) => r.CAD ?? null },
+  { pair: "NZD/USD", getPrice: (r) => (r.NZD > 0 ? 1 / r.NZD : null) },
+  {
+    pair: "EUR/GBP",
+    getPrice: (r) => (r.EUR > 0 && r.GBP > 0 ? r.GBP / r.EUR : null),
+  },
+  { pair: "XAU/USD", getPrice: (_, gold) => gold },
+  { pair: "XAG/USD", getPrice: (_, __, silver) => silver },
+  { pair: "US30", getPrice: () => null },
+  { pair: "NAS100", getPrice: () => null },
+];
 
 function formatPrice(price: number, pair: string): string {
-  if (pair === "XAU/USD") return price.toFixed(2);
+  if (pair === "USD/JPY") return price.toFixed(2);
+  if (pair === "XAU/USD" || pair === "XAG/USD") return price.toFixed(2);
+  if (pair === "US30" || pair === "NAS100") return price.toFixed(0);
   return price.toFixed(4);
 }
 
@@ -38,17 +55,45 @@ function isMarketOpen(): boolean {
   return true;
 }
 
-async function fetchGoldRate(): Promise<number | null> {
+async function fetchMetalRate(pair: string): Promise<number | null> {
   try {
-    const res = await fetch("https://fxapi.app/api/XAU/USD.json", { cache: "no-store" });
+    const res = await fetch(`https://fxapi.app/api/${pair}.json`, { cache: "no-store" });
     if (!res.ok) return null;
     const data = (await res.json()) as { rate?: number };
     const rate = data.rate;
-    if (typeof rate === "number" && rate >= 1500 && rate <= 5000) return rate;
+    if (typeof rate !== "number") return null;
+    if (pair === "XAU/USD" && rate >= 1500 && rate <= 6000) return rate;
+    if (pair === "XAG/USD" && rate >= 10 && rate <= 200) return rate;
     return null;
   } catch {
     return null;
   }
+}
+
+function TickerItem({ item }: { item: TickerPair }) {
+  return (
+    <span className="inline-flex items-center gap-2 px-6 font-mono text-sm font-medium tabular-nums whitespace-nowrap">
+      <span className="text-[#A8A8A8]">{item.pair}</span>
+      {item.price !== null ? (
+        <>
+          <span className="text-white">{formatPrice(item.price, item.pair)}</span>
+          <span
+            className={cn(
+              item.direction === "up" && "text-[#2D5A3D]",
+              item.direction === "down" && "text-[#5C2A2A]",
+              item.direction === "flat" && "text-[#A0A0A0]"
+            )}
+          >
+            {item.direction === "up" ? "▲" : item.direction === "down" ? "▼" : "—"}{" "}
+            {item.change > 0 ? "+" : ""}
+            {item.change.toFixed(2)}%
+          </span>
+        </>
+      ) : (
+        <span className="text-[#A0A0A0]">—</span>
+      )}
+    </span>
+  );
 }
 
 export function InstitutionalTicker() {
@@ -60,19 +105,16 @@ export function InstitutionalTicker() {
   const load = useCallback(async () => {
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
-        const res = await fetch(FXAPI_REST_URL, { cache: "no-store" });
+        const [res, gold, silver] = await Promise.all([
+          fetch(FXAPI_REST_URL, { cache: "no-store" }),
+          fetchMetalRate("XAU/USD"),
+          fetchMetalRate("XAG/USD"),
+        ]);
         if (!res.ok) throw new Error("fetch failed");
         const data = (await res.json()) as { rates: Record<string, number> };
-        const gold = await fetchGoldRate();
 
-        const next: TickerPair[] = PAIR_CONFIG.map(({ pair, code, compute }) => {
-          let price: number | null = null;
-          if (pair === "XAU/USD") {
-            price = gold;
-          } else {
-            const rv = data.rates[code];
-            if (rv && rv > 0) price = compute(data.rates);
-          }
+        const next: TickerPair[] = PAIR_CONFIG.map(({ pair, getPrice }) => {
+          const price = getPrice(data.rates, gold, silver);
           const prev = previousPricesRef.current[pair];
           const change =
             price && prev && prev > 0 ? ((price - prev) / prev) * 100 : 0;
@@ -107,52 +149,49 @@ export function InstitutionalTicker() {
     return () => clearInterval(id);
   }, [load]);
 
-  const display =
+  const marqueeItems =
     status === "ready" && pairs.length > 0
-      ? pairs.filter((p) => DISPLAY_PAIRS.includes(p.pair as (typeof DISPLAY_PAIRS)[number]))
+      ? [...pairs, ...pairs]
       : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-8 bg-[#050505] border-b border-[#1A1A1A]">
-      <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
-        <div className="flex items-center gap-6 font-mono text-xs text-[#737373] tabular-nums">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-14 bg-black border-b border-[#D4AF37]/20">
+      <div className="h-full flex items-stretch">
+        <div className="flex-1 overflow-hidden flex items-center min-w-0">
           {status === "loading" && (
-            <span className="text-[#737373]">Loading markets...</span>
+            <span className="px-6 font-mono text-sm font-medium text-[#A0A0A0]">
+              Loading markets...
+            </span>
           )}
           {status === "unavailable" && (
-            <span className="text-[#737373]">Market data unavailable</span>
-          )}
-          {display?.map((item) => (
-            <span key={item.pair} className="flex items-center gap-1.5">
-              <span className="text-[#A8A8A8]">{item.pair}</span>
-              {item.price !== null ? (
-                <>
-                  <span className="text-[#F5F5F5]">{formatPrice(item.price, item.pair)}</span>
-                  <span
-                    className={cn(
-                      item.direction === "up" && "text-[#2D5A3D]",
-                      item.direction === "down" && "text-[#5C2A2A]",
-                      item.direction === "flat" && "text-[#737373]"
-                    )}
-                  >
-                    {item.direction === "up" ? "▲" : item.direction === "down" ? "▼" : "—"}{" "}
-                    {item.change > 0 ? "+" : ""}
-                    {item.change.toFixed(2)}%
-                  </span>
-                </>
-              ) : (
-                <span>N/A</span>
-              )}
+            <span className="px-6 font-mono text-sm font-medium text-[#A0A0A0]">
+              Market data unavailable
             </span>
-          ))}
-        </div>
-        <div
-          className={cn(
-            "text-[10px] uppercase tracking-[0.25em] font-medium",
-            marketOpen ? "text-[#2D5A3D]" : "text-[#5C2A2A]"
           )}
-        >
-          Market Status: {marketOpen ? "OPEN" : "CLOSED"}
+          {marqueeItems && (
+            <div className="flex animate-ticker whitespace-nowrap items-center h-full">
+              {marqueeItems.map((item, i) => (
+                <TickerItem key={`${item.pair}-${i}`} item={item} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="shrink-0 flex items-center gap-2.5 px-6 border-l border-[#D4AF37]/20">
+          {marketOpen && (
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#2D5A3D] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2D5A3D]" />
+            </span>
+          )}
+          <span
+            className={cn(
+              "text-xs uppercase tracking-[0.25em] font-semibold whitespace-nowrap",
+              marketOpen ? "text-[#2D5A3D]" : "text-[#5C2A2A]"
+            )}
+          >
+            {marketOpen ? "MARKETS OPEN" : "MARKETS CLOSED"}
+          </span>
         </div>
       </div>
     </div>

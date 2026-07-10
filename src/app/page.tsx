@@ -231,7 +231,7 @@ function getResultLabel(signal: Signal) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="label-caps text-[#B8956A]/60 mb-4">{children}</p>
+    <p className="label-caps text-[#D4AF37] mb-4">{children}</p>
   );
 }
 
@@ -356,11 +356,11 @@ export default function Home() {
       <InstitutionalTicker />
 
       {/* Navbar */}
-      <header className="fixed top-8 left-0 right-0 z-50 h-[72px] bg-[#050505]/95 backdrop-blur border-b border-[#1A1A1A]">
+      <header className="fixed top-14 left-0 right-0 z-50 h-[72px] bg-black/95 backdrop-blur border-b border-[#D4AF37]/20">
         <nav className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <Link
             href="/"
-            className="block h-12 transition-shadow hover:shadow-[0_0_24px_rgba(184,149,106,0.25)]"
+            className="block h-12 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
           >
             <Image
               src={logoSrc}
@@ -383,12 +383,12 @@ export default function Home() {
                   href={link.href}
                   className={cn(
                     "label-caps relative pb-1 transition-colors duration-300",
-                    active ? "text-[#B8956A]" : "text-[#737373] hover:text-[#B8956A]"
+                    active ? "text-[#D4AF37]" : "text-[#A8A8A8] hover:text-[#D4AF37]"
                   )}
                 >
                   {link.label}
                   {active && (
-                    <span className="absolute bottom-0 left-0 right-0 h-px bg-[#B8956A]" />
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D4AF37]" />
                   )}
                 </a>
               );
@@ -400,13 +400,13 @@ export default function Home() {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block label-caps border border-[#B8956A]/40 text-[#B8956A] px-6 py-3 transition-colors duration-300 hover:bg-[#B8956A] hover:text-[#050505]"
+              className="hidden sm:inline-block label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3 transition-colors duration-300 hover:bg-[#D4AF37] hover:text-black"
             >
               CLIENT ACCESS
             </a>
             <button
               type="button"
-              className="lg:hidden label-caps text-[#737373] hover:text-[#B8956A] px-2 py-1"
+              className="lg:hidden label-caps text-[#A8A8A8] hover:text-[#D4AF37] px-2 py-1"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
             >
@@ -441,7 +441,7 @@ export default function Home() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
+                    className="label-caps text-[#A8A8A8] hover:text-[#D4AF37] transition-colors duration-300"
                   >
                     {link.label}
                   </a>
@@ -450,7 +450,7 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#B8956A]/40 text-[#B8956A] px-6 py-3 text-center hover:bg-[#B8956A] hover:text-[#050505] transition-colors duration-300"
+                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-6 py-3 text-center hover:bg-[#D4AF37] hover:text-black transition-colors duration-300"
                 >
                   CLIENT ACCESS
                 </a>
@@ -461,7 +461,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="pt-[104px] min-h-[calc(100vh-104px)] flex items-center">
+      <section className="pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
           <motion.div
             initial="hidden"
@@ -470,10 +470,10 @@ export default function Home() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <SectionLabel>INSTITUTIONAL FOREX INTELLIGENCE</SectionLabel>
-            <h1 className="font-serif-display text-6xl md:text-8xl text-[#F5F5F5] leading-[1.1] mb-8">
+            <h1 className="font-serif-display headline-glow text-6xl md:text-8xl text-white leading-[1.1] mb-8">
               Precision in Every Position
             </h1>
-            <p className="text-lg text-[#737373] max-w-md mb-10 leading-relaxed">
+            <p className="text-lg text-[#A0A0A0] max-w-md mb-10 leading-relaxed">
               Macro-driven signals for investors who demand institutional-grade execution.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
@@ -481,13 +481,13 @@ export default function Home() {
                 href={telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="label-caps bg-[#B8956A] text-[#050505] px-10 py-4 hover:bg-[#C4A57A] transition-colors duration-300"
+                className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300"
               >
                 REQUEST ACCESS
               </a>
               <a
                 href="#performance"
-                className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
+                className="label-caps text-[#D4AF37] hover:text-[#E0C060] transition-colors duration-300"
               >
                 VIEW PERFORMANCE →
               </a>
@@ -511,17 +511,17 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-[#1A1A1A]">
           {trustIndicators.map((item) => (
             <div key={item.value} className="text-center lg:px-6">
-              <div className="text-[#B8956A] font-semibold text-sm mb-2 tabular-nums">
+              <div className="text-[#D4AF37] font-semibold text-sm mb-2 tabular-nums">
                 {item.value}
               </div>
-              <div className="label-caps text-[#737373]">{item.label}</div>
+              <div className="label-caps text-[#A0A0A0]">{item.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[104px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -532,7 +532,7 @@ export default function Home() {
             className="mb-16"
           >
             <SectionLabel>METHODOLOGY</SectionLabel>
-            <h2 className="font-serif-display text-4xl text-[#F5F5F5]">
+            <h2 className="font-serif-display headline-glow text-4xl text-white">
               How We Generate Alpha
             </h2>
           </motion.div>
@@ -553,7 +553,7 @@ export default function Home() {
                 </span>
                 <div className="relative pt-16">
                   <h3 className="text-xl font-semibold text-[#F5F5F5] mb-3">{step.title}</h3>
-                  <p className="text-sm text-[#737373] leading-relaxed">{step.description}</p>
+                  <p className="text-sm text-[#A0A0A0] leading-relaxed">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -564,7 +564,7 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -576,14 +576,14 @@ export default function Home() {
             className="text-center mb-16"
           >
             <SectionLabel>TRACK RECORD</SectionLabel>
-            <h2 className="font-serif-display text-4xl text-[#F5F5F5] mb-12">
+            <h2 className="font-serif-display headline-glow text-4xl text-white mb-12">
               Verified. Audited. Consistent.
             </h2>
             {statsLoading ? (
               <div className="h-32 bg-[#111111] animate-pulse max-w-xs mx-auto" />
             ) : (
               <>
-                <div className="font-serif-display text-7xl md:text-9xl font-bold text-[#B8956A] tabular-nums mb-4">
+                <div className="font-serif-display text-7xl md:text-9xl font-bold text-[#D4AF37] tabular-nums mb-4">
                   {winRateDisplay}
                 </div>
                 <p className="label-caps text-[#737373]">Win Rate | 2024–2026</p>
@@ -593,19 +593,19 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#1A1A1A] py-10">
             <div>
-              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
                 +{stats.monthly_return}%
               </div>
               <div className="label-caps text-[#737373]">Monthly Return</div>
             </div>
             <div>
-              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
                 {stats.pips_month.toLocaleString()}
               </div>
               <div className="label-caps text-[#737373]">Pips/Month Average</div>
             </div>
             <div>
-              <div className="text-3xl text-[#B8956A] tabular-nums font-semibold mb-2">
+              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
                 {stats.active_traders}+
               </div>
               <div className="label-caps text-[#737373]">Active Accounts</div>
@@ -620,7 +620,7 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeIn}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="scroll-mt-[104px]"
+            className="scroll-mt-[128px]"
           >
             {signalsLoading ? (
               <div className="space-y-2">
@@ -679,7 +679,7 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#B8956A]/40 text-[#B8956A] px-8 py-3 hover:bg-[#B8956A] hover:text-[#050505] transition-colors duration-300"
+                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-8 py-3 hover:bg-[#D4AF37] hover:text-black transition-colors duration-300"
                 >
                   REQUEST ACCESS
                 </a>
@@ -690,7 +690,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[104px] py-24 px-6">
+      <section id="pricing" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -701,7 +701,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <SectionLabel>MEMBERSHIP</SectionLabel>
-            <h2 className="font-serif-display text-4xl text-[#F5F5F5]">
+            <h2 className="font-serif-display headline-glow text-4xl text-white">
               Select Your Level of Access
             </h2>
           </motion.div>
@@ -716,8 +716,8 @@ export default function Home() {
                 variants={fadeIn}
                 transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
                 className={cn(
-                  "flex flex-col bg-[#0A0A0A] p-8 hover:border-[#B8956A]/30 transition-colors duration-500",
-                  tier.highlighted && "border-2 border-[#B8956A]"
+                  "flex flex-col bg-[#0A0A0A] p-8 border border-[#D4AF37]/20 hover:border-[#D4AF37]/40 transition-colors duration-500",
+                  tier.highlighted && "border-2 border-[#D4AF37]"
                 )}
               >
                 {tier.badge && (
@@ -725,8 +725,8 @@ export default function Home() {
                     className={cn(
                       "label-caps inline-block w-fit mb-4 text-[10px]",
                       tier.highlighted
-                        ? "bg-[#B8956A] text-[#050505] font-bold px-2 py-1"
-                        : "bg-[#B8956A]/10 text-[#B8956A] px-2 py-1"
+                        ? "bg-[#D4AF37] text-black font-bold px-2 py-1"
+                        : "bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1"
                     )}
                   >
                     {tier.badge}
@@ -737,15 +737,15 @@ export default function Home() {
                   <span className="font-serif-display text-4xl text-[#F5F5F5] tabular-nums">
                     {tier.price}
                   </span>
-                  <span className="text-sm text-[#737373] ml-1">{tier.period}</span>
+                  <span className="text-sm text-[#A0A0A0] ml-1">{tier.period}</span>
                 </div>
                 {tier.subtitle && (
-                  <p className="text-xs text-[#737373] mb-6">{tier.subtitle}</p>
+                  <p className="text-xs text-[#A0A0A0] mb-6">{tier.subtitle}</p>
                 )}
                 {!tier.subtitle && <div className="mb-6" />}
                 <ul className="space-y-3 mb-8 flex-1">
                   {tier.features.map((f) => (
-                    <li key={f} className="text-sm text-[#737373]">
+                    <li key={f} className="text-sm text-[#A0A0A0]">
                       {f}
                     </li>
                   ))}
@@ -757,8 +757,8 @@ export default function Home() {
                   className={cn(
                     "label-caps text-center py-3 transition-colors duration-300",
                     tier.ctaPrimary
-                      ? "bg-[#B8956A] text-[#050505] hover:bg-[#C4A57A]"
-                      : "border border-[#B8956A]/40 text-[#B8956A] hover:bg-[#B8956A] hover:text-[#050505]"
+                      ? "bg-[#D4AF37] text-black hover:bg-[#E0C060]"
+                      : "border border-[#D4AF37]/20 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
                   )}
                 >
                   {tier.cta}
@@ -772,7 +772,7 @@ export default function Home() {
       {/* Testimonials / Insights */}
       <section
         id="insights"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
@@ -811,7 +811,7 @@ export default function Home() {
                   onClick={() => setTestimonialIndex(i)}
                   className={cn(
                     "w-2 h-2 transition-colors duration-300",
-                    testimonialIndex === i ? "bg-[#B8956A]" : "bg-[#1A1A1A]"
+                    testimonialIndex === i ? "bg-[#D4AF37]" : "bg-[#1A1A1A]"
                   )}
                   aria-label={`View testimonial ${i + 1}`}
                 />
@@ -822,7 +822,7 @@ export default function Home() {
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[104px] py-24 px-6">
+      <section id="education" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -847,10 +847,10 @@ export default function Home() {
                 className="px-0 md:px-10 py-10 md:py-0 first:md:pl-0 last:md:pr-0"
               >
                 <h3 className="text-lg text-[#F5F5F5] font-medium mb-3">{article.title}</h3>
-                <p className="text-sm text-[#737373] mb-6 leading-relaxed">{article.excerpt}</p>
+                <p className="text-sm text-[#A0A0A0] mb-6 leading-relaxed">{article.excerpt}</p>
                 <Link
                   href={article.href}
-                  className="label-caps text-[#B8956A] hover:underline transition-colors duration-300"
+                  className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
                 >
                   READ
                 </Link>
@@ -861,7 +861,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
+      <section id="faq" className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial="hidden"
@@ -919,14 +919,14 @@ export default function Home() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="font-serif-display text-4xl text-[#F5F5F5] mb-10">
+          <h2 className="font-serif-display headline-glow text-4xl text-white mb-10">
             Ready for Institutional-Grade Execution?
           </h2>
           <a
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block label-caps bg-[#B8956A] text-[#050505] px-12 py-5 hover:bg-[#C4A57A] transition-colors duration-300"
+            className="inline-block label-caps bg-[#D4AF37] text-black px-12 py-5 hover:bg-[#E0C060] transition-colors duration-300"
           >
             REQUEST ACCESS
           </a>
@@ -946,8 +946,8 @@ export default function Home() {
               onError={() => setLogoSrc("/logo.svg")}
             />
           </div>
-          <p className="label-caps text-[#737373] mb-2">FX RESEARCH DESK</p>
-          <p className="label-caps text-[#B8956A]/40 mb-10">Research. Analyze. Execute.</p>
+          <p className="label-caps text-[#A0A0A0] mb-2">FX RESEARCH DESK</p>
+          <p className="label-caps text-[#D4AF37]/60 mb-10">Research. Analyze. Execute.</p>
 
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-12">
             {[
@@ -959,7 +959,7 @@ export default function Home() {
               <a
                 key={link.label}
                 href={link.href}
-                className="label-caps text-[#737373] hover:text-[#B8956A] transition-colors duration-300"
+                className="label-caps text-[#A0A0A0] hover:text-[#D4AF37] transition-colors duration-300"
               >
                 {link.label}
               </a>

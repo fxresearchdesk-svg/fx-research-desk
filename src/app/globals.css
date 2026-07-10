@@ -161,7 +161,11 @@
 }
 
 .animate-ticker {
-  animation: ticker-scroll 45s linear infinite;
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.headline-glow {
+  text-shadow: 0 0 40px rgba(212, 175, 55, 0.1);
 }
 
 @keyframes float-orb {
