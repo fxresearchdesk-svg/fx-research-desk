@@ -572,7 +572,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <div className="hidden md:block relative min-h-[300px]">
+            <div className="hidden md:block relative min-h-[340px]">
               <div className="absolute right-0 top-1/2 -translate-y-1/2">
                 <HeroMiniChart />
               </div>

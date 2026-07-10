@@ -179,6 +179,26 @@
   pointer-events: none !important;
 }
 
+@keyframes hero-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.hero-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #141414 0%,
+    #1f1f1f 45%,
+    #141414 90%
+  );
+  background-size: 200% 100%;
+  animation: hero-shimmer 1.6s ease-in-out infinite;
+}
+
 @keyframes hero-sparkline-draw {
   to {
     stroke-dashoffset: 0;
