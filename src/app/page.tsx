@@ -572,7 +572,7 @@ export default function Home() {
       <SiteNavbar activeSection={activeSection} />
 
       {/* Hero */}
-      <section className="pt-[136px] min-h-[calc(100vh-136px)] flex items-center">
+      <section className="pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
           <motion.div
             initial="hidden"
@@ -634,7 +634,7 @@ export default function Home() {
       </section>
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[136px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -677,7 +677,7 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[136px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -733,7 +733,7 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeIn}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="scroll-mt-[136px]"
+            className="scroll-mt-[128px]"
           >
             {signalsLoading ? (
               <div className="space-y-2">
@@ -803,7 +803,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[136px] py-24 px-6">
+      <section id="pricing" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -885,7 +885,7 @@ export default function Home() {
       {/* Testimonials / Insights */}
       <section
         id="insights"
-        className="scroll-mt-[136px] bg-[#050505] py-24 px-6"
+        className="scroll-mt-[128px] bg-[#050505] py-24 px-6"
       >
         <div className="max-w-6xl mx-auto md:px-[60px]">
           <motion.div
@@ -902,7 +902,7 @@ export default function Home() {
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[136px] py-24 px-6">
+      <section id="education" className="scroll-mt-[128px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -950,7 +950,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-[136px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
+      <section id="faq" className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial="hidden"

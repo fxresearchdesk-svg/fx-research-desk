@@ -51,6 +51,7 @@ export function TradingViewAdvancedChart({
         toolbar_bg: "#0A0A0A",
         enable_publishing: false,
         hide_top_toolbar: false,
+        hide_side_toolbar: true,
         hide_legend: false,
         save_image: true,
         backgroundColor: "#0A0A0A",
@@ -69,7 +70,10 @@ export function TradingViewAdvancedChart({
   return (
     <div
       ref={containerRef}
-      className={cn("tradingview-widget-container h-full w-full", className)}
+      className={cn(
+        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden",
+        className
+      )}
     />
   );
 }
@@ -134,7 +138,10 @@ export function TradingViewMarketOverview({ className }: MarketOverviewProps) {
   return (
     <div
       ref={containerRef}
-      className={cn("tradingview-widget-container h-full w-full", className)}
+      className={cn(
+        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden",
+        className
+      )}
     />
   );
 }
@@ -174,7 +181,10 @@ export function TradingViewTechnicalAnalysis({
   return (
     <div
       ref={containerRef}
-      className={cn("tradingview-widget-container h-full w-full", className)}
+      className={cn(
+        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden",
+        className
+      )}
     />
   );
 }

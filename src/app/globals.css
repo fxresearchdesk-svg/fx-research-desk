@@ -168,6 +168,17 @@
   text-shadow: 0 0 40px rgba(212, 175, 55, 0.1);
 }
 
+/* Hide TradingView branding outside iframe; chart tools remain functional */
+.tv-widget-host .tradingview-widget-copyright,
+.tv-widget-host .tradingview-widget-container__copyright,
+.tv-widget-host > a[href*="tradingview.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
 @keyframes float-orb {
   0%,
   100% {
