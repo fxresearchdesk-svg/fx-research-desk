@@ -36,14 +36,15 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 sm:gap-3 shrink-0 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
+            className="flex items-center gap-2 sm:gap-3 shrink-0 sm:min-w-[200px] transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
           >
-            <Image
-              src={logoSrc}
-              alt="FX Research Desk"
-              width={320}
-              height={64}
-              className="h-12 sm:h-16 w-auto object-contain"
+            <div className="shrink-0 rounded-sm border border-[#D4AF37]/30 p-1">
+              <Image
+                src={logoSrc}
+                alt="FX Research Desk"
+                width={320}
+                height={80}
+                className="h-14 sm:h-20 w-auto object-contain"
               onError={() =>
                 setLogoSrc((prev) =>
                   prev === "/logo.png.jpeg"
@@ -56,6 +57,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               priority
               unoptimized
             />
+            </div>
             <span className="hidden sm:block text-sm font-bold text-white tracking-[0.25em] uppercase whitespace-nowrap">
               FX RESEARCH DESK
             </span>

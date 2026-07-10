@@ -30,8 +30,8 @@ export function ChartsPageClient() {
               Real-Time Technical Analysis
             </h1>
             <p className="text-[#A0A0A0] max-w-2xl mx-auto md:mx-0 leading-relaxed">
-              Professional-grade charts powered by TradingView. Analyze price action
-              across all major pairs.
+              Institutional-grade charting with real-time price action across all major
+              currency pairs and precious metals.
             </p>
           </header>
 

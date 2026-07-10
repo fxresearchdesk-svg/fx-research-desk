@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, animate } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
@@ -276,38 +276,83 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CandlestickChart() {
-  const candles = [
-    { h: 72, body: 28, up: true, wickTop: 12, wickBottom: 8 },
-    { h: 56, body: 22, up: false, wickTop: 10, wickBottom: 14 },
-    { h: 88, body: 32, up: true, wickTop: 16, wickBottom: 6 },
-    { h: 64, body: 20, up: true, wickTop: 8, wickBottom: 12 },
-    { h: 48, body: 18, up: false, wickTop: 14, wickBottom: 10 },
-    { h: 76, body: 26, up: true, wickTop: 10, wickBottom: 8 },
-  ];
+function CountUpValue({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  className,
+}: {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+}) {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(0, value, {
+      duration: 1.4,
+      ease: "easeOut",
+      onUpdate: (latest) => setDisplay(latest),
+    });
+    return () => controls.stop();
+  }, [value]);
 
   return (
-    <div className="flex items-end justify-center gap-3 h-64 opacity-40">
-      {candles.map((c, i) => (
-        <div key={i} className="flex flex-col items-center" style={{ height: c.h }}>
-          <div
-            className="w-px bg-[#737373]"
-            style={{ height: c.wickTop }}
-          />
-          <div
-            className={cn(
-              "w-4",
-              c.up ? "bg-[#2D5A3D]" : "bg-[#5C2A2A]"
-            )}
-            style={{ height: c.body }}
-          />
-          <div
-            className="w-px bg-[#737373] flex-1"
-            style={{ minHeight: c.wickBottom }}
-          />
-        </div>
-      ))}
-    </div>
+    <span className={className}>
+      {prefix}
+      {display.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
+
+function HeroLiveStats({
+  winRate,
+  monthlyReturn,
+  activeTraders,
+  className,
+}: {
+  winRate: number;
+  monthlyReturn: number;
+  activeTraders: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+      className={cn(
+        "bg-[#0A0A0A] border border-[#1A1A1A] rounded-sm p-6 w-[280px]",
+        className
+      )}
+    >
+      <p className="text-xs uppercase tracking-widest text-[#737373]">WIN RATE</p>
+      <p className="mt-2 text-4xl font-bold text-[#D4AF37] tabular-nums">
+        <CountUpValue value={winRate} decimals={1} suffix="%" />
+      </p>
+
+      <div className="my-4 h-px bg-[#1A1A1A]" />
+
+      <p className="text-xs uppercase tracking-widest text-[#737373]">
+        AVG MONTHLY RETURN
+      </p>
+      <p className="mt-2 text-4xl font-bold text-[#00C853] tabular-nums">
+        <CountUpValue value={monthlyReturn} decimals={1} prefix="+" suffix="%" />
+      </p>
+
+      <div className="my-4 h-px bg-[#1A1A1A]" />
+
+      <p className="text-xs uppercase tracking-widest text-[#737373]">
+        ACTIVE CLIENTS
+      </p>
+      <p className="mt-2 text-4xl font-bold text-[#D4AF37] tabular-nums">
+        <CountUpValue value={activeTraders} decimals={0} suffix="+" />
+      </p>
+    </motion.div>
   );
 }
 
@@ -572,48 +617,58 @@ export default function Home() {
       <SiteNavbar activeSection={activeSection} />
 
       {/* Hero */}
-      <section className="pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
-        <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <SectionLabel>INSTITUTIONAL FOREX INTELLIGENCE</SectionLabel>
-            <h1 className="font-serif-display headline-glow text-6xl md:text-8xl text-white leading-[1.1] mb-8">
-              Precision in Every Position
-            </h1>
-            <p className="text-lg text-[#A0A0A0] max-w-md mb-10 leading-relaxed">
-              Macro-driven signals for investors who demand institutional-grade execution.
-            </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
-              <a
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
-              >
-                REQUEST ACCESS
-              </a>
-              <a
-                href="#performance"
-                className="label-caps text-[#D4AF37] hover:text-[#E0C060] transition-colors duration-300"
-              >
-                VIEW PERFORMANCE →
-              </a>
-            </div>
-          </motion.div>
+      <section className="relative pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
+        <div className="max-w-7xl mx-auto w-full px-6 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <SectionLabel>INSTITUTIONAL FOREX INTELLIGENCE</SectionLabel>
+              <h1 className="font-serif-display headline-glow text-6xl md:text-8xl text-white leading-[1.1] mb-8">
+                Precision in Every Position
+              </h1>
+              <p className="text-lg text-[#A0A0A0] max-w-md mb-10 leading-relaxed">
+                Macro-driven signals for investors who demand institutional-grade execution.
+              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
+                <a
+                  href={telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
+                >
+                  REQUEST ACCESS
+                </a>
+                <a
+                  href="#performance"
+                  className="label-caps text-[#D4AF37] hover:text-[#E0C060] transition-colors duration-300"
+                >
+                  VIEW PERFORMANCE →
+                </a>
+              </div>
+            </motion.div>
 
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-            className="hidden lg:block"
-          >
-            <CandlestickChart />
-          </motion.div>
+            <div className="hidden lg:block relative min-h-[300px]">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                <HeroLiveStats
+                  winRate={Number(stats.win_rate)}
+                  monthlyReturn={Number(stats.monthly_return)}
+                  activeTraders={Number(stats.active_traders)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 flex justify-center lg:hidden">
+            <HeroLiveStats
+              winRate={Number(stats.win_rate)}
+              monthlyReturn={Number(stats.monthly_return)}
+              activeTraders={Number(stats.active_traders)}
+            />
+          </div>
         </div>
       </section>
 

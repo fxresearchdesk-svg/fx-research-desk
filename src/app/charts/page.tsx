@@ -4,7 +4,7 @@ import { ChartsPageClient } from "./charts-client";
 export const metadata: Metadata = {
   title: "Live Market Charts | FX Research Desk",
   description:
-    "Professional-grade TradingView charts for real-time technical analysis across major forex pairs and metals.",
+    "Institutional-grade live charts with real-time technical analysis across major forex pairs and precious metals.",
 };
 
 export default function ChartsPage() {
