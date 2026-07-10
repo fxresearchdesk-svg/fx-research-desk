@@ -411,18 +411,18 @@ export default function Home() {
       <InstitutionalTicker />
 
       {/* Navbar */}
-      <header className="fixed top-14 left-0 right-0 z-50 h-[72px] bg-black/95 backdrop-blur border-b border-[#D4AF37]/20">
-        <nav className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+      <header className="fixed top-12 left-0 right-0 z-50 h-[72px] bg-black/95 backdrop-blur border-b border-[#D4AF37]/20">
+        <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link
             href="/"
-            className="block shrink-0 min-w-[160px] max-w-[260px] h-12 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
+            className="flex items-center gap-2 sm:gap-3 shrink-0 transition-shadow hover:shadow-[0_0_24px_rgba(212,175,55,0.25)]"
           >
             <Image
               src={logoSrc}
               alt="FX Research Desk"
-              width={260}
-              height={48}
-              className="h-12 w-full max-w-[260px] object-contain object-left"
+              width={280}
+              height={56}
+              className="h-10 sm:h-14 w-auto object-contain"
               onError={() =>
                 setLogoSrc((prev) =>
                   prev === "/logo.png.jpeg"
@@ -435,6 +435,9 @@ export default function Home() {
               priority
               unoptimized
             />
+            <span className="hidden sm:block label-caps text-[#F5F5F5] tracking-[0.15em] whitespace-nowrap">
+              FX RESEARCH DESK
+            </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-10">
@@ -525,7 +528,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
+      <section className="pt-[120px] min-h-[calc(100vh-120px)] flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6 py-16 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
           <motion.div
             initial="hidden"
@@ -587,7 +590,7 @@ export default function Home() {
       </section>
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[128px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[120px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -630,7 +633,7 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -686,7 +689,7 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeIn}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="scroll-mt-[128px]"
+            className="scroll-mt-[120px]"
           >
             {signalsLoading ? (
               <div className="space-y-2">
@@ -756,7 +759,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[128px] py-24 px-6">
+      <section id="pricing" className="scroll-mt-[120px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -838,7 +841,7 @@ export default function Home() {
       {/* Testimonials / Insights */}
       <section
         id="insights"
-        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
       >
         <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
           <motion.div
@@ -888,7 +891,7 @@ export default function Home() {
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[128px] py-24 px-6">
+      <section id="education" className="scroll-mt-[120px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -936,7 +939,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
+      <section id="faq" className="scroll-mt-[120px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial="hidden"
