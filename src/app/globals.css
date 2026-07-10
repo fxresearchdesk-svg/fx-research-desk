@@ -179,6 +179,32 @@
   pointer-events: none !important;
 }
 
+@keyframes hero-sparkline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-hero-sparkline-draw {
+  animation: hero-sparkline-draw 1.2s ease-out forwards;
+}
+
+@keyframes hero-live-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+}
+
+.animate-hero-live-dot {
+  animation: hero-live-dot 2.8s ease-in-out infinite;
+}
+
 @keyframes hero-candle-grow {
   0%,
   100% {
