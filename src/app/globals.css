@@ -244,18 +244,3 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
-@keyframes hero-pulse-bar {
-  0%,
-  100% {
-    height: 18%;
-  }
-  50% {
-    height: 92%;
-  }
-}
-
-.hero-pulse-bar {
-  height: 40%;
-  animation: hero-pulse-bar 2.4s ease-in-out infinite;
-}

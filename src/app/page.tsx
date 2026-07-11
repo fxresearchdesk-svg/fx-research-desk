@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroMarketPulse } from "@/components/hero-market-pulse";
+import { HeroCandlesticks } from "@/components/hero-candlesticks";
 import {
   fetchSignals,
   fetchStats,
@@ -482,7 +482,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center justify-center lg:justify-end">
-            <HeroMarketPulse />
+            <HeroCandlesticks />
           </div>
         </div>
       </section>

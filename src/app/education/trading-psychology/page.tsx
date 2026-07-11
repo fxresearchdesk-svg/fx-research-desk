@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EducationLayout } from "@/components/education-layout";
+import { telegramUrl } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Mastering Trading Psychology | FX Research Desk",
@@ -93,7 +94,7 @@ export default function TradingPsychologyPage() {
           included.
         </p>
         <a
-          href="https://t.me/fxresearchdesk"
+          href={telegramUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block border border-[#1A1A1A] px-6 py-3 text-[11px] tracking-[0.2em] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-colors duration-200"

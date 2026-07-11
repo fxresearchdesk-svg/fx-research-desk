@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { PLANS } from "@/lib/plans";
+import { telegramUrl } from "@/lib/site-config";
 
 export default function PaymentPage() {
   const params = useParams();
@@ -137,7 +138,7 @@ export default function PaymentPage() {
               with your plan choice. We reply within 15 minutes.
             </p>
             <a
-              href="https://t.me/fxresearchdesk"
+              href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center border border-[#1A1A1A] py-3 text-[11px] tracking-[0.2em] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-colors duration-200"
