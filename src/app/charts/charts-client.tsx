@@ -16,18 +16,18 @@ export function ChartsPageClient() {
   const [symbol, setSymbol] = useState<string>(chartPairs[0].symbol);
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#F5F5F5] overflow-x-hidden">
+    <main className="min-h-screen bg-[#F8F9FA] text-[#374151] overflow-x-hidden">
       <InstitutionalTicker />
       <SiteNavbar />
 
       <div className="pt-[104px] pb-24">
         <div className="max-w-7xl mx-auto px-6">
-          <header className="mb-12 text-center md:text-left border-b border-[#333333] pb-10">
+          <header className="mb-12 text-center md:text-left border-b border-[#E5E7EB] pb-10">
             <p className="label-institutional mb-4">LIVE MARKET CHARTS</p>
-            <h1 className="font-serif-display text-[40px] text-[#F5F5F5] leading-[1.2] mb-4">
+            <h1 className="font-serif-display text-[40px] text-[#111827] leading-[1.2] mb-4">
               Real-Time Technical Analysis
             </h1>
-            <p className="text-base text-[#AAAAAA] max-w-2xl mx-auto md:mx-0 leading-relaxed">
+            <p className="text-base text-[#6B7280] max-w-2xl mx-auto md:mx-0 leading-relaxed">
               Institutional-grade charting with real-time price action across all major
               currency pairs and precious metals.
             </p>
@@ -44,8 +44,8 @@ export function ChartsPageClient() {
                   className={cn(
                     "border px-4 py-2 text-[11px] tracking-[0.2em] uppercase transition-colors duration-200",
                     active
-                      ? "border-[#B8956A] text-[#B8956A]"
-                      : "border-[#333333] text-[#AAAAAA] hover:border-[#B8956A] hover:text-[#B8956A]"
+                      ? "border-[#B8956A] text-[#B8956A] bg-[#FFFFFF]"
+                      : "border-[#E5E7EB] text-[#6B7280] hover:border-[#B8956A] hover:text-[#B8956A] bg-[#FFFFFF]"
                   )}
                 >
                   {pair.label}
@@ -54,13 +54,13 @@ export function ChartsPageClient() {
             })}
           </div>
 
-          <div className="mb-12 h-[400px] md:h-[600px] w-full overflow-hidden border border-[#333333] bg-[#1E1E1E]">
+          <div className="mb-12 h-[400px] md:h-[600px] w-full overflow-hidden card-surface p-2">
             <TradingViewAdvancedChart symbol={symbol} />
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <section className="overflow-hidden border border-[#333333] bg-[#1E1E1E]">
-              <div className="border-b border-[#333333] px-6 py-4">
+            <section className="overflow-hidden card-surface">
+              <div className="border-b border-[#E5E7EB] px-6 py-4">
                 <h2 className="label-institutional">Market Overview</h2>
               </div>
               <div className="h-[420px]">
@@ -68,8 +68,8 @@ export function ChartsPageClient() {
               </div>
             </section>
 
-            <section className="overflow-hidden border border-[#333333] bg-[#1E1E1E]">
-              <div className="border-b border-[#333333] px-6 py-4">
+            <section className="overflow-hidden card-surface">
+              <div className="border-b border-[#E5E7EB] px-6 py-4">
                 <h2 className="label-institutional">Technical Analysis</h2>
               </div>
               <div className="h-[420px]">

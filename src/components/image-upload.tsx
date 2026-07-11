@@ -16,7 +16,7 @@ export function ImageUpload({ value, onChange, className }: ImageUploadProps) {
   return (
     <div className={cn("space-y-3", className)}>
       {value ? (
-        <div className="relative w-24 h-24 overflow-hidden border border-[#333333]">
+        <div className="relative w-24 h-24 overflow-hidden border border-[#E5E7EB]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt="Upload preview" className="w-full h-full object-cover" />
         </div>
@@ -33,8 +33,8 @@ export function ImageUpload({ value, onChange, className }: ImageUploadProps) {
         onUploadError={() => setUploading(false)}
         appearance={{
           button:
-            "border border-[#333333] text-[#B8956A] text-sm px-4 py-2 ut-ready:text-[#B8956A] ut-uploading:text-[#777777]",
-          allowedContent: "text-[#777777] text-xs",
+            "border border-[#E5E7EB] text-[#B8956A] text-sm px-4 py-2 ut-ready:text-[#B8956A] ut-uploading:text-[#9CA3AF]",
+          allowedContent: "text-[#9CA3AF] text-xs",
         }}
         content={{
           button({ ready }) {

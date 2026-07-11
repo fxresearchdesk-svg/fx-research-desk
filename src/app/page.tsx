@@ -197,7 +197,7 @@ type CarouselTestimonial = {
 };
 
 const arrowButtonClass =
-  "flex items-center justify-center border border-[#333333] text-[#B8956A] transition-colors duration-200 hover:border-[#B8956A] hover:text-[#C9A87C] focus-visible:outline-none focus-visible:border-[#B8956A]";
+  "flex items-center justify-center border border-[#E5E7EB] text-[#B8956A] transition-colors duration-200 hover:border-[#B8956A] hover:text-[#C9A87C] focus-visible:outline-none focus-visible:border-[#B8956A]";
 
 function SectionRule() {
   return <div className="section-rule" />;
@@ -316,17 +316,17 @@ function TestimonialsCarousel({
       <div className="relative w-full overflow-hidden">
         <article
           key={index}
-          className="fade-in w-full bg-[#1E1E1E] border border-[#333333] p-8 text-center md:p-12 lg:p-16"
+          className="fade-in w-full card-surface p-8 text-center md:p-12 lg:p-16"
         >
-          <blockquote className="mx-auto max-w-3xl font-serif-display text-xl text-[#F5F5F5] leading-relaxed break-words md:text-2xl lg:text-3xl">
+          <blockquote className="mx-auto max-w-3xl font-serif-display text-xl text-[#111827] leading-relaxed break-words md:text-2xl lg:text-3xl">
             {current.quote}
           </blockquote>
 
-          <p className="mt-12 text-[11px] uppercase tracking-[0.2em] text-[#AAAAAA]">
+          <p className="mt-12 text-[11px] uppercase tracking-[0.2em] text-[#6B7280]">
             {current.name}
           </p>
           {current.location && (
-            <p className="mt-2 text-[11px] text-[#AAAAAA]">{current.location}</p>
+            <p className="mt-2 text-[11px] text-[#6B7280]">{current.location}</p>
           )}
         </article>
       </div>
@@ -344,7 +344,7 @@ function TestimonialsCarousel({
                 "h-2 shrink-0 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B8956A]",
                 index === i
                   ? "w-8 bg-[#B8956A]"
-                  : "w-2 bg-[#333333] hover:bg-[#AAAAAA]"
+                  : "w-2 bg-[#D1D5DB] hover:bg-[#9CA3AF]"
               )}
             />
           ))}
@@ -435,28 +435,22 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#F5F5F5] overflow-x-hidden">
+    <main className="min-h-screen bg-[#F8F9FA] text-[#374151] overflow-x-hidden">
       <InstitutionalTicker />
       <SiteNavbar activeSection={activeSection} />
 
       {/* Hero */}
-      <section
-        className="relative pt-[104px]"
-        style={{
-          background:
-            "linear-gradient(135deg, #1A1A1A 0%, #121212 50%, #1A1A1A 100%)",
-        }}
-      >
+      <section className="relative pt-[104px] bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto w-full px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
-            <div className="fade-in bg-[#1E1E1E] border-l-2 border-[#B8956A]/30 p-10 max-w-xl">
-              <p className="label-institutional mb-4">
+            <div className="fade-in card-surface p-10 max-w-xl">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-[#B8956A] mb-4">
                 INSTITUTIONAL FOREX INTELLIGENCE
               </p>
-              <h1 className="font-serif-display hero-headline-glow text-[48px] text-[#F5F5F5] leading-[1.2] mb-6">
+              <h1 className="font-serif-display text-[48px] text-[#111827] leading-[1.2] mb-6">
                 Precision in Every Position
               </h1>
-              <p className="text-base text-[#AAAAAA] max-w-md mb-10 leading-relaxed">
+              <p className="text-base text-[#6B7280] max-w-md mb-10 leading-relaxed">
                 Macro-driven signals for investors who demand institutional-grade
                 execution.
               </p>
@@ -475,12 +469,12 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hidden md:block h-[340px] bg-[#1E1E1E] border border-[#333333] p-2 rounded-sm">
+            <div className="hidden md:block h-[340px] card-surface p-2">
               <TradingViewHeroChart className="h-full w-full" />
             </div>
           </div>
 
-          <div className="mt-10 md:hidden h-[280px] w-full bg-[#1E1E1E] border border-[#333333] p-2 rounded-sm">
+          <div className="mt-10 md:hidden h-[280px] w-full card-surface p-2">
             <TradingViewHeroChart className="h-full w-full" />
           </div>
         </div>
@@ -489,8 +483,8 @@ export default function Home() {
       <SectionRule />
 
       {/* Trust */}
-      <section className="border-y border-[#333333] py-6">
-        <p className="text-center text-[11px] tracking-[0.2em] text-[#AAAAAA]">
+      <section className="bg-[#F1F3F4] border-y border-[#E5E7EB] py-6">
+        <p className="text-center text-[11px] tracking-[0.2em] text-[#6B7280]">
           <span className="text-[#B8956A]">◆</span> Institutional-grade signals.
           Verified performance since 2015.{" "}
           <span className="text-[#B8956A]">◆</span>
@@ -500,27 +494,27 @@ export default function Home() {
       <SectionRule />
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[104px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[104px] py-24 px-6 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16">
             <p className="label-institutional mb-4">METHODOLOGY</p>
-            <h2 className="font-serif-display text-[40px] text-[#F5F5F5] leading-[1.2]">
+            <h2 className="font-serif-display text-[40px] text-[#111827] leading-[1.2]">
               How We Generate Alpha
             </h2>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#333333] bg-[#333333] md:bg-transparent">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {processSteps.map((step) => (
               <div
                 key={step.num}
-                className="relative bg-[#121212] p-8 md:px-8 lg:px-10 min-w-0"
+                className="relative card-surface p-8 md:px-8 lg:px-10 min-w-0"
               >
-                <span className="font-data text-5xl text-[#333333] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
+                <span className="font-data text-5xl text-[#E5E7EB] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
                   {step.num}
                 </span>
                 <div className="relative">
-                  <h3 className="text-lg text-[#F5F5F5] mb-3">{step.title}</h3>
-                  <p className="text-sm text-[#AAAAAA] leading-relaxed break-words">
+                  <h3 className="text-lg text-[#111827] mb-3">{step.title}</h3>
+                  <p className="text-sm text-[#6B7280] leading-relaxed break-words">
                     {step.description}
                   </p>
                 </div>
@@ -535,19 +529,19 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#1A1A1A] border-y border-[#333333]"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#FFFFFF] border-y border-[#E5E7EB]"
       >
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-16">
             <p className="label-institutional mb-4">TRACK RECORD</p>
-            <h2 className="font-serif-display text-[40px] text-[#F5F5F5] leading-[1.2] mb-12">
+            <h2 className="font-serif-display text-[40px] text-[#111827] leading-[1.2] mb-12">
               Verified. Audited. Consistent.
             </h2>
             {statsLoading ? (
-              <div className="h-32 bg-[#333333]/30 animate-pulse max-w-xs mx-auto" />
+              <div className="h-32 bg-[#E5E7EB] animate-pulse max-w-xs mx-auto" />
             ) : (
               <>
-                <div className="font-data text-[56px] text-[#FFFFFF] tabular-nums mb-4">
+                <div className="font-data text-[56px] text-[#111827] tabular-nums mb-4">
                   {winRateDisplay}
                 </div>
                 <p className="label-institutional">Win Rate | 2015–2026</p>
@@ -555,21 +549,21 @@ export default function Home() {
             )}
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#333333] py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#E5E7EB] py-10">
             <div>
-              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#111827] tabular-nums mb-2">
                 +{stats.monthly_return}%
               </div>
               <div className="label-institutional">Monthly Return</div>
             </div>
             <div>
-              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#111827] tabular-nums mb-2">
                 {stats.pips_month.toLocaleString()}
               </div>
               <div className="label-institutional">Pips/Month Average</div>
             </div>
             <div>
-              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#111827] tabular-nums mb-2">
                 {stats.active_traders}+
               </div>
               <div className="label-institutional">Active Accounts</div>
@@ -581,12 +575,12 @@ export default function Home() {
             {signalsLoading ? (
               <div className="space-y-2">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-12 bg-[#333333]/30 animate-pulse" />
+                  <div key={i} className="h-12 bg-[#E5E7EB] animate-pulse" />
                 ))}
               </div>
             ) : dbConfigured && liveSignals.length > 0 ? (
               <>
-                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-institutional border-b border-[#333333]">
+                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-institutional border-b border-[#E5E7EB]">
                   <span>PAIR</span>
                   <span>TYPE</span>
                   <span>ENTRY</span>
@@ -598,17 +592,17 @@ export default function Home() {
                 {liveSignals.map((signal) => (
                   <div
                     key={signal.id}
-                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#333333] font-data text-[13px] tabular-nums hover:bg-[#121212] transition-colors duration-200"
+                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#E5E7EB] font-data text-[13px] tabular-nums hover:bg-[#F8F9FA] transition-colors duration-200"
                   >
-                    <span className="text-[#F5F5F5]">{signal.pair}</span>
-                    <span className="text-[#AAAAAA]">{signal.direction}</span>
-                    <span className="text-[#AAAAAA] hidden md:block">
+                    <span className="text-[#111827]">{signal.pair}</span>
+                    <span className="text-[#6B7280]">{signal.direction}</span>
+                    <span className="text-[#6B7280] hidden md:block">
                       {formatPrice(signal.entry_price)}
                     </span>
-                    <span className="text-[#AAAAAA] hidden md:block">
+                    <span className="text-[#6B7280] hidden md:block">
                       {formatPrice(signal.stop_loss)}
                     </span>
-                    <span className="text-[#AAAAAA] hidden md:block">
+                    <span className="text-[#6B7280] hidden md:block">
                       {formatPrice(signal.take_profit)}
                     </span>
                     <span
@@ -616,20 +610,20 @@ export default function Home() {
                         signal.result === "WIN" && "text-[#4A7C59]",
                         signal.result === "LOSS" && "text-[#8B3A3A]",
                         (signal.result === "PENDING" || !signal.result) &&
-                          "text-[#AAAAAA]"
+                          "text-[#6B7280]"
                       )}
                     >
                       {getResultLabel(signal)}
                     </span>
-                    <span className="text-[#AAAAAA] hidden md:block">
+                    <span className="text-[#6B7280] hidden md:block">
                       {formatSignalDate(signal.created_at)}
                     </span>
                   </div>
                 ))}
               </>
             ) : (
-              <div className="text-center py-16 border border-[#333333] bg-[#1E1E1E]">
-                <p className="text-[#AAAAAA] mb-8">
+              <div className="text-center py-16 card-surface">
+                <p className="text-[#6B7280] mb-8">
                   Live signals available through secure client channels.
                 </p>
                 <a
@@ -649,7 +643,7 @@ export default function Home() {
       <SectionRule />
 
       {/* Testimonials / Insights */}
-      <section id="insights" className="scroll-mt-[104px] bg-[#121212] py-24 px-6">
+      <section id="insights" className="scroll-mt-[104px] bg-[#F1F3F4] py-24 px-6">
         <div className="max-w-6xl mx-auto md:px-[56px]">
           <p className="label-institutional mb-12">CLIENT PERSPECTIVES</p>
           <TestimonialsCarousel testimonials={displayTestimonials} />
@@ -659,22 +653,22 @@ export default function Home() {
       <SectionRule />
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[104px] py-24 px-6">
+      <section id="education" className="scroll-mt-[104px] py-24 px-6 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16">
             <p className="label-institutional mb-4">KNOWLEDGE CENTER</p>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#333333]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {educationArticles.map((article, i) => (
               <div
                 key={`${article.title}-${i}`}
-                className="bg-[#121212] p-8 min-w-0"
+                className="card-surface p-8 min-w-0"
               >
-                <h3 className="text-lg text-[#F5F5F5] mb-3 leading-snug">
+                <h3 className="text-lg text-[#111827] mb-3 leading-snug">
                   {article.title}
                 </h3>
-                <p className="text-sm text-[#AAAAAA] mb-6 leading-relaxed break-words">
+                <p className="text-sm text-[#6B7280] mb-6 leading-relaxed break-words">
                   {article.excerpt}
                 </p>
                 {article.href.startsWith("/education") ? (
@@ -703,7 +697,7 @@ export default function Home() {
       {/* FAQ */}
       <section
         id="faq"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#1A1A1A] border-t border-[#333333]"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#FFFFFF] border-t border-[#E5E7EB]"
       >
         <div className="max-w-3xl mx-auto">
           <header className="mb-12">
@@ -714,16 +708,16 @@ export default function Home() {
             {faqItems.map((item, i) => {
               const open = openFaq === i;
               return (
-                <div key={item.question} className="border-b border-[#333333]">
+                <div key={item.question} className="border-b border-[#E5E7EB]">
                   <button
                     type="button"
                     onClick={() => setOpenFaq(open ? null : i)}
                     className="w-full flex items-start justify-between gap-6 py-6 text-left"
                   >
-                    <span className="text-[#F5F5F5] leading-relaxed pr-4">
+                    <span className="text-[#111827] leading-relaxed pr-4">
                       {item.question}
                     </span>
-                    <span className="text-[#AAAAAA] text-lg shrink-0">
+                    <span className="text-[#6B7280] text-lg shrink-0">
                       {open ? "—" : "+"}
                     </span>
                   </button>
@@ -734,7 +728,7 @@ export default function Home() {
                     )}
                   >
                     <div className="overflow-hidden">
-                      <p className="pb-8 text-sm text-[#AAAAAA] leading-relaxed break-words">
+                      <p className="pb-8 text-sm text-[#6B7280] leading-relaxed break-words">
                         {item.answer}
                       </p>
                     </div>
@@ -749,9 +743,9 @@ export default function Home() {
       <SectionRule />
 
       {/* CTA */}
-      <section className="bg-[#1A1A1A] border-y border-[#333333] py-24 px-6">
+      <section className="bg-[#F1F3F4] border-y border-[#E5E7EB] py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif-display text-[40px] text-[#F5F5F5] leading-[1.2] mb-10">
+          <h2 className="font-serif-display text-[40px] text-[#111827] leading-[1.2] mb-10">
             Ready for Institutional-Grade Execution?
           </h2>
           <a

@@ -80,14 +80,14 @@ function TickerItem({
   return (
     <>
       <span className="inline-flex items-center gap-1.5 font-data text-xs tabular-nums whitespace-nowrap px-1">
-        <span className="text-[#AAAAAA]">{item.pair}</span>
-        <span className="text-[#FFFFFF]">{formatPrice(item.price, item.pair)}</span>
+        <span className="text-[#B8956A]">{item.pair}</span>
+        <span className="text-[#F5F5F5]">{formatPrice(item.price, item.pair)}</span>
         {item.change !== null && (
           <span
             className={cn(
               item.direction === "up" && "text-[#4A7C59]",
               item.direction === "down" && "text-[#8B3A3A]",
-              item.direction === "flat" && "text-[#AAAAAA]"
+              item.direction === "flat" && "text-[#9CA3AF]"
             )}
           >
             {item.direction === "up" && "▲ "}
@@ -202,7 +202,7 @@ export function InstitutionalTicker() {
     <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#333333] bg-[#1A1A1A]">
       <div className="h-full flex items-center overflow-hidden">
         {centerMessage && (
-          <span className="w-full text-center font-data text-xs text-[#AAAAAA] px-4">
+          <span className="w-full text-center font-data text-xs text-[#9CA3AF] px-4">
             {centerMessage}
           </span>
         )}

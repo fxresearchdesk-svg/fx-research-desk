@@ -52,7 +52,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
 
   return (
     <>
-      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b border-[#333333] bg-[#1A1A1A]">
+      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b border-[#E5E7EB] bg-[#FFFFFF]">
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link href="/" className="shrink-0">
             <Image
@@ -60,8 +60,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               alt="FX Research Desk"
               width={160}
               height={40}
-              className="h-10 w-auto object-contain brightness-110"
-              style={{ boxShadow: "0 0 15px rgba(184,149,106,0.1)" }}
+              className="h-10 w-auto object-contain"
               onError={() =>
                 setLogoSrc((prev) =>
                   prev === "/logo.png.jpeg"
@@ -87,8 +86,8 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                   className={cn(
                     "relative pb-1 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-200",
                     active
-                      ? "text-[#FFFFFF] border-b-2 border-[#B8956A]"
-                      : "text-[#B8956A] hover:text-[#FFFFFF]"
+                      ? "text-[#111827] border-b-2 border-[#B8956A]"
+                      : "text-[#374151] hover:text-[#B8956A]"
                   )}
                 >
                   {link.label}
@@ -102,13 +101,13 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block bg-[#B8956A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#121212] shadow-[0_0_15px_rgba(184,149,106,0.2)] transition-colors duration-200 hover:bg-[#C9A87C] whitespace-nowrap"
+              className="hidden sm:inline-block bg-[#B8956A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors duration-200 hover:bg-[#C9A87C] whitespace-nowrap"
             >
               CLIENT ACCESS
             </a>
             <button
               type="button"
-              className="lg:hidden text-xs font-medium uppercase tracking-[0.2em] text-[#B8956A] hover:text-[#FFFFFF] px-2 py-1 transition-colors duration-200"
+              className="lg:hidden text-xs font-medium uppercase tracking-[0.2em] text-[#374151] hover:text-[#B8956A] px-2 py-1 transition-colors duration-200"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
             >
@@ -121,10 +120,10 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
       {menuOpen && (
         <>
           <div
-            className="fixed inset-0 z-[70] bg-[#121212]/95 lg:hidden"
+            className="fixed inset-0 z-[70] bg-[#111827]/40 lg:hidden"
             onClick={() => setMenuOpen(false)}
           />
-          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#1A1A1A] border-l border-[#333333] p-8 pt-28 lg:hidden fade-in">
+          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#FFFFFF] border-l border-[#E5E7EB] p-8 pt-28 lg:hidden fade-in shadow-sm">
             <div className="flex flex-col gap-6">
               {navLinks.map((link) => {
                 const active = isNavLinkActive(link.href, pathname, activeSection);
@@ -138,8 +137,8 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                     className={cn(
                       "text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-200",
                       active
-                        ? "text-[#FFFFFF] border-b-2 border-[#B8956A] pb-1 w-fit"
-                        : "text-[#B8956A] hover:text-[#FFFFFF]"
+                        ? "text-[#111827] border-b-2 border-[#B8956A] pb-1 w-fit"
+                        : "text-[#374151] hover:text-[#B8956A]"
                     )}
                   >
                     {link.label}
@@ -150,7 +149,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                 href={telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#B8956A] px-6 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-[#121212] shadow-[0_0_15px_rgba(184,149,106,0.2)] hover:bg-[#C9A87C] transition-colors duration-200 whitespace-nowrap"
+                className="bg-[#B8956A] px-6 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:bg-[#C9A87C] transition-colors duration-200 whitespace-nowrap"
               >
                 CLIENT ACCESS
               </a>
