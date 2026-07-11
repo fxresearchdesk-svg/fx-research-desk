@@ -6,7 +6,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroSignalCard } from "@/components/hero-signal-card";
+import { HeroLivePrices } from "@/components/hero-live-prices";
+import { HomePricingSection } from "@/components/home-pricing-section";
 import {
   fetchSignals,
   fetchStats,
@@ -439,9 +440,9 @@ export default function Home() {
       <InstitutionalTicker />
       <SiteNavbar activeSection={activeSection} />
 
-      {/* Hero — The Signal */}
+      {/* Hero */}
       <section className="relative bg-[#FFFFFF] pt-[100px]">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-16 lg:py-0 min-h-[500px] lg:min-h-[600px]">
+        <div className="mx-auto grid h-[500px] max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2 lg:gap-16">
           <div className="fade-in flex flex-col justify-center">
             <h1 className="font-serif-display mb-6 max-w-xl text-[40px] font-semibold leading-[1.15] text-[#1A1A1A] md:text-[48px]">
               Trade What the Institutions Trade
@@ -451,32 +452,19 @@ export default function Home() {
               Delivered instantly to your Telegram.
             </p>
 
-            <div className="mb-10 flex flex-wrap items-start gap-x-6 gap-y-4">
-              <div>
-                <p className="font-data text-sm text-[#1A1A1A]">
-                  {statsLoading ? "—" : winRateDisplay} Win Rate
-                </p>
-                <p className="mt-1 text-[11px] text-[#9CA3AF]">Verified</p>
-              </div>
-              <span className="hidden text-[#D1D5DB] sm:inline" aria-hidden>
-                |
-              </span>
-              <div>
-                <p className="font-data text-sm text-[#1A1A1A]">
-                  {statsLoading ? "—" : `${stats.pips_month.toLocaleString()}+`} Pips/Month
-                </p>
-                <p className="mt-1 text-[11px] text-[#9CA3AF]">Average</p>
-              </div>
-              <span className="hidden text-[#D1D5DB] sm:inline" aria-hidden>
-                |
-              </span>
-              <div>
-                <p className="font-data text-sm text-[#1A1A1A]">
-                  {statsLoading ? "—" : `${stats.active_traders}+`} Members
-                </p>
-                <p className="mt-1 text-[11px] text-[#9CA3AF]">Global</p>
-              </div>
-            </div>
+            <p className="mb-10 font-data text-sm text-[#1A1A1A]">
+              {statsLoading ? (
+                "—"
+              ) : (
+                <>
+                  {winRateDisplay} Win Rate
+                  <span className="mx-3 text-[#D1D5DB]">|</span>
+                  {stats.pips_month.toLocaleString()}+ Pips/Month
+                  <span className="mx-3 text-[#D1D5DB]">|</span>
+                  {stats.active_traders}+ Members
+                </>
+              )}
+            </p>
 
             <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
               <Link
@@ -495,21 +483,12 @@ export default function Home() {
           </div>
 
           <div className="flex items-center justify-center lg:justify-end">
-            <HeroSignalCard />
+            <HeroLivePrices />
           </div>
         </div>
       </section>
 
-      <SectionRule />
-
-      {/* Trust */}
-      <section className="border-y border-[#E5E5E5] bg-[#FFFFFF] py-6">
-        <p className="text-center text-xs tracking-[0.2em] text-[#4A4A4A]">
-          <span className="mx-1.5 text-sm font-medium text-[#B8956A]">◆</span>
-          Institutional-grade signals. Verified performance since 2015.{" "}
-          <span className="mx-1.5 text-sm font-medium text-[#B8956A]">◆</span>
-        </p>
-      </section>
+      <HomePricingSection />
 
       <SectionRule />
 

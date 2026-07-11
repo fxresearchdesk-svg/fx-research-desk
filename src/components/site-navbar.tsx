@@ -13,7 +13,7 @@ type SiteNavbarProps = {
 
 function isNavLinkActive(href: string, pathname: string, activeSection?: string) {
   if (href === "/charts") return pathname === "/charts";
-  if (href === "/pricing") return pathname === "/pricing";
+  if (href === "/#pricing" || href === "/pricing") return pathname === "/" && activeSection === "pricing";
   const sectionId = href.replace("/#", "").replace("#", "");
   return pathname === "/" && activeSection === sectionId;
 }

@@ -3,7 +3,7 @@ export const telegramUrl = "https://t.me/fxresearchdesk";
 export const navLinks = [
   { href: "/charts", label: "CHARTS" },
   { href: "/#performance", label: "PERFORMANCE" },
-  { href: "/pricing", label: "PRICING" },
+  { href: "/#pricing", label: "PRICING" },
   { href: "/#education", label: "EDUCATION" },
   { href: "/#insights", label: "INSIGHTS" },
 ] as const;
