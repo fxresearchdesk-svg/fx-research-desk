@@ -230,7 +230,7 @@ export function TradingViewHeroChart({ className }: HeroChartProps) {
     <div
       ref={containerRef}
       className={cn(
-        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden border border-[#1F1F1F] bg-[#0C0C0C]",
+        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden bg-[#111111]",
         className
       )}
     />

@@ -167,10 +167,10 @@ export function InstitutionalTicker() {
         : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#1F1F1F] bg-[#030303]">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#2A2A2A] bg-[#0A0A0A]">
       <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center overflow-hidden">
         {centerMessage && (
-          <span className="w-full text-center font-data text-xs text-[#6B6B6B]">
+          <span className="w-full text-center font-data text-xs text-[#8A8A8A]">
             {centerMessage}
           </span>
         )}
@@ -186,8 +186,8 @@ export function InstitutionalTicker() {
                 key={item.pair}
                 className="inline-flex items-center gap-2 font-data text-xs tabular-nums whitespace-nowrap"
               >
-                <span className="text-[#6B6B6B]">{item.pair}</span>
-                <span className="text-[#E8E6E3]">
+                <span className="text-[#8A8A8A]">{item.pair}</span>
+                <span className="text-[#FFFFFF]">
                   {formatPrice(item.price, item.pair)}
                 </span>
                 {item.change !== null && (
@@ -195,7 +195,7 @@ export function InstitutionalTicker() {
                     className={cn(
                       item.direction === "up" && "text-[#4A7C59]",
                       item.direction === "down" && "text-[#8B3A3A]",
-                      item.direction === "flat" && "text-[#6B6B6B]"
+                      item.direction === "flat" && "text-[#8A8A8A]"
                     )}
                   >
                     {item.change > 0 ? "+" : ""}

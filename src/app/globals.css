@@ -14,25 +14,26 @@
 
 :root {
   --fx-bg: #030303;
-  --fx-surface: #0c0c0c;
-  --fx-border: #1f1f1f;
+  --fx-surface: #0a0a0a;
+  --fx-border: #2a2a2a;
   --fx-text: #e8e6e3;
-  --fx-muted: #6b6b6b;
+  --fx-muted: #8a8a8a;
+  --fx-data: #ffffff;
   --fx-gold: #b8956a;
   --fx-gold-hover: #c9a87c;
   --fx-green: #4a7c59;
   --fx-red: #8b3a3a;
   --background: #030303;
   --foreground: #e8e6e3;
-  --card: #0c0c0c;
+  --card: #111111;
   --card-foreground: #e8e6e3;
-  --border: #1f1f1f;
+  --border: #2a2a2a;
   --radius: 0;
 }
 
 @layer base {
   * {
-    @apply border-[#1F1F1F] outline-[#B8956A]/30;
+    @apply border-[#2A2A2A] outline-[#B8956A]/30;
   }
   html {
     @apply scroll-smooth;
@@ -50,29 +51,29 @@
 
 .font-data {
   font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #ffffff;
 }
 
 .label-institutional {
   font-size: 10px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #6b6b6b;
+  color: #8a8a8a;
 }
 
-.headline-institutional {
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-weight: 400;
-  color: #e8e6e3;
-  line-height: 1.2;
+.hero-headline-glow {
+  text-shadow: 0 0 60px rgba(184, 149, 106, 0.08);
 }
 
 .btn-primary {
   background-color: #b8956a;
   color: #030303;
   font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 0.75rem 2rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.25);
   transition: background-color 0.2s ease;
 }
 
@@ -81,8 +82,8 @@
 }
 
 .btn-secondary {
-  border: 1px solid #1f1f1f;
-  color: #6b6b6b;
+  border: 1px solid rgba(184, 149, 106, 0.4);
+  color: #8a8a8a;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -93,6 +94,14 @@
 .btn-secondary:hover {
   border-color: #b8956a;
   color: #b8956a;
+}
+
+.section-rule {
+  height: 1px;
+  background-color: #2a2a2a;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .fade-in {

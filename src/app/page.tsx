@@ -197,7 +197,11 @@ type CarouselTestimonial = {
 };
 
 const arrowButtonClass =
-  "flex items-center justify-center border border-[#1F1F1F] text-[#B8956A] transition-colors duration-200 hover:border-[#B8956A] hover:text-[#C9A87C] focus-visible:outline-none focus-visible:border-[#B8956A]";
+  "flex items-center justify-center border border-[#2A2A2A] text-[#B8956A] transition-colors duration-200 hover:border-[#B8956A] hover:text-[#C9A87C] focus-visible:outline-none focus-visible:border-[#B8956A]";
+
+function SectionRule() {
+  return <div className="section-rule" />;
+}
 
 function TestimonialsCarousel({
   testimonials,
@@ -312,17 +316,17 @@ function TestimonialsCarousel({
       <div className="relative w-full overflow-hidden">
         <article
           key={index}
-          className="fade-in w-full bg-[#0C0C0C] border border-[#1F1F1F] p-8 text-center md:p-12 lg:p-16"
+          className="fade-in w-full bg-[#111111] border border-[#2A2A2A] p-8 text-center md:p-12 lg:p-16"
         >
           <blockquote className="mx-auto max-w-3xl font-serif-display text-xl text-[#E8E6E3] leading-relaxed break-words md:text-2xl lg:text-3xl">
             {current.quote}
           </blockquote>
 
-          <p className="mt-12 text-[11px] uppercase tracking-[0.2em] text-[#6B6B6B]">
+          <p className="mt-12 text-[11px] uppercase tracking-[0.2em] text-[#8A8A8A]">
             {current.name}
           </p>
           {current.location && (
-            <p className="mt-2 text-[11px] text-[#6B6B6B]">{current.location}</p>
+            <p className="mt-2 text-[11px] text-[#8A8A8A]">{current.location}</p>
           )}
         </article>
       </div>
@@ -340,7 +344,7 @@ function TestimonialsCarousel({
                 "h-2 shrink-0 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B8956A]",
                 index === i
                   ? "w-8 bg-[#B8956A]"
-                  : "w-2 bg-[#1F1F1F] hover:bg-[#6B6B6B]"
+                  : "w-2 bg-[#2A2A2A] hover:bg-[#8A8A8A]"
               )}
             />
           ))}
@@ -436,17 +440,23 @@ export default function Home() {
       <SiteNavbar activeSection={activeSection} />
 
       {/* Hero */}
-      <section className="relative pt-[104px]">
+      <section
+        className="relative pt-[104px]"
+        style={{
+          background:
+            "linear-gradient(135deg, #0A0A0A 0%, #030303 50%, #0A0A0A 100%)",
+        }}
+      >
         <div className="max-w-7xl mx-auto w-full px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
-            <div className="fade-in">
+            <div className="fade-in border-l-2 border-[#B8956A]/20 pl-8">
               <p className="label-institutional mb-4">
                 INSTITUTIONAL FOREX INTELLIGENCE
               </p>
-              <h1 className="font-serif-display text-[48px] text-[#E8E6E3] leading-[1.2] mb-6">
+              <h1 className="font-serif-display hero-headline-glow text-[48px] text-[#E8E6E3] leading-[1.2] mb-6">
                 Precision in Every Position
               </h1>
-              <p className="text-base text-[#6B6B6B] max-w-md mb-10 leading-relaxed">
+              <p className="text-base text-[#8A8A8A] max-w-md mb-10 leading-relaxed">
                 Macro-driven signals for investors who demand institutional-grade
                 execution.
               </p>
@@ -465,23 +475,29 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hidden md:block h-[340px]">
+            <div className="hidden md:block h-[340px] bg-[#111111] border border-[#2A2A2A] p-2 rounded-sm">
               <TradingViewHeroChart className="h-full w-full" />
             </div>
           </div>
 
-          <div className="mt-10 md:hidden h-[280px] w-full">
+          <div className="mt-10 md:hidden h-[280px] w-full bg-[#111111] border border-[#2A2A2A] p-2 rounded-sm">
             <TradingViewHeroChart className="h-full w-full" />
           </div>
         </div>
       </section>
 
+      <SectionRule />
+
       {/* Trust */}
-      <section className="border-y border-[#1F1F1F] py-6">
-        <p className="text-center text-[11px] tracking-[0.2em] text-[#6B6B6B]">
-          Institutional-grade signals. Verified performance since 2015.
+      <section className="border-y border-[#2A2A2A] py-6">
+        <p className="text-center text-[11px] tracking-[0.2em] text-[#8A8A8A]">
+          <span className="text-[#B8956A]">◆</span> Institutional-grade signals.
+          Verified performance since 2015.{" "}
+          <span className="text-[#B8956A]">◆</span>
         </p>
       </section>
+
+      <SectionRule />
 
       {/* Methodology */}
       <section id="methodology" className="scroll-mt-[104px] py-24 px-6">
@@ -493,18 +509,18 @@ export default function Home() {
             </h2>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#1F1F1F] bg-[#1F1F1F] md:bg-transparent">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#2A2A2A] bg-[#2A2A2A] md:bg-transparent">
             {processSteps.map((step) => (
               <div
                 key={step.num}
                 className="relative bg-[#030303] p-8 md:px-8 lg:px-10 min-w-0"
               >
-                <span className="font-data text-5xl text-[#1F1F1F] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
+                <span className="font-data text-5xl text-[#2A2A2A] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
                   {step.num}
                 </span>
                 <div className="relative">
                   <h3 className="text-lg text-[#E8E6E3] mb-3">{step.title}</h3>
-                  <p className="text-sm text-[#6B6B6B] leading-relaxed break-words">
+                  <p className="text-sm text-[#8A8A8A] leading-relaxed break-words">
                     {step.description}
                   </p>
                 </div>
@@ -514,10 +530,12 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionRule />
+
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#0C0C0C] border-y border-[#1F1F1F]"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-y border-[#2A2A2A]"
       >
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-16">
@@ -526,10 +544,10 @@ export default function Home() {
               Verified. Audited. Consistent.
             </h2>
             {statsLoading ? (
-              <div className="h-32 bg-[#1F1F1F]/30 animate-pulse max-w-xs mx-auto" />
+              <div className="h-32 bg-[#2A2A2A]/30 animate-pulse max-w-xs mx-auto" />
             ) : (
               <>
-                <div className="font-data text-[56px] text-[#B8956A] tabular-nums mb-4">
+                <div className="font-data text-[56px] text-[#FFFFFF] tabular-nums mb-4">
                   {winRateDisplay}
                 </div>
                 <p className="label-institutional">Win Rate | 2015–2026</p>
@@ -537,21 +555,21 @@ export default function Home() {
             )}
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#1F1F1F] py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#2A2A2A] py-10">
             <div>
-              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
                 +{stats.monthly_return}%
               </div>
               <div className="label-institutional">Monthly Return</div>
             </div>
             <div>
-              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
                 {stats.pips_month.toLocaleString()}
               </div>
               <div className="label-institutional">Pips/Month Average</div>
             </div>
             <div>
-              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
+              <div className="font-data text-3xl text-[#FFFFFF] tabular-nums mb-2">
                 {stats.active_traders}+
               </div>
               <div className="label-institutional">Active Accounts</div>
@@ -563,12 +581,12 @@ export default function Home() {
             {signalsLoading ? (
               <div className="space-y-2">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-12 bg-[#1F1F1F]/30 animate-pulse" />
+                  <div key={i} className="h-12 bg-[#2A2A2A]/30 animate-pulse" />
                 ))}
               </div>
             ) : dbConfigured && liveSignals.length > 0 ? (
               <>
-                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-institutional border-b border-[#1F1F1F]">
+                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-institutional border-b border-[#2A2A2A]">
                   <span>PAIR</span>
                   <span>TYPE</span>
                   <span>ENTRY</span>
@@ -580,17 +598,17 @@ export default function Home() {
                 {liveSignals.map((signal) => (
                   <div
                     key={signal.id}
-                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#1F1F1F] font-data text-[13px] tabular-nums hover:bg-[#030303] transition-colors duration-200"
+                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#2A2A2A] font-data text-[13px] tabular-nums hover:bg-[#030303] transition-colors duration-200"
                   >
                     <span className="text-[#E8E6E3]">{signal.pair}</span>
-                    <span className="text-[#6B6B6B]">{signal.direction}</span>
-                    <span className="text-[#6B6B6B] hidden md:block">
+                    <span className="text-[#8A8A8A]">{signal.direction}</span>
+                    <span className="text-[#8A8A8A] hidden md:block">
                       {formatPrice(signal.entry_price)}
                     </span>
-                    <span className="text-[#6B6B6B] hidden md:block">
+                    <span className="text-[#8A8A8A] hidden md:block">
                       {formatPrice(signal.stop_loss)}
                     </span>
-                    <span className="text-[#6B6B6B] hidden md:block">
+                    <span className="text-[#8A8A8A] hidden md:block">
                       {formatPrice(signal.take_profit)}
                     </span>
                     <span
@@ -598,20 +616,20 @@ export default function Home() {
                         signal.result === "WIN" && "text-[#4A7C59]",
                         signal.result === "LOSS" && "text-[#8B3A3A]",
                         (signal.result === "PENDING" || !signal.result) &&
-                          "text-[#6B6B6B]"
+                          "text-[#8A8A8A]"
                       )}
                     >
                       {getResultLabel(signal)}
                     </span>
-                    <span className="text-[#6B6B6B] hidden md:block">
+                    <span className="text-[#8A8A8A] hidden md:block">
                       {formatSignalDate(signal.created_at)}
                     </span>
                   </div>
                 ))}
               </>
             ) : (
-              <div className="text-center py-16 border border-[#1F1F1F] bg-[#0C0C0C]">
-                <p className="text-[#6B6B6B] mb-8">
+              <div className="text-center py-16 border border-[#2A2A2A] bg-[#111111]">
+                <p className="text-[#8A8A8A] mb-8">
                   Live signals available through secure client channels.
                 </p>
                 <a
@@ -628,6 +646,8 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionRule />
+
       {/* Testimonials / Insights */}
       <section id="insights" className="scroll-mt-[104px] bg-[#030303] py-24 px-6">
         <div className="max-w-6xl mx-auto md:px-[56px]">
@@ -636,6 +656,8 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionRule />
+
       {/* Education */}
       <section id="education" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
@@ -643,7 +665,7 @@ export default function Home() {
             <p className="label-institutional mb-4">KNOWLEDGE CENTER</p>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1F1F1F]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2A2A2A]">
             {educationArticles.map((article, i) => (
               <div
                 key={`${article.title}-${i}`}
@@ -652,7 +674,7 @@ export default function Home() {
                 <h3 className="text-lg text-[#E8E6E3] mb-3 leading-snug">
                   {article.title}
                 </h3>
-                <p className="text-sm text-[#6B6B6B] mb-6 leading-relaxed break-words">
+                <p className="text-sm text-[#8A8A8A] mb-6 leading-relaxed break-words">
                   {article.excerpt}
                 </p>
                 {article.href.startsWith("/education") ? (
@@ -676,10 +698,12 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionRule />
+
       {/* FAQ */}
       <section
         id="faq"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#0C0C0C] border-t border-[#1F1F1F]"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0A0A0A] border-t border-[#2A2A2A]"
       >
         <div className="max-w-3xl mx-auto">
           <header className="mb-12">
@@ -690,7 +714,7 @@ export default function Home() {
             {faqItems.map((item, i) => {
               const open = openFaq === i;
               return (
-                <div key={item.question} className="border-b border-[#1F1F1F]">
+                <div key={item.question} className="border-b border-[#2A2A2A]">
                   <button
                     type="button"
                     onClick={() => setOpenFaq(open ? null : i)}
@@ -699,7 +723,7 @@ export default function Home() {
                     <span className="text-[#E8E6E3] leading-relaxed pr-4">
                       {item.question}
                     </span>
-                    <span className="text-[#6B6B6B] text-lg shrink-0">
+                    <span className="text-[#8A8A8A] text-lg shrink-0">
                       {open ? "—" : "+"}
                     </span>
                   </button>
@@ -710,7 +734,7 @@ export default function Home() {
                     )}
                   >
                     <div className="overflow-hidden">
-                      <p className="pb-8 text-sm text-[#6B6B6B] leading-relaxed break-words">
+                      <p className="pb-8 text-sm text-[#8A8A8A] leading-relaxed break-words">
                         {item.answer}
                       </p>
                     </div>
@@ -722,8 +746,10 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionRule />
+
       {/* CTA */}
-      <section className="bg-[#0C0C0C] border-y border-[#1F1F1F] py-24 px-6">
+      <section className="bg-[#0A0A0A] border-y border-[#2A2A2A] py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-serif-display text-[40px] text-[#E8E6E3] leading-[1.2] mb-10">
             Ready for Institutional-Grade Execution?

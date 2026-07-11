@@ -8,7 +8,7 @@ export function SiteFooter() {
   const [logoSrc, setLogoSrc] = useState("/logo.png.jpeg");
 
   return (
-    <footer className="bg-[#030303] border-t border-[#1F1F1F] py-16 px-6">
+    <footer className="bg-[#030303] border-t border-[#2A2A2A] py-16 px-6">
       <div className="max-w-7xl mx-auto text-center">
         <div className="flex justify-center mb-8">
           <Image
@@ -40,14 +40,14 @@ export function SiteFooter() {
             <a
               key={link.label}
               href={link.href}
-              className="text-[10px] uppercase tracking-[0.3em] text-[#6B6B6B] hover:text-[#B8956A] transition-colors duration-200 whitespace-nowrap"
+              className="text-[10px] uppercase tracking-[0.3em] text-[#8A8A8A] hover:text-[#B8956A] transition-colors duration-200 whitespace-nowrap"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <p className="text-[10px] text-[#6B6B6B] tracking-[0.2em]">
+        <p className="text-[10px] text-[#8A8A8A] tracking-[0.2em]">
           © 2026 FX Research Desk. All Rights Reserved.
         </p>
       </div>
