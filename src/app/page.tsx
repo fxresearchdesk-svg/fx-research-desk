@@ -443,7 +443,7 @@ export default function Home() {
       <section className="relative pt-[104px] bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto w-full px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
-            <div className="fade-in card-surface p-10 max-w-xl">
+            <div className="fade-in bg-[#FFFFFF] border border-[#E5E7EB] shadow-sm border-l-[3px] border-l-[#B8956A] p-10 max-w-xl">
               <p className="text-[10px] tracking-[0.3em] uppercase text-[#B8956A] mb-4">
                 INSTITUTIONAL FOREX INTELLIGENCE
               </p>
@@ -459,23 +459,26 @@ export default function Home() {
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary whitespace-nowrap"
+                  className="btn-primary bg-[#B8956A] text-white font-bold whitespace-nowrap"
                 >
                   REQUEST ACCESS
                 </a>
-                <a href="#performance" className="btn-secondary whitespace-nowrap">
+                <a
+                  href="#performance"
+                  className="btn-secondary border-[#B8956A] text-[#B8956A] whitespace-nowrap"
+                >
                   VIEW PERFORMANCE
                 </a>
               </div>
             </div>
 
-            <div className="hidden md:block h-[340px] card-surface p-2">
-              <TradingViewHeroChart className="h-full w-full" />
+            <div className="group hidden md:block h-[340px] bg-[#FFFFFF] border border-[#E5E7EB] shadow-sm p-2">
+              <TradingViewHeroChart className="h-full w-full opacity-60 transition-opacity duration-[400ms] ease-in-out group-hover:opacity-100" />
             </div>
           </div>
 
-          <div className="mt-10 md:hidden h-[280px] w-full card-surface p-2">
-            <TradingViewHeroChart className="h-full w-full" />
+          <div className="group mt-10 md:hidden h-[280px] w-full bg-[#FFFFFF] border border-[#E5E7EB] shadow-sm p-2">
+            <TradingViewHeroChart className="h-full w-full opacity-60 transition-opacity duration-[400ms] ease-in-out group-hover:opacity-100" />
           </div>
         </div>
       </section>
@@ -484,10 +487,10 @@ export default function Home() {
 
       {/* Trust */}
       <section className="bg-[#F1F3F4] border-y border-[#E5E7EB] py-6">
-        <p className="text-center text-[11px] tracking-[0.2em] text-[#6B7280]">
-          <span className="text-[#B8956A]">◆</span> Institutional-grade signals.
-          Verified performance since 2015.{" "}
-          <span className="text-[#B8956A]">◆</span>
+        <p className="text-center text-xs tracking-[0.2em] text-[#6B7280]">
+          <span className="text-[#B8956A] text-sm font-medium mx-1.5">◆</span>
+          Institutional-grade signals. Verified performance since 2015.{" "}
+          <span className="text-[#B8956A] text-sm font-medium mx-1.5">◆</span>
         </p>
       </section>
 

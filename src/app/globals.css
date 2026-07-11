@@ -78,8 +78,8 @@
 }
 
 .btn-primary {
-  background-color: #b8956a;
-  color: #ffffff;
+  background-color: #b8956a !important;
+  color: #ffffff !important;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -90,12 +90,14 @@
 }
 
 .btn-primary:hover {
-  background-color: #c9a87c;
+  background-color: #c9a87c !important;
+  color: #ffffff !important;
 }
 
 .btn-secondary {
   border: 1px solid #b8956a;
   color: #b8956a;
+  background-color: transparent;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -107,6 +109,7 @@
 .btn-secondary:hover {
   background-color: #b8956a;
   color: #ffffff;
+  border-color: #b8956a;
 }
 
 .section-rule {
@@ -156,7 +159,11 @@
 
 .tv-widget-host .tradingview-widget-copyright,
 .tv-widget-host .tradingview-widget-container__copyright,
-.tv-widget-host > a[href*="tradingview.com"] {
+.tv-widget-host > a[href*="tradingview.com"],
+.tv-widget-host [class*="tv-logo"],
+.tv-widget-host [class*="tradingview-logo"],
+.tv-widget-host [class*="copyright"],
+.tv-widget-host iframe[src*="tradingview"] + a {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
