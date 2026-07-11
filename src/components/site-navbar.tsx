@@ -52,7 +52,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
 
   return (
     <>
-      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b border-[#2A2A2A] bg-[#0A0A0A]">
+      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b-2 border-[#2A2A2A] bg-[#0A0A0A]">
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link href="/" className="shrink-0">
             <Image
@@ -61,6 +61,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               width={160}
               height={40}
               className="h-10 w-auto object-contain brightness-110"
+              style={{ boxShadow: "0 0 15px rgba(184,149,106,0.1)" }}
               onError={() =>
                 setLogoSrc((prev) =>
                   prev === "/logo.png.jpeg"
@@ -84,10 +85,10 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href, pathname)}
                   className={cn(
-                    "relative pb-1 text-[11px] uppercase tracking-[0.25em] transition-colors duration-200",
+                    "relative pb-1 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-200",
                     active
-                      ? "text-[#B8956A] border-b border-[#B8956A]"
-                      : "text-[#8A8A8A] hover:text-[#B8956A]"
+                      ? "text-[#FFFFFF] border-b-2 border-[#B8956A]"
+                      : "text-[#B8956A] hover:text-[#FFFFFF]"
                   )}
                 >
                   {link.label}
@@ -101,13 +102,13 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block border border-[#2A2A2A] px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-[#B8956A] transition-colors duration-200 hover:bg-[#B8956A] hover:text-[#030303] whitespace-nowrap"
+              className="hidden sm:inline-block bg-[#B8956A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#030303] shadow-[0_0_15px_rgba(184,149,106,0.2)] transition-colors duration-200 hover:bg-[#C9A87C] whitespace-nowrap"
             >
               CLIENT ACCESS
             </a>
             <button
               type="button"
-              className="lg:hidden text-[11px] uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#B8956A] px-2 py-1 transition-colors duration-200"
+              className="lg:hidden text-xs font-medium uppercase tracking-[0.2em] text-[#B8956A] hover:text-[#FFFFFF] px-2 py-1 transition-colors duration-200"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
             >
@@ -125,23 +126,31 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
           />
           <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#0A0A0A] border-l border-[#2A2A2A] p-8 pt-28 lg:hidden fade-in">
             <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) =>
-                    handleNavClick(e, link.href, pathname, () => setMenuOpen(false))
-                  }
-                  className="text-[11px] uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#B8956A] transition-colors duration-200"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active = isNavLinkActive(link.href, pathname, activeSection);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) =>
+                      handleNavClick(e, link.href, pathname, () => setMenuOpen(false))
+                    }
+                    className={cn(
+                      "text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-200",
+                      active
+                        ? "text-[#FFFFFF] border-b-2 border-[#B8956A] pb-1 w-fit"
+                        : "text-[#B8956A] hover:text-[#FFFFFF]"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <a
                 href={telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-[#1F1F1F] px-5 py-2.5 text-center text-[11px] uppercase tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] transition-colors duration-200 whitespace-nowrap"
+                className="bg-[#B8956A] px-6 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-[#030303] shadow-[0_0_15px_rgba(184,149,106,0.2)] hover:bg-[#C9A87C] transition-colors duration-200 whitespace-nowrap"
               >
                 CLIENT ACCESS
               </a>

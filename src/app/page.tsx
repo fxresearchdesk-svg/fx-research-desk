@@ -449,7 +449,7 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto w-full px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
-            <div className="fade-in border-l-2 border-[#B8956A]/20 pl-8">
+            <div className="fade-in bg-[#0C0C0C]/60 border-l-2 border-[#B8956A]/30 p-10 max-w-xl">
               <p className="label-institutional mb-4">
                 INSTITUTIONAL FOREX INTELLIGENCE
               </p>

@@ -70,10 +70,43 @@ async function fetchMetalRate(pair: string): Promise<number | null> {
   }
 }
 
+function TickerItem({
+  item,
+  showSeparator,
+}: {
+  item: TickerPair;
+  showSeparator?: boolean;
+}) {
+  return (
+    <>
+      <span className="inline-flex items-center gap-1.5 font-data text-xs tabular-nums whitespace-nowrap px-1">
+        <span className="text-[#8A8A8A]">{item.pair}</span>
+        <span className="text-[#FFFFFF]">{formatPrice(item.price, item.pair)}</span>
+        {item.change !== null && (
+          <span
+            className={cn(
+              item.direction === "up" && "text-[#4A7C59]",
+              item.direction === "down" && "text-[#8B3A3A]",
+              item.direction === "flat" && "text-[#8A8A8A]"
+            )}
+          >
+            {item.direction === "up" && "▲ "}
+            {item.direction === "down" && "▼ "}
+            {item.change > 0 ? "+" : ""}
+            {item.change.toFixed(2)}%
+          </span>
+        )}
+      </span>
+      {showSeparator && (
+        <span className="text-[#2A2A2A] whitespace-nowrap px-1"> • </span>
+      )}
+    </>
+  );
+}
+
 export function InstitutionalTicker() {
   const [pairs, setPairs] = useState<TickerPair[]>([]);
   const [status, setStatus] = useState<TickerStatus>("loading");
-  const [fade, setFade] = useState(true);
   const previousPricesRef = useRef<Record<string, number>>({});
   const statusRef = useRef<TickerStatus>("loading");
 
@@ -120,23 +153,19 @@ export function InstitutionalTicker() {
           previousPricesRef.current[pair] = raw;
         }
 
-        setFade(false);
-        setTimeout(() => {
-          if (validPairs.length >= MIN_PAIRS_TO_DISPLAY) {
-            setPairs(validPairs);
-            setStatus("ready");
-            statusRef.current = "ready";
-          } else if (validPairs.length > 0) {
-            setPairs(validPairs);
-            setStatus("insufficient");
-            statusRef.current = "insufficient";
-          } else {
-            setPairs([]);
-            setStatus("insufficient");
-            statusRef.current = "insufficient";
-          }
-          setFade(true);
-        }, 150);
+        if (validPairs.length >= MIN_PAIRS_TO_DISPLAY) {
+          setPairs(validPairs);
+          setStatus("ready");
+          statusRef.current = "ready";
+        } else if (validPairs.length > 0) {
+          setPairs(validPairs);
+          setStatus("insufficient");
+          statusRef.current = "insufficient";
+        } else {
+          setPairs([]);
+          setStatus("insufficient");
+          statusRef.current = "insufficient";
+        }
         return;
       } catch {
         if (attempt < MAX_RETRIES) {
@@ -159,6 +188,9 @@ export function InstitutionalTicker() {
   const displayPairs =
     status === "ready" && pairs.length >= MIN_PAIRS_TO_DISPLAY ? pairs : [];
 
+  const marqueeItems =
+    displayPairs.length > 0 ? [...displayPairs, ...displayPairs] : [];
+
   const centerMessage =
     status === "unavailable"
       ? "Market data temporarily unavailable"
@@ -168,41 +200,20 @@ export function InstitutionalTicker() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#2A2A2A] bg-[#0A0A0A]">
-      <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center overflow-hidden">
+      <div className="h-full flex items-center overflow-hidden">
         {centerMessage && (
-          <span className="w-full text-center font-data text-xs text-[#8A8A8A]">
+          <span className="w-full text-center font-data text-xs text-[#8A8A8A] px-4">
             {centerMessage}
           </span>
         )}
-        {displayPairs.length > 0 && (
-          <div
-            className={cn(
-              "flex flex-wrap items-center gap-x-6 gap-y-1 ticker-fade",
-              fade ? "opacity-100" : "opacity-40"
-            )}
-          >
-            {displayPairs.map((item) => (
-              <span
-                key={item.pair}
-                className="inline-flex items-center gap-2 font-data text-xs tabular-nums whitespace-nowrap"
-              >
-                <span className="text-[#8A8A8A]">{item.pair}</span>
-                <span className="text-[#FFFFFF]">
-                  {formatPrice(item.price, item.pair)}
-                </span>
-                {item.change !== null && (
-                  <span
-                    className={cn(
-                      item.direction === "up" && "text-[#4A7C59]",
-                      item.direction === "down" && "text-[#8B3A3A]",
-                      item.direction === "flat" && "text-[#8A8A8A]"
-                    )}
-                  >
-                    {item.change > 0 ? "+" : ""}
-                    {item.change.toFixed(2)}%
-                  </span>
-                )}
-              </span>
+        {marqueeItems.length > 0 && (
+          <div className="ticker-marquee">
+            {marqueeItems.map((item, i) => (
+              <TickerItem
+                key={`${item.pair}-${i}`}
+                item={item}
+                showSeparator={i < marqueeItems.length - 1}
+              />
             ))}
           </div>
         )}

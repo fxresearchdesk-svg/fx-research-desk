@@ -121,6 +121,26 @@
   transition: opacity 0.3s ease;
 }
 
+@keyframes ticker-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-marquee {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: ticker-marquee 30s linear infinite;
+}
+
+.ticker-marquee:hover {
+  animation-play-state: paused;
+}
+
 .tv-widget-host .tradingview-widget-copyright,
 .tv-widget-host .tradingview-widget-container__copyright,
 .tv-widget-host > a[href*="tradingview.com"] {
