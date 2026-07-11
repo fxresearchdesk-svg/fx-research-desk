@@ -22,6 +22,24 @@ export function getSupabaseClient(): SupabaseClient | null {
   return browserClient;
 }
 
+export async function fetchRecentSignals(limit = 20): Promise<Signal[]> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("signals")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("fetchRecentSignals error:", error.message);
+    return [];
+  }
+
+  return (data ?? []) as Signal[];
+}
+
 export async function fetchSignals(limit = 5): Promise<Signal[]> {
   const supabase = getSupabaseClient();
   if (!supabase) return [];

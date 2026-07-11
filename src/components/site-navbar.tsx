@@ -15,8 +15,11 @@ function isNavLinkActive(href: string, pathname: string, activeSection?: string)
   if (href === "/charts") return pathname === "/charts";
   if (href === "/pricing") return pathname === "/pricing";
   if (href === "/news") return pathname === "/news";
-  const sectionId = href.replace("/#", "").replace("#", "");
-  return pathname === "/" && activeSection === sectionId;
+  if (href === "/performance") return pathname === "/performance";
+  if (href === "/insights") return pathname === "/insights";
+  if (href === "/education") {
+    return pathname === "/education" || pathname.startsWith("/education/");
+  }
 }
 
 function handleNavClick(

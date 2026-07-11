@@ -14,7 +14,6 @@ import {
   fetchTestimonials,
   isSupabaseConfigured,
 } from "@/lib/supabase";
-import { navLinks } from "@/lib/site-config";
 import type { Stats, Testimonial } from "@/lib/types";
 
 const FALLBACK_STATS = {
@@ -53,8 +52,6 @@ const FEATURED_TESTIMONIAL = {
 };
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("");
-
   const [statsLoading, setStatsLoading] = useState(true);
   const [liveStats, setLiveStats] = useState<Stats | null>(null);
   const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
@@ -104,32 +101,10 @@ export default function Home() {
       .catch(() => setNewsLoading(false));
   }, []);
 
-  useEffect(() => {
-    const ids = navLinks
-      .map((l) => l.href.replace("/#", "").replace("#", ""))
-      .filter((id) => !["charts", "news", "education"].includes(id));
-    const observers: IntersectionObserver[] = [];
-
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-white text-[#4A4A4A]">
       <InstitutionalTicker />
-      <SiteNavbar activeSection={activeSection} />
+      <SiteNavbar />
 
       <SwissBankHero
         winRate={winRateDisplay}
