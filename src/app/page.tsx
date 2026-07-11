@@ -441,7 +441,7 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative bg-[#FFFFFF] pt-[100px]">
-        <div className="mx-auto grid h-[500px] max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto grid h-[500px] max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-[55%_45%] lg:gap-16">
           <div className="fade-in flex flex-col justify-center">
             <h1 className="font-serif-display mb-6 max-w-xl text-[40px] font-semibold leading-[1.15] text-[#1A1A1A] md:text-[48px]">
               Trade What the Institutions Trade
@@ -481,7 +481,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center lg:justify-end">
+          <div className="flex h-full items-center justify-center">
             <HeroCandlesticks />
           </div>
         </div>
