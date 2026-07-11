@@ -54,48 +54,53 @@ export default function PaymentPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div className="bg-[#0A0A0A] border border-[#1A1A1A] p-8">
-          <h2 className="text-[10px] tracking-[0.3em] text-[#D4AF37] mb-4">
-            SELECTED PLAN
-          </h2>
-          <h1 className="text-3xl font-bold text-white mb-2">{plan.name}</h1>
-          <p className="text-[#888] text-sm mb-6">{plan.headline}</p>
+        <div className="bg-[#0C0C0C] border border-[#1F1F1F] p-8">
+          <h2 className="label-institutional mb-4">SELECTED PLAN</h2>
+          <h1 className="font-serif-display text-[32px] text-[#E8E6E3] mb-2">
+            {plan.name}
+          </h1>
+          <p className="text-[13px] text-[#6B6B6B] mb-6">{plan.headline}</p>
 
           <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-5xl font-bold text-white">${plan.price}</span>
-            <span className="text-[#666]">/{plan.period}</span>
+            <span className="font-data text-[40px] text-[#E8E6E3]">
+              ${plan.price}
+            </span>
+            <span className="text-[#6B6B6B]">/{plan.period}</span>
           </div>
-          <p className="text-[#00C853] text-xs tracking-widest mb-8">{plan.billing}</p>
+          <p className="text-[11px] text-[#6B6B6B] tracking-[0.15em] mb-8">
+            {plan.billing}
+          </p>
 
-          <div className="space-y-3">
+          <ul className="space-y-3">
             {plan.features.map((f, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="text-[#00C853] mt-0.5">✓</span>
-                <span className="text-[#A0A0A0] text-sm">{f}</span>
-              </div>
+              <li
+                key={i}
+                className="text-[13px] text-[#6B6B6B] leading-relaxed pl-3 border-l border-[#1F1F1F]"
+              >
+                {f}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
-        <div className="bg-[#0A0A0A] border border-[#1A1A1A] p-8">
-          <h2 className="text-[10px] tracking-[0.3em] text-[#D4AF37] mb-4">
-            SECURE CHECKOUT
-          </h2>
-          <p className="text-white text-lg mb-6">Pay ${plan.price} USD</p>
+        <div className="bg-[#0C0C0C] border border-[#1F1F1F] p-8">
+          <h2 className="label-institutional mb-4">SECURE CHECKOUT</h2>
+          <p className="font-data text-lg text-[#E8E6E3] mb-6">
+            Pay ${plan.price} USD
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="text-[10px] tracking-[0.2em] text-[#666] uppercase mb-2 block">
-                Card Details
-              </label>
-              <div className="bg-[#111] border border-[#2A2A2A] p-4 rounded-sm">
+              <label className="label-institutional mb-2 block">Card Details</label>
+              <div className="bg-[#030303] border border-[#1F1F1F] p-4">
                 <CardElement
                   options={{
                     style: {
                       base: {
-                        color: "#fff",
-                        fontSize: "16px",
-                        "::placeholder": { color: "#555" },
+                        color: "#E8E6E3",
+                        fontFamily: "JetBrains Mono, monospace",
+                        fontSize: "14px",
+                        "::placeholder": { color: "#6B6B6B" },
                       },
                     },
                   }}
@@ -103,29 +108,29 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            {error && <p className="text-[#FF3D00] text-sm">{error}</p>}
+            {error && <p className="text-[#8B3A3A] text-sm">{error}</p>}
 
             <button
               type="submit"
               disabled={!stripe || loading}
-              className="w-full bg-[#D4AF37] text-black font-bold py-4 text-[11px] tracking-[0.2em] hover:bg-[#E5C158] transition disabled:opacity-50"
+              className="w-full border border-[#1F1F1F] py-4 text-[11px] tracking-[0.2em] text-[#B8956A] transition-colors duration-200 hover:bg-[#B8956A] hover:text-[#030303] disabled:opacity-50"
             >
-              {loading ? "PROCESSING..." : `PAY $${plan.price} — SECURE`}
+              {loading ? "PROCESSING..." : `PAY $${plan.price}`}
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-[#1A1A1A]">
-            <p className="text-[10px] tracking-[0.2em] text-[#666] uppercase mb-4 text-center">
+          <div className="mt-8 pt-6 border-t border-[#1F1F1F]">
+            <p className="label-institutional mb-4 text-center">
               Other Payment Methods
             </p>
-            <p className="text-[#888] text-sm text-center mb-4">
+            <p className="text-[13px] text-[#6B6B6B] text-center mb-4">
               Bitcoin, Ethereum, USDT, Skrill, Neteller, or Wise
             </p>
-            <p className="text-[#666] text-xs text-center mb-4">
+            <p className="text-[13px] text-[#6B6B6B] text-center mb-4">
               Email us at{" "}
               <a
                 href="mailto:fxresearchdesk@gmail.com"
-                className="text-[#D4AF37] hover:underline"
+                className="text-[#B8956A] hover:text-[#C9A87C] transition-colors"
               >
                 fxresearchdesk@gmail.com
               </a>{" "}
@@ -135,7 +140,7 @@ export default function PaymentPage() {
               href="https://t.me/fxresearchdesk"
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-center border border-[#D4AF37]/40 text-[#D4AF37] py-3 text-[11px] tracking-[0.2em] hover:bg-[#D4AF37]/10 transition"
+              className="block text-center border border-[#1F1F1F] py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] transition-colors duration-200"
             >
               CONTACT ON TELEGRAM
             </a>

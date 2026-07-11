@@ -16,20 +16,18 @@ export function ChartsPageClient() {
   const [symbol, setSymbol] = useState<string>(chartPairs[0].symbol);
 
   return (
-    <main className="min-h-screen bg-[#050505] text-[#F5F5F5] overflow-x-hidden">
+    <main className="min-h-screen bg-[#030303] text-[#E8E6E3] overflow-x-hidden">
       <InstitutionalTicker />
       <SiteNavbar />
 
-      <div className="pt-[128px] pb-24">
+      <div className="pt-[104px] pb-24">
         <div className="max-w-7xl mx-auto px-6">
-          <header className="mb-12 text-center md:text-left">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#D4AF37] mb-4">
-              LIVE MARKET CHARTS
-            </p>
-            <h1 className="font-serif-display text-4xl text-white mb-4">
+          <header className="mb-12 text-center md:text-left border-b border-[#1F1F1F] pb-10">
+            <p className="label-institutional mb-4">LIVE MARKET CHARTS</p>
+            <h1 className="font-serif-display text-[40px] text-[#E8E6E3] leading-[1.2] mb-4">
               Real-Time Technical Analysis
             </h1>
-            <p className="text-[#A0A0A0] max-w-2xl mx-auto md:mx-0 leading-relaxed">
+            <p className="text-base text-[#6B6B6B] max-w-2xl mx-auto md:mx-0 leading-relaxed">
               Institutional-grade charting with real-time price action across all major
               currency pairs and precious metals.
             </p>
@@ -44,10 +42,10 @@ export function ChartsPageClient() {
                   type="button"
                   onClick={() => setSymbol(pair.symbol)}
                   className={cn(
-                    "border px-4 py-2 text-xs tracking-widest uppercase transition-colors duration-300",
+                    "border px-4 py-2 text-[11px] tracking-[0.2em] uppercase transition-colors duration-200",
                     active
-                      ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]"
-                      : "border-[#1A1A1A] text-[#A0A0A0] hover:border-[#D4AF37] hover:text-[#D4AF37]"
+                      ? "border-[#B8956A] text-[#B8956A]"
+                      : "border-[#1F1F1F] text-[#6B6B6B] hover:border-[#B8956A] hover:text-[#B8956A]"
                   )}
                 >
                   {pair.label}
@@ -56,27 +54,23 @@ export function ChartsPageClient() {
             })}
           </div>
 
-          <div className="mb-12 h-[400px] md:h-[600px] w-full overflow-hidden rounded-sm border border-[#1A1A1A] bg-[#0A0A0A]">
+          <div className="mb-12 h-[400px] md:h-[600px] w-full overflow-hidden border border-[#1F1F1F] bg-[#0C0C0C]">
             <TradingViewAdvancedChart symbol={symbol} />
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <section className="overflow-hidden rounded-sm border border-[#1A1A1A] bg-[#0A0A0A]">
-              <div className="border-b border-[#1A1A1A] px-6 py-4">
-                <h2 className="text-xs uppercase tracking-[0.3em] text-[#D4AF37]">
-                  Market Overview
-                </h2>
+            <section className="overflow-hidden border border-[#1F1F1F] bg-[#0C0C0C]">
+              <div className="border-b border-[#1F1F1F] px-6 py-4">
+                <h2 className="label-institutional">Market Overview</h2>
               </div>
               <div className="h-[420px]">
                 <TradingViewMarketOverview />
               </div>
             </section>
 
-            <section className="overflow-hidden rounded-sm border border-[#1A1A1A] bg-[#0A0A0A]">
-              <div className="border-b border-[#1A1A1A] px-6 py-4">
-                <h2 className="text-xs uppercase tracking-[0.3em] text-[#D4AF37]">
-                  Technical Analysis
-                </h2>
+            <section className="overflow-hidden border border-[#1F1F1F] bg-[#0C0C0C]">
+              <div className="border-b border-[#1F1F1F] px-6 py-4">
+                <h2 className="label-institutional">Technical Analysis</h2>
               </div>
               <div className="h-[420px]">
                 <TradingViewTechnicalAnalysis symbol={symbol} />

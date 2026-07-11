@@ -2,12 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroPulse } from "@/components/hero-pulse";
+import { TradingViewHeroChart } from "@/components/tradingview-widgets";
 import {
   fetchSignals,
   fetchStats,
@@ -44,14 +43,6 @@ const processSteps = [
     description:
       "Precise entry, stop-loss, and take-profit levels delivered via secure channels.",
   },
-];
-
-const trustIndicators = [
-  { value: "AUM: $2.4M+", label: "Client capital under signal guidance" },
-  { value: "87% Win Rate", label: "Verified since 2015" },
-  { value: "30+ Countries", label: "Global client base" },
-  { value: "0% Hidden Fees", label: "Transparent pricing structure" },
-  { value: "24/7 Desk", label: "London • New York • Singapore" },
 ];
 
 const educationArticles = [
@@ -177,11 +168,6 @@ const FALLBACK_TESTIMONIALS = [
   },
 ];
 
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
-
 function formatPrice(value: number) {
   return Number(value).toFixed(4);
 }
@@ -204,12 +190,6 @@ function getResultLabel(signal: Signal) {
   return "PENDING";
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="label-caps text-[#D4AF37] mb-4">{children}</p>
-  );
-}
-
 type CarouselTestimonial = {
   quote: string;
   name: string;
@@ -217,7 +197,7 @@ type CarouselTestimonial = {
 };
 
 const arrowButtonClass =
-  "flex items-center justify-center rounded-full border border-[#D4AF37]/40 text-[#D4AF37] transition-all duration-300 hover:border-[#D4AF37]/80 hover:bg-[#D4AF37]/10 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60";
+  "flex items-center justify-center border border-[#1F1F1F] text-[#B8956A] transition-colors duration-200 hover:border-[#B8956A] hover:text-[#C9A87C] focus-visible:outline-none focus-visible:border-[#B8956A]";
 
 function TestimonialsCarousel({
   testimonials,
@@ -280,7 +260,7 @@ function TestimonialsCarousel({
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505] rounded-sm pb-20 md:pb-0"
+      className="relative outline-none focus-visible:ring-1 focus-visible:ring-[#B8956A] pb-20 md:pb-0"
     >
       {count > 1 && (
         <>
@@ -290,10 +270,10 @@ function TestimonialsCarousel({
             aria-label="Previous testimonial"
             className={cn(
               arrowButtonClass,
-              "absolute left-0 top-1/2 z-20 hidden h-14 w-14 -translate-y-1/2 md:left-[-60px] md:flex"
+              "absolute left-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 md:left-[-56px] md:flex"
             )}
           >
-            <ChevronLeft className="h-6 w-6" strokeWidth={1.5} />
+            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
           </button>
 
           <button
@@ -302,10 +282,10 @@ function TestimonialsCarousel({
             aria-label="Next testimonial"
             className={cn(
               arrowButtonClass,
-              "absolute right-0 top-1/2 z-20 hidden h-14 w-14 -translate-y-1/2 md:right-[-60px] md:flex"
+              "absolute right-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 md:right-[-56px] md:flex"
             )}
           >
-            <ChevronRight className="h-6 w-6" strokeWidth={1.5} />
+            <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
           </button>
 
           <div className="absolute bottom-[-50px] left-0 right-0 z-20 flex items-center justify-center gap-8 md:hidden">
@@ -330,36 +310,21 @@ function TestimonialsCarousel({
       )}
 
       <div className="relative w-full overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.article
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, zIndex: 10 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="relative w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded-sm p-8 text-center md:p-12 lg:p-16"
-          >
-            <span
-              className="pointer-events-none absolute top-8 left-8 font-serif-display text-8xl leading-none text-[#D4AF37]/20 select-none"
-              aria-hidden
-            >
-              &ldquo;
-            </span>
+        <article
+          key={index}
+          className="fade-in w-full bg-[#0C0C0C] border border-[#1F1F1F] p-8 text-center md:p-12 lg:p-16"
+        >
+          <blockquote className="mx-auto max-w-3xl font-serif-display text-xl text-[#E8E6E3] leading-relaxed break-words md:text-2xl lg:text-3xl">
+            {current.quote}
+          </blockquote>
 
-            <blockquote className="relative z-10 mx-auto max-w-3xl font-serif-display italic text-xl text-[#F5F5F5] leading-relaxed break-words md:text-2xl lg:text-3xl xl:text-4xl">
-              {current.quote}
-            </blockquote>
-
-            <p className="relative z-10 mt-12 text-sm uppercase tracking-[0.2em] text-[#A0A0A0]">
-              {current.name}
-            </p>
-            {current.location && (
-              <p className="relative z-10 mt-2 text-xs text-[#737373]">
-                {current.location}
-              </p>
-            )}
-          </motion.article>
-        </AnimatePresence>
+          <p className="mt-12 text-[11px] uppercase tracking-[0.2em] text-[#6B6B6B]">
+            {current.name}
+          </p>
+          {current.location && (
+            <p className="mt-2 text-[11px] text-[#6B6B6B]">{current.location}</p>
+          )}
+        </article>
       </div>
 
       {count > 1 && (
@@ -372,10 +337,10 @@ function TestimonialsCarousel({
               aria-label={`Go to testimonial ${i + 1}`}
               aria-current={index === i ? "true" : undefined}
               className={cn(
-                "h-2.5 shrink-0 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60",
+                "h-2 shrink-0 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B8956A]",
                 index === i
-                  ? "w-8 bg-[#D4AF37]"
-                  : "w-2.5 bg-[#333333] hover:bg-[#555555]"
+                  ? "w-8 bg-[#B8956A]"
+                  : "w-2 bg-[#1F1F1F] hover:bg-[#6B6B6B]"
               )}
             />
           ))}
@@ -466,110 +431,84 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#050505] text-[#F5F5F5] overflow-x-hidden">
+    <main className="min-h-screen bg-[#030303] text-[#E8E6E3] overflow-x-hidden">
       <InstitutionalTicker />
       <SiteNavbar activeSection={activeSection} />
 
       {/* Hero */}
-      <section className="relative pt-[128px] min-h-[calc(100vh-128px)] flex items-center">
+      <section className="relative pt-[104px]">
         <div className="max-w-7xl mx-auto w-full px-6 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 items-center">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={fadeIn}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <SectionLabel>INSTITUTIONAL FOREX INTELLIGENCE</SectionLabel>
-              <h1 className="font-serif-display headline-glow text-6xl md:text-8xl text-white leading-[1.1] mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
+            <div className="fade-in">
+              <p className="label-institutional mb-4">
+                INSTITUTIONAL FOREX INTELLIGENCE
+              </p>
+              <h1 className="font-serif-display text-[48px] text-[#E8E6E3] leading-[1.2] mb-6">
                 Precision in Every Position
               </h1>
-              <p className="text-lg text-[#A0A0A0] max-w-md mb-10 leading-relaxed">
-                Macro-driven signals for investors who demand institutional-grade execution.
+              <p className="text-base text-[#6B6B6B] max-w-md mb-10 leading-relaxed">
+                Macro-driven signals for investors who demand institutional-grade
+                execution.
               </p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <a
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps bg-[#D4AF37] text-black px-10 py-4 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
+                  className="btn-primary whitespace-nowrap"
                 >
                   REQUEST ACCESS
                 </a>
-                <a
-                  href="#performance"
-                  className="label-caps text-[#D4AF37] hover:text-[#E0C060] transition-colors duration-300"
-                >
-                  VIEW PERFORMANCE →
+                <a href="#performance" className="btn-secondary whitespace-nowrap">
+                  VIEW PERFORMANCE
                 </a>
               </div>
-            </motion.div>
+            </div>
 
-            <div className="hidden md:block relative min-h-[360px]">
-              <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                <HeroPulse />
-              </div>
+            <div className="hidden md:block h-[340px]">
+              <TradingViewHeroChart className="h-full w-full" />
             </div>
           </div>
 
-          <div className="mt-10 flex justify-center md:hidden">
-            <HeroPulse compact className="max-w-full" />
+          <div className="mt-10 md:hidden h-[280px] w-full">
+            <TradingViewHeroChart className="h-full w-full" />
           </div>
         </div>
       </section>
 
-      {/* Trust indicators */}
-      <section className="bg-[#0A0A0A] border-y border-[#1A1A1A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-[#1A1A1A]">
-          {trustIndicators.map((item) => (
-            <div key={item.value} className="text-center lg:px-4 xl:px-6 min-w-0">
-              <div className="text-[#D4AF37] font-semibold text-sm mb-2 tabular-nums whitespace-nowrap">
-                {item.value}
-              </div>
-              <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#A0A0A0] leading-relaxed px-2">
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Trust */}
+      <section className="border-y border-[#1F1F1F] py-6">
+        <p className="text-center text-[11px] tracking-[0.2em] text-[#6B6B6B]">
+          Institutional-grade signals. Verified performance since 2015.
+        </p>
       </section>
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[128px] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-16"
-          >
-            <SectionLabel>METHODOLOGY</SectionLabel>
-            <h2 className="font-serif-display headline-glow text-4xl text-white">
+          <header className="mb-16">
+            <p className="label-institutional mb-4">METHODOLOGY</p>
+            <h2 className="font-serif-display text-[40px] text-[#E8E6E3] leading-[1.2]">
               How We Generate Alpha
             </h2>
-          </motion.div>
+          </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#1A1A1A] bg-[#1A1A1A] md:bg-transparent">
-            {processSteps.map((step, i) => (
-              <motion.div
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px md:gap-0 md:divide-x divide-[#1F1F1F] bg-[#1F1F1F] md:bg-transparent">
+            {processSteps.map((step) => (
+              <div
                 key={step.num}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.08 }}
-                className="relative bg-[#050505] p-8 md:px-8 lg:px-10 min-w-0"
+                className="relative bg-[#030303] p-8 md:px-8 lg:px-10 min-w-0"
               >
-                <span className="font-serif-display text-7xl text-[#1A1A1A] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
+                <span className="font-data text-5xl text-[#1F1F1F] absolute top-4 right-4 md:right-6 select-none pointer-events-none">
                   {step.num}
                 </span>
                 <div className="relative">
-                  <h3 className="text-xl font-semibold text-[#F5F5F5] mb-3">{step.title}</h3>
-                  <p className="text-sm text-[#A0A0A0] leading-relaxed break-words">{step.description}</p>
+                  <h3 className="text-lg text-[#E8E6E3] mb-3">{step.title}</h3>
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed break-words">
+                    {step.description}
+                  </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -578,73 +517,58 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-y border-[#1A1A1A]"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0C0C0C] border-y border-[#1F1F1F]"
       >
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-center mb-16"
-          >
-            <SectionLabel>TRACK RECORD</SectionLabel>
-            <h2 className="font-serif-display headline-glow text-4xl text-white mb-12">
+          <header className="text-center mb-16">
+            <p className="label-institutional mb-4">TRACK RECORD</p>
+            <h2 className="font-serif-display text-[40px] text-[#E8E6E3] leading-[1.2] mb-12">
               Verified. Audited. Consistent.
             </h2>
             {statsLoading ? (
-              <div className="h-32 bg-[#111111] animate-pulse max-w-xs mx-auto" />
+              <div className="h-32 bg-[#1F1F1F]/30 animate-pulse max-w-xs mx-auto" />
             ) : (
               <>
-                <div className="font-serif-display text-7xl md:text-9xl font-bold text-[#D4AF37] tabular-nums mb-4">
+                <div className="font-data text-[56px] text-[#B8956A] tabular-nums mb-4">
                   {winRateDisplay}
                 </div>
-                <p className="label-caps text-[#A0A0A0]">Win Rate | 2015–2026</p>
+                <p className="label-institutional">Win Rate | 2015–2026</p>
               </>
             )}
-          </motion.div>
+          </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#1A1A1A] py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-20 text-center border-t border-b border-[#1F1F1F] py-10">
             <div>
-              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
+              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
                 +{stats.monthly_return}%
               </div>
-              <div className="label-caps text-[#737373]">Monthly Return</div>
+              <div className="label-institutional">Monthly Return</div>
             </div>
             <div>
-              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
+              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
                 {stats.pips_month.toLocaleString()}
               </div>
-              <div className="label-caps text-[#737373]">Pips/Month Average</div>
+              <div className="label-institutional">Pips/Month Average</div>
             </div>
             <div>
-              <div className="text-3xl text-[#D4AF37] tabular-nums font-semibold mb-2">
+              <div className="font-data text-3xl text-[#B8956A] tabular-nums mb-2">
                 {stats.active_traders}+
               </div>
-              <div className="label-caps text-[#737373]">Active Accounts</div>
+              <div className="label-institutional">Active Accounts</div>
             </div>
           </div>
 
           {/* Signals table */}
-          <motion.div
-            id="signals"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="scroll-mt-[128px]"
-          >
+          <div id="signals" className="scroll-mt-[104px]">
             {signalsLoading ? (
               <div className="space-y-2">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-12 bg-[#111111] animate-pulse" />
+                  <div key={i} className="h-12 bg-[#1F1F1F]/30 animate-pulse" />
                 ))}
               </div>
             ) : dbConfigured && liveSignals.length > 0 ? (
               <>
-                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-caps text-[#737373] border-b border-[#1A1A1A]">
+                <div className="hidden md:grid grid-cols-7 gap-4 px-4 py-3 label-institutional border-b border-[#1F1F1F]">
                   <span>PAIR</span>
                   <span>TYPE</span>
                   <span>ENTRY</span>
@@ -656,162 +580,141 @@ export default function Home() {
                 {liveSignals.map((signal) => (
                   <div
                     key={signal.id}
-                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#1A1A1A] font-mono text-[13px] tabular-nums hover:bg-[#111111] transition-colors duration-300"
+                    className="grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 px-4 py-4 border-b border-[#1F1F1F] font-data text-[13px] tabular-nums hover:bg-[#030303] transition-colors duration-200"
                   >
-                    <span className="text-[#F5F5F5]">{signal.pair}</span>
-                    <span className="text-[#A8A8A8]">{signal.direction}</span>
-                    <span className="text-[#737373] hidden md:block">
+                    <span className="text-[#E8E6E3]">{signal.pair}</span>
+                    <span className="text-[#6B6B6B]">{signal.direction}</span>
+                    <span className="text-[#6B6B6B] hidden md:block">
                       {formatPrice(signal.entry_price)}
                     </span>
-                    <span className="text-[#737373] hidden md:block">
+                    <span className="text-[#6B6B6B] hidden md:block">
                       {formatPrice(signal.stop_loss)}
                     </span>
-                    <span className="text-[#737373] hidden md:block">
+                    <span className="text-[#6B6B6B] hidden md:block">
                       {formatPrice(signal.take_profit)}
                     </span>
                     <span
                       className={cn(
-                        signal.result === "WIN" && "text-[#2D5A3D]",
-                        signal.result === "LOSS" && "text-[#5C2A2A]",
-                        (signal.result === "PENDING" || !signal.result) && "text-[#737373]"
+                        signal.result === "WIN" && "text-[#4A7C59]",
+                        signal.result === "LOSS" && "text-[#8B3A3A]",
+                        (signal.result === "PENDING" || !signal.result) &&
+                          "text-[#6B6B6B]"
                       )}
                     >
                       {getResultLabel(signal)}
                     </span>
-                    <span className="text-[#737373] hidden md:block">
+                    <span className="text-[#6B6B6B] hidden md:block">
                       {formatSignalDate(signal.created_at)}
                     </span>
                   </div>
                 ))}
               </>
             ) : (
-              <div className="text-center py-16 border border-[#1A1A1A] bg-[#0A0A0A]">
-                <p className="text-[#737373] mb-8">
+              <div className="text-center py-16 border border-[#1F1F1F] bg-[#0C0C0C]">
+                <p className="text-[#6B6B6B] mb-8">
                   Live signals available through secure client channels.
                 </p>
                 <a
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label-caps border border-[#D4AF37]/20 text-[#D4AF37] px-8 py-3.5 hover:bg-[#D4AF37] hover:text-black transition-colors duration-300 whitespace-nowrap"
+                  className="btn-secondary inline-block whitespace-nowrap"
                 >
                   REQUEST ACCESS
                 </a>
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Testimonials / Insights */}
-      <section
-        id="insights"
-        className="scroll-mt-[128px] bg-[#050505] py-24 px-6"
-      >
-        <div className="max-w-6xl mx-auto md:px-[60px]">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <SectionLabel>CLIENT PERSPECTIVES</SectionLabel>
-            <TestimonialsCarousel testimonials={displayTestimonials} />
-          </motion.div>
+      <section id="insights" className="scroll-mt-[104px] bg-[#030303] py-24 px-6">
+        <div className="max-w-6xl mx-auto md:px-[56px]">
+          <p className="label-institutional mb-12">CLIENT PERSPECTIVES</p>
+          <TestimonialsCarousel testimonials={displayTestimonials} />
         </div>
       </section>
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[128px] py-24 px-6">
+      <section id="education" className="scroll-mt-[104px] py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-16"
-          >
-            <SectionLabel>KNOWLEDGE CENTER</SectionLabel>
-          </motion.div>
+          <header className="mb-16">
+            <p className="label-institutional mb-4">KNOWLEDGE CENTER</p>
+          </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1A1A1A]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1F1F1F]">
             {educationArticles.map((article, i) => (
-              <motion.div
+              <div
                 key={`${article.title}-${i}`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
-                className="bg-[#050505] p-8 min-w-0"
+                className="bg-[#030303] p-8 min-w-0"
               >
-                <h3 className="text-lg text-[#F5F5F5] font-medium mb-3 leading-snug">{article.title}</h3>
-                <p className="text-sm text-[#A0A0A0] mb-6 leading-relaxed break-words">{article.excerpt}</p>
+                <h3 className="text-lg text-[#E8E6E3] mb-3 leading-snug">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-[#6B6B6B] mb-6 leading-relaxed break-words">
+                  {article.excerpt}
+                </p>
                 {article.href.startsWith("/education") ? (
                   <Link
                     href={article.href}
-                    className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
+                    className="text-[11px] tracking-[0.2em] uppercase text-[#B8956A] hover:text-[#C9A87C] transition-colors duration-200"
                   >
                     READ
                   </Link>
                 ) : (
                   <a
                     href="#"
-                    className="label-caps text-[#D4AF37] hover:underline transition-colors duration-300"
+                    className="text-[11px] tracking-[0.2em] uppercase text-[#B8956A] hover:text-[#C9A87C] transition-colors duration-200"
                   >
                     READ
                   </a>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-[128px] py-24 px-6 bg-[#0A0A0A] border-t border-[#1A1A1A]">
+      <section
+        id="faq"
+        className="scroll-mt-[104px] py-24 px-6 bg-[#0C0C0C] border-t border-[#1F1F1F]"
+      >
         <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-12"
-          >
-            <SectionLabel>INQUIRIES</SectionLabel>
-          </motion.div>
+          <header className="mb-12">
+            <p className="label-institutional">INQUIRIES</p>
+          </header>
 
           <div>
             {faqItems.map((item, i) => {
               const open = openFaq === i;
               return (
-                <div key={item.question} className="border-b border-[#1A1A1A]">
+                <div key={item.question} className="border-b border-[#1F1F1F]">
                   <button
                     type="button"
                     onClick={() => setOpenFaq(open ? null : i)}
                     className="w-full flex items-start justify-between gap-6 py-6 text-left"
                   >
-                    <span className="text-[#F5F5F5] font-semibold leading-relaxed pr-4">{item.question}</span>
-                    <span className="text-[#737373] text-lg shrink-0">{open ? "—" : "+"}</span>
+                    <span className="text-[#E8E6E3] leading-relaxed pr-4">
+                      {item.question}
+                    </span>
+                    <span className="text-[#6B6B6B] text-lg shrink-0">
+                      {open ? "—" : "+"}
+                    </span>
                   </button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="overflow-hidden"
-                      >
-                        <p className="pb-8 text-sm text-[#A0A0A0] leading-relaxed break-words">
-                          {item.answer}
-                        </p>
-                      </motion.div>
+                  <div
+                    className={cn(
+                      "grid transition-[grid-template-rows] duration-300 ease-out",
+                      open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                     )}
-                  </AnimatePresence>
+                  >
+                    <div className="overflow-hidden">
+                      <p className="pb-8 text-sm text-[#6B6B6B] leading-relaxed break-words">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -820,27 +723,20 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0A0A0A] border-y border-[#1A1A1A] py-24 px-6">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h2 className="font-serif-display headline-glow text-4xl text-white mb-10">
+      <section className="bg-[#0C0C0C] border-y border-[#1F1F1F] py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-serif-display text-[40px] text-[#E8E6E3] leading-[1.2] mb-10">
             Ready for Institutional-Grade Execution?
           </h2>
           <a
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block label-caps bg-[#D4AF37] text-black px-12 py-5 hover:bg-[#E0C060] transition-colors duration-300 whitespace-nowrap"
+            className="btn-primary inline-block whitespace-nowrap"
           >
             REQUEST ACCESS
           </a>
-        </motion.div>
+        </div>
       </section>
 
       <SiteFooter />

@@ -6,7 +6,6 @@ export const PLANS = {
     price: 49,
     period: "month",
     billing: "Monthly billing",
-    badge: null,
     features: [
       "Daily 2–4 VIP Signals",
       "Entry, Stop-Loss & Take-Profit — Every Trade",
@@ -15,7 +14,7 @@ export const PLANS = {
       "Full Education Library Access",
       "VIP Telegram Channel Delivery",
     ],
-    cta: "START NOW — $49",
+    cta: "SELECT — $49",
     href: "/payment/standard",
   },
   professional: {
@@ -24,8 +23,7 @@ export const PLANS = {
     headline: "Accelerate Returns",
     price: 99,
     period: "quarter",
-    billing: "SAVE 33% — $33/month equivalent",
-    badge: "MOST POPULAR",
+    billing: "Quarterly billing — $33/month equivalent",
     features: [
       "Daily 2–4 VIP Signals",
       "Entry, Stop-Loss & Take-Profit — Every Trade",
@@ -35,7 +33,7 @@ export const PLANS = {
       "VIP Telegram Channel Delivery",
       "Dedicated Support (24hr Response)",
     ],
-    cta: "START NOW — $99",
+    cta: "SELECT — $99",
     href: "/payment/professional",
   },
   elite: {
@@ -44,8 +42,7 @@ export const PLANS = {
     headline: "Trade Like an Institution",
     price: 150,
     period: "year",
-    billing: "SAVE 75% — $12.50/month equivalent",
-    badge: "BEST VALUE",
+    billing: "Annual billing — $12.50/month equivalent",
     features: [
       "Daily 3–6 VIP Signals (Higher Frequency)",
       "Entry, Stop-Loss & Take-Profit — Every Trade",
@@ -56,7 +53,7 @@ export const PLANS = {
       "Priority Support (4hr Response)",
       "Monthly 1-on-1 Strategy Consultation",
     ],
-    cta: "START NOW — $150",
+    cta: "SELECT — $150",
     href: "/payment/elite",
   },
   permanent: {
@@ -65,8 +62,7 @@ export const PLANS = {
     headline: "Own Your Edge Forever",
     price: 209,
     period: "one-time",
-    billing: "Never pay again. Ever.",
-    badge: "LIFETIME ACCESS",
+    billing: "Single payment. Lifetime access.",
     features: [
       "Daily 3–6 VIP Signals — Forever",
       "Entry, Stop-Loss & Take-Profit — Every Trade",
@@ -79,7 +75,7 @@ export const PLANS = {
       "Lifetime Signal Access",
       "Personal Onboarding Session (30min call)",
     ],
-    cta: "SECURE LIFETIME — $209",
+    cta: "SELECT — $209",
     href: "/payment/permanent",
   },
 };

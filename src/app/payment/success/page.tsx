@@ -11,9 +11,9 @@ function SuccessContent() {
 
   return (
     <div className="max-w-xl mx-auto px-6 py-24 text-center">
-      <div className="w-16 h-16 border-2 border-[#00C853] rounded-full flex items-center justify-center mx-auto mb-8">
+      <div className="w-16 h-16 border border-[#4A7C59] flex items-center justify-center mx-auto mb-8">
         <svg
-          className="w-8 h-8 text-[#00C853]"
+          className="w-8 h-8 text-[#4A7C59]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -21,45 +21,45 @@ function SuccessContent() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={1.5}
             d="M5 13l4 4L19 7"
           />
         </svg>
       </div>
 
-      <h1 className="text-3xl font-bold text-white mb-4">Payment Confirmed</h1>
-      <p className="text-[#888] mb-2">Welcome to FX Research Desk</p>
-      <p className="text-[#666] text-sm mb-8">
+      <h1 className="font-serif-display text-[40px] text-[#E8E6E3] mb-4">
+        Payment Confirmed
+      </h1>
+      <p className="text-[#6B6B6B] mb-2">Welcome to FX Research Desk</p>
+      <p className="font-data text-sm text-[#6B6B6B] mb-8">
         Plan:{" "}
-        <span className="text-[#D4AF37] uppercase tracking-widest">{plan}</span> |
+        <span className="text-[#B8956A] uppercase tracking-widest">{plan}</span> |
         Paid via {method}
       </p>
 
-      <div className="bg-[#0A0A0A] border border-[#1A1A1A] p-6 mb-8 text-left">
-        <h3 className="text-[10px] tracking-[0.2em] text-[#D4AF37] uppercase mb-4">
-          What happens next?
-        </h3>
-        <ol className="space-y-3 text-sm text-[#A0A0A0]">
+      <div className="bg-[#0C0C0C] border border-[#1F1F1F] p-6 mb-8 text-left">
+        <h3 className="label-institutional mb-4">What happens next?</h3>
+        <ol className="space-y-3 text-[13px] text-[#6B6B6B] leading-relaxed">
           <li className="flex gap-3">
-            <span className="text-[#D4AF37] font-bold">1.</span>
+            <span className="text-[#B8956A] font-data">1.</span>
             Check your email for the Telegram channel invite link
           </li>
           <li className="flex gap-3">
-            <span className="text-[#D4AF37] font-bold">2.</span>
+            <span className="text-[#B8956A] font-data">2.</span>
             Join the VIP Telegram channel to start receiving signals immediately
           </li>
           <li className="flex gap-3">
-            <span className="text-[#D4AF37] font-bold">3.</span>
+            <span className="text-[#B8956A] font-data">3.</span>
             Access the education library from your welcome email
           </li>
         </ol>
       </div>
 
-      <p className="text-[#666] text-xs mb-6">
+      <p className="text-[13px] text-[#6B6B6B] mb-6">
         Questions? Contact us at{" "}
         <a
           href="mailto:fxresearchdesk@gmail.com"
-          className="text-[#D4AF37] hover:underline"
+          className="text-[#B8956A] hover:text-[#C9A87C] transition-colors"
         >
           fxresearchdesk@gmail.com
         </a>
@@ -67,7 +67,7 @@ function SuccessContent() {
 
       <Link
         href="/"
-        className="inline-block bg-[#D4AF37] text-black px-8 py-3 text-[11px] tracking-[0.2em] font-bold hover:bg-[#E5C158] transition"
+        className="inline-block border border-[#1F1F1F] px-8 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] transition-colors duration-200"
       >
         RETURN TO HOMEPAGE
       </Link>
@@ -79,7 +79,7 @@ export default function SuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-xl mx-auto px-6 py-24 text-center text-[#666] text-sm">
+        <div className="max-w-xl mx-auto px-6 py-24 text-center text-[#6B6B6B] text-sm">
           Loading...
         </div>
       }

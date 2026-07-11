@@ -1,6 +1,7 @@
 "use client";
 
 import { Elements } from "@stripe/react-stripe-js";
+import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { stripePromise } from "@/lib/stripe";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SiteFooter } from "@/components/site-footer";
@@ -12,8 +13,9 @@ export default function PaymentLayout({
 }) {
   return (
     <Elements stripe={stripePromise}>
+      <InstitutionalTicker />
       <SiteNavbar />
-      <main className="min-h-screen bg-[#050505] pt-[128px]">{children}</main>
+      <main className="min-h-screen bg-[#030303] pt-[104px]">{children}</main>
       <SiteFooter />
     </Elements>
   );

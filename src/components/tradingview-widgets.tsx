@@ -48,15 +48,15 @@ export function TradingViewAdvancedChart({
         theme: "dark",
         style: "1",
         locale: "en",
-        toolbar_bg: "#0A0A0A",
+        toolbar_bg: "#0C0C0C",
         enable_publishing: false,
         hide_top_toolbar: false,
         hide_side_toolbar: true,
         hide_legend: false,
         save_image: true,
-        backgroundColor: "#0A0A0A",
-        gridColor: "#1A1A1A",
-        textColor: "#A0A0A0",
+        backgroundColor: "#0C0C0C",
+        gridColor: "#1F1F1F",
+        textColor: "#6B6B6B",
         watchlist: [...tradingViewWatchlist],
         details: true,
         hotlist: true,
@@ -102,13 +102,13 @@ export function TradingViewMarketOverview({ className }: MarketOverviewProps) {
         height: "100%",
         largeChartUrl: "",
         showSymbolLogo: true,
-        plotLineColorGrowing: "#00C853",
-        plotLineColorFalling: "#FF1744",
-        gridLineColor: "#1A1A1A",
-        scaleFontColor: "#A0A0A0",
-        belowLineFillColorGrowing: "rgba(0, 200, 83, 0.12)",
-        belowLineFillColorFalling: "rgba(255, 23, 68, 0.12)",
-        symbolActiveColor: "rgba(212, 175, 55, 0.12)",
+        plotLineColorGrowing: "#4A7C59",
+        plotLineColorFalling: "#8B3A3A",
+        gridLineColor: "#1F1F1F",
+        scaleFontColor: "#6B6B6B",
+        belowLineFillColorGrowing: "rgba(74, 124, 89, 0.12)",
+        belowLineFillColorFalling: "rgba(139, 58, 58, 0.12)",
+        symbolActiveColor: "rgba(184, 149, 106, 0.12)",
         tabs: [
           {
             title: "Forex",
@@ -183,6 +183,54 @@ export function TradingViewTechnicalAnalysis({
       ref={containerRef}
       className={cn(
         "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden",
+        className
+      )}
+    />
+  );
+}
+
+type HeroChartProps = {
+  className?: string;
+};
+
+export function TradingViewHeroChart({ className }: HeroChartProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    mountTradingViewWidget(
+      container,
+      "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js",
+      {
+        autosize: true,
+        symbol: "FX:EURUSD",
+        interval: "60",
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "1",
+        locale: "en",
+        toolbar_bg: "#0C0C0C",
+        enable_publishing: false,
+        hide_top_toolbar: true,
+        hide_side_toolbar: true,
+        hide_legend: true,
+        save_image: false,
+        backgroundColor: "#0C0C0C",
+        gridColor: "#1F1F1F",
+        textColor: "#6B6B6B",
+        allow_symbol_change: false,
+        support_host: "https://www.tradingview.com",
+      }
+    );
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        "tv-widget-host tradingview-widget-container h-full w-full overflow-hidden border border-[#1F1F1F] bg-[#0C0C0C]",
         className
       )}
     />

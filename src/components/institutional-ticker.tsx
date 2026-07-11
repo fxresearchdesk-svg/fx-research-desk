@@ -53,16 +53,6 @@ function formatPrice(price: number, pair: string): string {
   return price.toFixed(4);
 }
 
-function isMarketOpen(): boolean {
-  const now = new Date();
-  const day = now.getUTCDay();
-  const hour = now.getUTCHours();
-  if (day === 6) return false;
-  if (day === 0 && hour < 22) return false;
-  if (day === 5 && hour >= 22) return false;
-  return true;
-}
-
 async function fetchMetalRate(pair: string): Promise<number | null> {
   try {
     const res = await fetch(`https://fxapi.app/api/${pair}.json`, {
@@ -80,74 +70,15 @@ async function fetchMetalRate(pair: string): Promise<number | null> {
   }
 }
 
-function TickerItem({
-  item,
-  showSeparator,
-}: {
-  item: TickerPair;
-  showSeparator?: boolean;
-}) {
-  return (
-    <>
-      <span className="inline-flex items-center gap-2 px-3 font-mono text-sm tabular-nums whitespace-nowrap">
-        <span className="text-[#D4AF37]">{item.pair}</span>
-        <span className="text-sm font-bold text-white">
-          {formatPrice(item.price, item.pair)}
-        </span>
-        {item.change !== null && (
-          <span
-            className={cn(
-              "text-sm font-bold",
-              item.direction === "up" && "text-[#00C853]",
-              item.direction === "down" && "text-[#FF1744]",
-              item.direction === "flat" && "text-[#A0A0A0]"
-            )}
-          >
-            {item.direction === "up" && "▲ "}
-            {item.direction === "down" && "▼ "}
-            {item.change > 0 ? "+" : ""}
-            {item.change.toFixed(2)}%
-          </span>
-        )}
-      </span>
-      {showSeparator && <span className="mx-2 text-[#555555]">•</span>}
-    </>
-  );
-}
-
-function RefreshIcon({ spinning }: { spinning?: boolean }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("h-4 w-4", spinning && "animate-spin")}
-      aria-hidden
-    >
-      <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-      <path d="M3 3v5h5" />
-      <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-      <path d="M16 16h5v5" />
-    </svg>
-  );
-}
-
 export function InstitutionalTicker() {
   const [pairs, setPairs] = useState<TickerPair[]>([]);
   const [status, setStatus] = useState<TickerStatus>("loading");
-  const [refreshing, setRefreshing] = useState(false);
+  const [fade, setFade] = useState(true);
   const previousPricesRef = useRef<Record<string, number>>({});
   const statusRef = useRef<TickerStatus>("loading");
-  const marketOpen = isMarketOpen();
 
-  const load = useCallback(async (manual = false) => {
-    if (manual) {
-      setRefreshing(true);
-    } else if (statusRef.current !== "ready") {
+  const load = useCallback(async () => {
+    if (statusRef.current !== "ready") {
       setStatus("loading");
       statusRef.current = "loading";
     }
@@ -189,21 +120,23 @@ export function InstitutionalTicker() {
           previousPricesRef.current[pair] = raw;
         }
 
-        if (validPairs.length >= MIN_PAIRS_TO_DISPLAY) {
-          setPairs(validPairs);
-          setStatus("ready");
-          statusRef.current = "ready";
-        } else if (validPairs.length > 0) {
-          setPairs(validPairs);
-          setStatus("insufficient");
-          statusRef.current = "insufficient";
-        } else {
-          setPairs([]);
-          setStatus("insufficient");
-          statusRef.current = "insufficient";
-        }
-
-        setRefreshing(false);
+        setFade(false);
+        setTimeout(() => {
+          if (validPairs.length >= MIN_PAIRS_TO_DISPLAY) {
+            setPairs(validPairs);
+            setStatus("ready");
+            statusRef.current = "ready";
+          } else if (validPairs.length > 0) {
+            setPairs(validPairs);
+            setStatus("insufficient");
+            statusRef.current = "insufficient";
+          } else {
+            setPairs([]);
+            setStatus("insufficient");
+            statusRef.current = "insufficient";
+          }
+          setFade(true);
+        }, 150);
         return;
       } catch {
         if (attempt < MAX_RETRIES) {
@@ -215,7 +148,6 @@ export function InstitutionalTicker() {
     setPairs([]);
     setStatus("unavailable");
     statusRef.current = "unavailable";
-    setRefreshing(false);
   }, []);
 
   useEffect(() => {
@@ -227,64 +159,53 @@ export function InstitutionalTicker() {
   const displayPairs =
     status === "ready" && pairs.length >= MIN_PAIRS_TO_DISPLAY ? pairs : [];
 
-  const marqueeItems =
-    displayPairs.length > 0 ? [...displayPairs, ...displayPairs] : null;
-
   const centerMessage =
     status === "unavailable"
       ? "Market data temporarily unavailable"
       : status === "loading" || status === "insufficient"
-        ? "Live market data loading..."
+        ? "Loading market data..."
         : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-14 border-b-2 border-[#D4AF37]/40 bg-[#111111]">
-      <div className="h-full flex items-stretch">
-        <div className="flex-1 overflow-hidden flex items-center min-w-0">
-          {centerMessage && (
-            <span className="w-full text-center px-3 font-mono text-sm text-[#A0A0A0]">
-              {centerMessage}
-            </span>
-          )}
-          {marqueeItems && (
-            <div className="flex animate-ticker whitespace-nowrap items-center h-full">
-              {marqueeItems.map((item, i) => (
-                <TickerItem
-                  key={`${item.pair}-${i}`}
-                  item={item}
-                  showSeparator={i < marqueeItems.length - 1}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2.5 px-4 border-l border-[#1A1A1A]">
-          <button
-            type="button"
-            onClick={() => load(true)}
-            disabled={refreshing}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D4AF37]/50 text-[#D4AF37] transition-colors duration-300 hover:bg-[#D4AF37]/10 disabled:opacity-50"
-            aria-label="Refresh market data"
-          >
-            <RefreshIcon spinning={refreshing} />
-          </button>
-
-          {marketOpen && (
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[#00C853] opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00C853] animate-pulse" />
-            </span>
-          )}
-          <span
+    <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#1F1F1F] bg-[#030303]">
+      <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center overflow-hidden">
+        {centerMessage && (
+          <span className="w-full text-center font-data text-xs text-[#6B6B6B]">
+            {centerMessage}
+          </span>
+        )}
+        {displayPairs.length > 0 && (
+          <div
             className={cn(
-              "text-sm font-bold uppercase tracking-widest whitespace-nowrap font-mono",
-              marketOpen ? "text-[#00C853]" : "text-[#FF1744]"
+              "flex flex-wrap items-center gap-x-6 gap-y-1 ticker-fade",
+              fade ? "opacity-100" : "opacity-40"
             )}
           >
-            {marketOpen ? "MARKETS OPEN" : "MARKETS CLOSED"}
-          </span>
-        </div>
+            {displayPairs.map((item) => (
+              <span
+                key={item.pair}
+                className="inline-flex items-center gap-2 font-data text-xs tabular-nums whitespace-nowrap"
+              >
+                <span className="text-[#6B6B6B]">{item.pair}</span>
+                <span className="text-[#E8E6E3]">
+                  {formatPrice(item.price, item.pair)}
+                </span>
+                {item.change !== null && (
+                  <span
+                    className={cn(
+                      item.direction === "up" && "text-[#4A7C59]",
+                      item.direction === "down" && "text-[#8B3A3A]",
+                      item.direction === "flat" && "text-[#6B6B6B]"
+                    )}
+                  >
+                    {item.change > 0 ? "+" : ""}
+                    {item.change.toFixed(2)}%
+                  </span>
+                )}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

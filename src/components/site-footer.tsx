@@ -8,15 +8,15 @@ export function SiteFooter() {
   const [logoSrc, setLogoSrc] = useState("/logo.png.jpeg");
 
   return (
-    <footer className="bg-[#050505] border-t border-[#1A1A1A] py-16 px-6">
+    <footer className="bg-[#030303] border-t border-[#1F1F1F] py-16 px-6">
       <div className="max-w-7xl mx-auto text-center">
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-8">
           <Image
             src={logoSrc}
             alt="FX Research Desk"
-            width={200}
-            height={64}
-            className="h-16 w-auto max-w-[200px] object-contain"
+            width={160}
+            height={40}
+            className="h-10 w-auto object-contain"
             onError={() =>
               setLogoSrc((prev) =>
                 prev === "/logo.png.jpeg"
@@ -29,10 +29,8 @@ export function SiteFooter() {
             unoptimized
           />
         </div>
-        <p className="label-caps text-[#A0A0A0] mb-2">FX RESEARCH DESK</p>
-        <p className="label-caps text-[#D4AF37]/60 mb-10">Research. Analyze. Execute.</p>
 
-        <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 gap-y-4 mb-12 px-4">
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-12 px-4">
           {[
             ...navLinks,
             { href: "/#faq", label: "INQUIRIES" },
@@ -42,14 +40,14 @@ export function SiteFooter() {
             <a
               key={link.label}
               href={link.href}
-              className="label-caps text-[#A0A0A0] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap"
+              className="text-[10px] uppercase tracking-[0.3em] text-[#6B6B6B] hover:text-[#B8956A] transition-colors duration-200 whitespace-nowrap"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <p className="text-[11px] text-[#333333] tracking-wide">
+        <p className="text-[10px] text-[#6B6B6B] tracking-[0.2em]">
           © 2026 FX Research Desk. All Rights Reserved.
         </p>
       </div>
