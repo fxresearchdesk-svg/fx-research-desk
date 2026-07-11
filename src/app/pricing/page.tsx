@@ -13,7 +13,7 @@ export default function PricingPage() {
       <InstitutionalTicker />
       <SiteNavbar />
 
-      <div className="pt-[104px] pb-24">
+      <div className="pt-[100px] pb-24">
         <section className="py-16 px-6 border-b border-[#E5E5E5] bg-[#F5F5F0]">
           <p className="text-center text-xs tracking-[0.2em] text-[#4A4A4A]">
             <span className="text-[#B8956A] mx-1">◆</span>

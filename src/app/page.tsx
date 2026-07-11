@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroVaultArt } from "@/components/hero-vault-art";
+import { HeroSignalCard } from "@/components/hero-signal-card";
 import {
   fetchSignals,
   fetchStats,
@@ -439,37 +439,63 @@ export default function Home() {
       <InstitutionalTicker />
       <SiteNavbar activeSection={activeSection} />
 
-      {/* Hero — The Vault */}
-      <section className="relative min-h-screen vault-grain bg-[#F5F5F0]">
-        <div className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pb-16 pt-[104px] lg:flex-row lg:items-center lg:gap-16">
-          <div className="fade-in w-full lg:w-[55%]">
-            <p className="mb-6 text-[10px] uppercase tracking-[0.35em] text-[#B8956A]">
-              INSTITUTIONAL FOREX INTELLIGENCE
-            </p>
-            <h1 className="font-serif-display mb-8 max-w-xl text-[48px] leading-[1.1] text-[#1A1A1A] md:text-[56px]">
-              Precision in Every Position
+      {/* Hero — The Signal */}
+      <section className="relative bg-[#FFFFFF] pt-[100px]">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-16 lg:py-0 min-h-[500px] lg:min-h-[600px]">
+          <div className="fade-in flex flex-col justify-center">
+            <h1 className="font-serif-display mb-6 max-w-xl text-[40px] font-semibold leading-[1.15] text-[#1A1A1A] md:text-[48px]">
+              Trade What the Institutions Trade
             </h1>
-            <p className="mb-12 max-w-md text-base leading-relaxed text-[#6B7280]">
-              Macro-driven signals for investors who demand institutional-grade
-              execution.
+            <p className="mb-8 max-w-md text-lg leading-relaxed text-[#6B7280]">
+              Real-time forex signals with entry, stop-loss, and take-profit levels.
+              Delivered instantly to your Telegram.
             </p>
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-              <a
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-vault-primary whitespace-nowrap"
+
+            <div className="mb-10 flex flex-wrap items-start gap-x-6 gap-y-4">
+              <div>
+                <p className="font-data text-sm text-[#1A1A1A]">
+                  {statsLoading ? "—" : winRateDisplay} Win Rate
+                </p>
+                <p className="mt-1 text-[11px] text-[#9CA3AF]">Verified</p>
+              </div>
+              <span className="hidden text-[#D1D5DB] sm:inline" aria-hidden>
+                |
+              </span>
+              <div>
+                <p className="font-data text-sm text-[#1A1A1A]">
+                  {statsLoading ? "—" : `${stats.pips_month.toLocaleString()}+`} Pips/Month
+                </p>
+                <p className="mt-1 text-[11px] text-[#9CA3AF]">Average</p>
+              </div>
+              <span className="hidden text-[#D1D5DB] sm:inline" aria-hidden>
+                |
+              </span>
+              <div>
+                <p className="font-data text-sm text-[#1A1A1A]">
+                  {statsLoading ? "—" : `${stats.active_traders}+`} Members
+                </p>
+                <p className="mt-1 text-[11px] text-[#9CA3AF]">Global</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+              <Link
+                href="/payment/standard"
+                className="inline-block bg-[#1A1A1A] px-8 py-4 text-center text-xs font-bold uppercase tracking-[0.15em] text-white transition-colors duration-200 hover:bg-[#333333] whitespace-nowrap"
               >
-                REQUEST ACCESS
-              </a>
-              <a href="#performance" className="btn-vault-secondary whitespace-nowrap">
+                GET STARTED — $49
+              </Link>
+              <a
+                href="#performance"
+                className="inline-block border border-[#1A1A1A] px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1A1A] transition-colors duration-200 hover:bg-[#1A1A1A] hover:text-white whitespace-nowrap"
+              >
                 VIEW PERFORMANCE
               </a>
             </div>
           </div>
 
-          <div className="mt-16 w-full lg:mt-0 lg:w-[45%] lg:min-h-[480px]">
-            <HeroVaultArt />
+          <div className="flex items-center justify-center lg:justify-end">
+            <HeroSignalCard />
           </div>
         </div>
       </section>
@@ -488,7 +514,7 @@ export default function Home() {
       <SectionRule />
 
       {/* Methodology */}
-      <section id="methodology" className="scroll-mt-[104px] bg-[#F5F5F0] py-24 px-6">
+      <section id="methodology" className="scroll-mt-[100px] bg-[#F5F5F0] py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16">
             <p className="label-institutional mb-4">METHODOLOGY</p>
@@ -523,7 +549,7 @@ export default function Home() {
       {/* Performance */}
       <section
         id="performance"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#FFFFFF] border-y border-[#E5E5E5]"
+        className="scroll-mt-[100px] py-24 px-6 bg-[#FFFFFF] border-y border-[#E5E5E5]"
       >
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-16">
@@ -565,7 +591,7 @@ export default function Home() {
           </div>
 
           {/* Signals table */}
-          <div id="signals" className="scroll-mt-[104px]">
+          <div id="signals" className="scroll-mt-[100px]">
             {signalsLoading ? (
               <div className="space-y-2">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -637,7 +663,7 @@ export default function Home() {
       <SectionRule />
 
       {/* Testimonials / Insights */}
-      <section id="insights" className="scroll-mt-[104px] bg-[#F5F5F0] py-24 px-6">
+      <section id="insights" className="scroll-mt-[100px] bg-[#F5F5F0] py-24 px-6">
         <div className="max-w-6xl mx-auto md:px-[56px]">
           <p className="label-institutional mb-12">CLIENT PERSPECTIVES</p>
           <TestimonialsCarousel testimonials={displayTestimonials} />
@@ -647,7 +673,7 @@ export default function Home() {
       <SectionRule />
 
       {/* Education */}
-      <section id="education" className="scroll-mt-[104px] py-24 px-6 bg-[#FFFFFF]">
+      <section id="education" className="scroll-mt-[100px] py-24 px-6 bg-[#FFFFFF]">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16">
             <p className="label-institutional mb-4">KNOWLEDGE CENTER</p>
@@ -691,7 +717,7 @@ export default function Home() {
       {/* FAQ */}
       <section
         id="faq"
-        className="scroll-mt-[104px] py-24 px-6 bg-[#F5F5F0] border-t border-[#E5E5E5]"
+        className="scroll-mt-[100px] py-24 px-6 bg-[#F5F5F0] border-t border-[#E5E5E5]"
       >
         <div className="max-w-3xl mx-auto">
           <header className="mb-12">

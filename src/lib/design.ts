@@ -14,5 +14,5 @@ export const colors = {
   red: "#8B3A3A",
 } as const;
 
-export const layoutOffset = "pt-[104px]";
-export const scrollOffset = "scroll-mt-[104px]";
+export const layoutOffset = "pt-[100px]";
+export const scrollOffset = "scroll-mt-[100px]";

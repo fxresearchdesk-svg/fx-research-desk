@@ -20,7 +20,7 @@ export function EducationLayout({
     <main className="min-h-screen bg-[#FFFFFF] text-[#4A4A4A]">
       <InstitutionalTicker />
       <SiteNavbar />
-      <article className="max-w-3xl mx-auto px-6 pt-[104px] pb-24">
+      <article className="max-w-3xl mx-auto px-6 pt-[100px] pb-24">
         <Link
           href="/#education"
           className="text-[11px] uppercase tracking-[0.2em] text-[#9A9A9A] hover:text-[#B8956A] transition-colors mb-10 inline-block"

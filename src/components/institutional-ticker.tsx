@@ -79,7 +79,7 @@ function TickerItem({
 }) {
   return (
     <>
-      <span className="inline-flex items-center gap-1.5 font-data text-xs tabular-nums whitespace-nowrap px-1">
+      <span className="inline-flex items-center gap-1.5 font-data text-[12px] tabular-nums whitespace-nowrap px-1">
         <span className="text-[#B8956A]">{item.pair}</span>
         <span className="text-[#F5F5F5]">{formatPrice(item.price, item.pair)}</span>
         {item.change !== null && (
@@ -199,10 +199,10 @@ export function InstitutionalTicker() {
         : null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-10 border-b border-[#333333] bg-[#1A1A1A]">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-9 border-b border-[#333333] bg-[#1A1A1A]">
       <div className="h-full flex items-center overflow-hidden">
         {centerMessage && (
-          <span className="w-full text-center font-data text-xs text-[#9CA3AF] px-4">
+          <span className="w-full text-center font-data text-[12px] text-[#9CA3AF] px-4">
             {centerMessage}
           </span>
         )}

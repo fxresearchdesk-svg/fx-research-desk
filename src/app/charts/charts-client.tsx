@@ -20,7 +20,7 @@ export function ChartsPageClient() {
       <InstitutionalTicker />
       <SiteNavbar />
 
-      <div className="pt-[104px] pb-24">
+      <div className="pt-[100px] pb-24">
         <div className="max-w-7xl mx-auto px-6">
           <header className="mb-12 text-center md:text-left border-b border-[#333333] pb-10">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#B8956A] mb-4">

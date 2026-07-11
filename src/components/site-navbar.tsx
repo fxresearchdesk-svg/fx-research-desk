@@ -52,7 +52,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
 
   return (
     <>
-      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b border-[#E5E5E5] bg-[#F5F5F0]">
+      <header className="fixed top-9 left-0 right-0 z-50 h-16 border-b border-[#E5E7EB] bg-[#FFFFFF]">
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link href="/" className="shrink-0">
             <Image
@@ -123,7 +123,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
             className="fixed inset-0 z-[70] bg-[#1A1A1A]/40 lg:hidden"
             onClick={() => setMenuOpen(false)}
           />
-          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#F5F5F0] border-l border-[#E5E5E5] p-8 pt-28 lg:hidden fade-in">
+          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#FFFFFF] border-l border-[#E5E7EB] p-8 pt-28 lg:hidden fade-in">
             <div className="flex flex-col gap-6">
               {navLinks.map((link) => {
                 const active = isNavLinkActive(link.href, pathname, activeSection);
