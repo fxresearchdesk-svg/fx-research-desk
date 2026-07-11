@@ -64,29 +64,27 @@ export function SwissBankHero({
           </div>
         </div>
 
-        <div className="relative flex h-full min-h-[280px] items-center justify-center lg:min-h-0">
-          <div
-            className="pointer-events-none absolute h-72 w-72 rounded-full bg-[#B8956A]/10 blur-3xl"
-            aria-hidden
-          />
-          <Image
-            src={logoSrc}
-            alt="FX Research Desk"
-            width={320}
-            height={120}
-            className="relative z-10 h-auto w-full max-w-[280px] object-contain lg:max-w-[320px]"
-            onError={() =>
-              setLogoSrc((prev) =>
-                prev === "/logo.png.jpeg"
-                  ? "/logo.png"
-                  : prev === "/logo.png"
-                    ? "/logo.svg"
-                    : "/logo.svg"
-              )
-            }
-            priority
-            unoptimized
-          />
+        <div className="flex h-full min-h-[280px] items-center justify-center lg:min-h-0">
+          <div className="opacity-10 transition-opacity duration-500 ease-in-out hover:opacity-20">
+            <Image
+              src={logoSrc}
+              alt="FX Research Desk"
+              width={360}
+              height={140}
+              className="h-auto w-full min-w-[300px] max-w-[360px] object-contain"
+              onError={() =>
+                setLogoSrc((prev) =>
+                  prev === "/logo.png.jpeg"
+                    ? "/logo.png"
+                    : prev === "/logo.png"
+                      ? "/logo.svg"
+                      : "/logo.svg"
+                )
+              }
+              priority
+              unoptimized
+            />
+          </div>
         </div>
       </div>
     </section>
