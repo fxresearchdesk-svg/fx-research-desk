@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroMiniChart } from "@/components/hero-mini-chart";
+import { HeroPulse } from "@/components/hero-pulse";
 import {
   fetchSignals,
   fetchStats,
@@ -15,7 +15,6 @@ import {
   isSupabaseConfigured,
 } from "@/lib/supabase";
 import { navLinks, telegramUrl } from "@/lib/site-config";
-import { PLANS } from "@/lib/plans";
 import type { Signal, Stats, Testimonial } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -508,13 +507,13 @@ export default function Home() {
 
             <div className="hidden md:block relative min-h-[360px]">
               <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                <HeroMiniChart />
+                <HeroPulse />
               </div>
             </div>
           </div>
 
           <div className="mt-10 flex justify-center md:hidden">
-            <HeroMiniChart compact className="max-w-full" />
+            <HeroPulse compact className="max-w-full" />
           </div>
         </div>
       </section>
@@ -701,109 +700,6 @@ export default function Home() {
               </div>
             )}
           </motion.div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <div className="bg-[#0A0A0A] border-y border-[#1A1A1A] py-4">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            ["SECURE CHECKOUT", "256-bit SSL Encryption"],
-            ["INSTANT DELIVERY", "Signals in 60 Seconds"],
-            ["VERIFIED RESULTS", "87.3% Win Rate Since 2015"],
-            ["GLOBAL REACH", "500+ Traders | 30+ Countries"],
-          ].map(([title, sub]) => (
-            <div key={title} className="text-center">
-              <p className="text-[10px] tracking-[0.25em] text-[#888]">{title}</p>
-              <p className="text-[10px] text-[#555] mt-1">{sub}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <section id="pricing" className="scroll-mt-[128px] py-24 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-[10px] tracking-[0.35em] text-[#D4AF37] text-center uppercase mb-4">
-            Membership Access
-          </p>
-          <h2 className="text-4xl md:text-5xl text-white text-center font-serif mb-3">
-            Choose Your Level of Market Intelligence
-          </h2>
-          <p className="text-sm text-[#666] text-center mb-8">
-            Institutional-grade signals. Retail pricing.
-          </p>
-          <div className="w-16 h-px bg-[#D4AF37]/20 mx-auto mb-16" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.values(PLANS).map((plan) => (
-              <div
-                key={plan.id}
-                className={`relative bg-[#0A0A0A] border p-8 transition-all duration-400 hover:-translate-y-1 ${
-                  plan.id === "permanent"
-                    ? "border-2 border-[#D4AF37] shadow-[0_0_40px_rgba(212,175,55,0.12)]"
-                    : plan.id === "professional"
-                      ? "border-[#D4AF37]/40 -translate-y-3 shadow-[0_0_30px_rgba(212,175,55,0.08)]"
-                      : "border-[#1A1A1A] hover:border-[#D4AF37]/20"
-                }`}
-              >
-                {plan.badge && (
-                  <div
-                    className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[9px] font-bold tracking-[0.2em] ${
-                      plan.id === "professional"
-                        ? "bg-[#D4AF37] text-black"
-                        : "bg-[#0A0A0A] border border-[#D4AF37]/40 text-[#D4AF37]"
-                    }`}
-                  >
-                    {plan.badge}
-                  </div>
-                )}
-
-                <p className="text-[10px] tracking-[0.3em] text-[#888] mb-4">{plan.name}</p>
-                <p className="text-xl text-white font-semibold mb-2">{plan.headline}</p>
-
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-5xl font-bold text-white">${plan.price}</span>
-                  <span className="text-sm text-[#666]">/{plan.period}</span>
-                </div>
-                <p className="text-[10px] text-[#00C853] tracking-widest mb-6">{plan.billing}</p>
-
-                <div className="h-px bg-[#1A1A1A] mb-6" />
-
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-[#A0A0A0]">
-                      <span className="text-[#00C853] mt-0.5 shrink-0">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {plan.id === "permanent" && (
-                  <p className="text-[10px] text-[#FF3D00] tracking-widest text-center mb-4">
-                    Limited spots available
-                  </p>
-                )}
-
-                <a
-                  href={plan.href}
-                  className={`block text-center py-3 text-[11px] tracking-[0.2em] font-bold transition ${
-                    plan.id === "professional" || plan.id === "permanent"
-                      ? "bg-[#D4AF37] text-black hover:bg-[#E5C158]"
-                      : "border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
-                  }`}
-                >
-                  {plan.cta}
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 text-center">
-            <p className="text-[10px] tracking-[0.3em] text-[#555] mb-4">We Accept</p>
-            <p className="text-[10px] tracking-[0.2em] text-[#444]">
-              VISA • MASTERCARD • STRIPE • BITCOIN • ETHEREUM • USDT • SKRILL • NETELLER
-            </p>
-          </div>
         </div>
       </section>
 
