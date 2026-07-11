@@ -7,6 +7,7 @@ import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import { HeroCandlesticks } from "@/components/hero-candlesticks";
+import { NewsArticleCard, type NewsArticle } from "@/components/news-article-card";
 import {
   fetchSignals,
   fetchStats,
@@ -364,6 +365,8 @@ export default function Home() {
   const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
   const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
   const [dbConfigured, setDbConfigured] = useState(false);
+  const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
+  const [newsLoading, setNewsLoading] = useState(true);
 
   const stats = liveStats ?? FALLBACK_STATS;
   const winRateDisplay = liveStats
@@ -410,6 +413,16 @@ export default function Home() {
     }
 
     load();
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/news?pageSize=3")
+      .then((r) => r.json())
+      .then((data) => {
+        setNewsArticles(data.articles || []);
+        setNewsLoading(false);
+      })
+      .catch(() => setNewsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -654,6 +667,44 @@ export default function Home() {
         <div className="max-w-6xl mx-auto md:px-[56px]">
           <p className="label-institutional mb-12">CLIENT PERSPECTIVES</p>
           <TestimonialsCarousel testimonials={displayTestimonials} />
+        </div>
+      </section>
+
+      <SectionRule />
+
+      {/* Latest News */}
+      <section className="bg-[#FFFFFF] py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <p className="label-institutional mb-4">MARKET INTELLIGENCE</p>
+          <h2 className="font-serif-display mb-12 text-3xl text-[#1A1A1A] md:text-4xl">
+            Latest News
+          </h2>
+
+          {newsLoading ? (
+            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-[320px] animate-pulse border border-[#E5E7EB] bg-white"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {newsArticles.slice(0, 3).map((article, i) => (
+                <NewsArticleCard key={`${article.url}-${i}`} article={article} />
+              ))}
+            </div>
+          )}
+
+          <div className="text-center">
+            <Link
+              href="/news"
+              className="inline-block border border-[#1A1A1A] px-8 py-4 text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1A1A] transition-colors duration-200 hover:bg-[#1A1A1A] hover:text-white"
+            >
+              View All News
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -6,6 +6,7 @@ export const navLinks = [
   { href: "/pricing", label: "PRICING" },
   { href: "/#education", label: "EDUCATION" },
   { href: "/#insights", label: "INSIGHTS" },
+  { href: "/news", label: "NEWS" },
 ] as const;
 
 export const chartPairs = [
