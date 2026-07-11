@@ -12,7 +12,7 @@ export function HomeTestimonial({
   memberSince = "2024",
 }: HomeTestimonialProps) {
   return (
-    <section id="insights" className="scroll-mt-[100px] bg-[#F5F5F0] px-4 py-14 lg:px-6">
+    <section id="insights" className="scroll-mt-[100px] bg-[#F9FAFB] px-4 py-16 lg:px-6">
       <div className="relative mx-auto max-w-4xl px-4 text-center">
         <span
           className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 font-serif-display text-[120px] leading-none text-[#B8956A]/20 select-none"

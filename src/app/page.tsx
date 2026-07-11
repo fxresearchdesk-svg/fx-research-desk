@@ -3,21 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
-import { CommandCenterHero } from "@/components/home/command-center-hero";
-import { HomeLiveSignals } from "@/components/home/home-live-signals";
-import { HomePricingStrip } from "@/components/home/home-pricing-strip";
+import { HomePricingSection } from "@/components/home/home-pricing-section";
 import { HomeTestimonial } from "@/components/home/home-testimonial";
+import { SwissBankHero } from "@/components/home/swiss-bank-hero";
 import { NewsArticleCard, type NewsArticle } from "@/components/news-article-card";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import {
-  fetchSignals,
   fetchStats,
   fetchTestimonials,
   isSupabaseConfigured,
 } from "@/lib/supabase";
 import { navLinks } from "@/lib/site-config";
-import type { Signal, Stats, Testimonial } from "@/lib/types";
+import type { Stats, Testimonial } from "@/lib/types";
 
 const FALLBACK_STATS = {
   win_rate: 87.3,
@@ -25,6 +23,26 @@ const FALLBACK_STATS = {
   monthly_return: 14.2,
   active_traders: 500,
 };
+
+const HOW_IT_WORKS = [
+  {
+    step: "1",
+    title: "Subscribe",
+    description: "Choose a plan and get instant access to our secure Telegram channel.",
+  },
+  {
+    step: "2",
+    title: "Receive Signals",
+    description:
+      "Daily trade alerts with entry, stop-loss, and take-profit levels in real-time.",
+  },
+  {
+    step: "3",
+    title: "Execute Trades",
+    description:
+      "Apply institutional-grade setups with clear risk parameters on your broker.",
+  },
+];
 
 const FEATURED_TESTIMONIAL = {
   quote:
@@ -38,15 +56,13 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("");
 
   const [statsLoading, setStatsLoading] = useState(true);
-  const [signalsLoading, setSignalsLoading] = useState(true);
   const [liveStats, setLiveStats] = useState<Stats | null>(null);
-  const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
   const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
 
   const stats = liveStats ?? FALLBACK_STATS;
-  const winRateDisplay = `${Number(stats.win_rate).toFixed(1)}%`;
+  const winRateDisplay = `${Math.round(Number(stats.win_rate))}%`;
 
   const featuredTestimonial = liveTestimonials[0]
     ? {
@@ -62,21 +78,17 @@ export default function Home() {
 
     if (!configured) {
       setStatsLoading(false);
-      setSignalsLoading(false);
       return;
     }
 
     async function load() {
-      const [statsData, signals, testimonials] = await Promise.all([
+      const [statsData, testimonials] = await Promise.all([
         fetchStats(),
-        fetchSignals(3),
         fetchTestimonials(),
       ]);
       if (statsData) setLiveStats(statsData);
-      setLiveSignals(signals);
       setLiveTestimonials(testimonials);
       setStatsLoading(false);
-      setSignalsLoading(false);
     }
 
     load();
@@ -95,7 +107,7 @@ export default function Home() {
   useEffect(() => {
     const ids = navLinks
       .map((l) => l.href.replace("/#", "").replace("#", ""))
-      .filter((id) => !["charts", "pricing", "news", "education"].includes(id));
+      .filter((id) => !["charts", "news", "education"].includes(id));
     const observers: IntersectionObserver[] = [];
 
     ids.forEach((id) => {
@@ -115,20 +127,55 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F5F5F0] text-[#4A4A4A]">
+    <main className="min-h-screen overflow-x-hidden bg-white text-[#4A4A4A]">
       <InstitutionalTicker />
       <SiteNavbar activeSection={activeSection} />
 
-      <CommandCenterHero
+      <SwissBankHero
         winRate={winRateDisplay}
         pipsMonth={stats.pips_month}
-        activeMembers={stats.active_traders}
+        members={stats.active_traders}
         loading={statsLoading}
       />
 
-      <HomePricingStrip />
+      <section className="border-y border-[#E5E7EB] bg-[#F9FAFB] py-6">
+        <p className="text-center text-xs uppercase tracking-[0.2em] text-[#4A4A4A]">
+          Secure Checkout
+          <span className="mx-4 text-[#D1D5DB]">|</span>
+          Instant Access
+          <span className="mx-4 text-[#D1D5DB]">|</span>
+          Verified Results
+          <span className="mx-4 text-[#D1D5DB]">|</span>
+          Global Reach
+        </p>
+      </section>
 
-      <HomeLiveSignals signals={liveSignals} loading={signalsLoading} />
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto max-w-5xl">
+          <header className="mb-14 text-center">
+            <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-[#B8956A]">
+              Process
+            </p>
+            <h2 className="font-serif-display text-3xl text-[#1A1A1A]">How It Works</h2>
+          </header>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+            {HOW_IT_WORKS.map((item) => (
+              <div key={item.step} className="text-center">
+                <div className="font-data mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-[#E5E7EB] text-lg text-[#B8956A]">
+                  {item.step}
+                </div>
+                <h3 className="mb-3 text-lg text-[#1A1A1A]">{item.title}</h3>
+                <p className="text-sm leading-relaxed text-[#6B7280]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <HomePricingSection />
 
       <HomeTestimonial
         quote={featuredTestimonial.quote}
@@ -137,9 +184,9 @@ export default function Home() {
         memberSince={featuredTestimonial.memberSince}
       />
 
-      <section className="border-t border-[#E5E7EB] bg-white px-4 py-12 lg:px-6">
+      <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-end justify-between gap-4">
+          <div className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="mb-2 text-[10px] uppercase tracking-[0.3em] text-[#B8956A]">
                 Market Intelligence
@@ -150,12 +197,12 @@ export default function Home() {
               href="/news"
               className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-[#B8956A] transition-colors duration-200 hover:text-[#C9A87C]"
             >
-              View All Market News →
+              View All →
             </Link>
           </div>
 
           {newsLoading ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
@@ -164,7 +211,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {newsArticles.slice(0, 3).map((article, i) => (
                 <NewsArticleCard key={`${article.url}-${i}`} article={article} />
               ))}
