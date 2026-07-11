@@ -6,8 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionalTicker } from "@/components/institutional-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { HeroLivePrices } from "@/components/hero-live-prices";
-import { HomePricingSection } from "@/components/home-pricing-section";
+import { HeroMarketPulse } from "@/components/hero-market-pulse";
 import {
   fetchSignals,
   fetchStats,
@@ -483,12 +482,21 @@ export default function Home() {
           </div>
 
           <div className="flex items-center justify-center lg:justify-end">
-            <HeroLivePrices />
+            <HeroMarketPulse />
           </div>
         </div>
       </section>
 
-      <HomePricingSection />
+      <SectionRule />
+
+      {/* Trust */}
+      <section className="border-y border-[#E5E5E5] bg-[#FFFFFF] py-6">
+        <p className="text-center text-xs tracking-[0.2em] text-[#4A4A4A]">
+          <span className="mx-1.5 text-sm font-medium text-[#B8956A]">◆</span>
+          Institutional-grade signals. Verified performance since 2015.{" "}
+          <span className="mx-1.5 text-sm font-medium text-[#B8956A]">◆</span>
+        </p>
+      </section>
 
       <SectionRule />
 
