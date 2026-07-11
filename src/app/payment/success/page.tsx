@@ -27,19 +27,19 @@ function SuccessContent() {
         </svg>
       </div>
 
-      <h1 className="font-serif-display text-[40px] text-[#E8E6E3] mb-4">
+      <h1 className="font-serif-display text-[40px] text-[#F5F5F5] mb-4">
         Payment Confirmed
       </h1>
-      <p className="text-[#8A8A8A] mb-2">Welcome to FX Research Desk</p>
-      <p className="font-data text-sm text-[#8A8A8A] mb-8">
+      <p className="text-[#AAAAAA] mb-2">Welcome to FX Research Desk</p>
+      <p className="font-data text-sm text-[#AAAAAA] mb-8">
         Plan:{" "}
         <span className="text-[#B8956A] uppercase tracking-widest">{plan}</span> |
         Paid via {method}
       </p>
 
-      <div className="bg-[#111111] border border-[#2A2A2A] p-6 mb-8 text-left">
+      <div className="bg-[#1E1E1E] border border-[#333333] p-6 mb-8 text-left">
         <h3 className="label-institutional mb-4">What happens next?</h3>
-        <ol className="space-y-3 text-[13px] text-[#8A8A8A] leading-relaxed">
+        <ol className="space-y-3 text-[13px] text-[#AAAAAA] leading-relaxed">
           <li className="flex gap-3">
             <span className="text-[#B8956A] font-data">1.</span>
             Check your email for the Telegram channel invite link
@@ -55,7 +55,7 @@ function SuccessContent() {
         </ol>
       </div>
 
-      <p className="text-[13px] text-[#8A8A8A] mb-6">
+      <p className="text-[13px] text-[#AAAAAA] mb-6">
         Questions? Contact us at{" "}
         <a
           href="mailto:fxresearchdesk@gmail.com"
@@ -67,7 +67,7 @@ function SuccessContent() {
 
       <Link
         href="/"
-        className="inline-block border border-[#2A2A2A] px-8 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] transition-colors duration-200"
+        className="inline-block border border-[#333333] px-8 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#121212] transition-colors duration-200"
       >
         RETURN TO HOMEPAGE
       </Link>
@@ -79,7 +79,7 @@ export default function SuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-xl mx-auto px-6 py-24 text-center text-[#8A8A8A] text-sm">
+        <div className="max-w-xl mx-auto px-6 py-24 text-center text-[#AAAAAA] text-sm">
           Loading...
         </div>
       }

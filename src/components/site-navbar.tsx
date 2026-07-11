@@ -52,7 +52,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
 
   return (
     <>
-      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b-2 border-[#2A2A2A] bg-[#0A0A0A]">
+      <header className="fixed top-10 left-0 right-0 z-50 h-16 border-b border-[#333333] bg-[#1A1A1A]">
         <nav className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
           <Link href="/" className="shrink-0">
             <Image
@@ -102,7 +102,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block bg-[#B8956A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#030303] shadow-[0_0_15px_rgba(184,149,106,0.2)] transition-colors duration-200 hover:bg-[#C9A87C] whitespace-nowrap"
+              className="hidden sm:inline-block bg-[#B8956A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#121212] shadow-[0_0_15px_rgba(184,149,106,0.2)] transition-colors duration-200 hover:bg-[#C9A87C] whitespace-nowrap"
             >
               CLIENT ACCESS
             </a>
@@ -121,10 +121,10 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
       {menuOpen && (
         <>
           <div
-            className="fixed inset-0 z-[70] bg-[#030303]/95 lg:hidden"
+            className="fixed inset-0 z-[70] bg-[#121212]/95 lg:hidden"
             onClick={() => setMenuOpen(false)}
           />
-          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#0A0A0A] border-l border-[#2A2A2A] p-8 pt-28 lg:hidden fade-in">
+          <div className="fixed top-0 right-0 bottom-0 z-[80] w-72 bg-[#1A1A1A] border-l border-[#333333] p-8 pt-28 lg:hidden fade-in">
             <div className="flex flex-col gap-6">
               {navLinks.map((link) => {
                 const active = isNavLinkActive(link.href, pathname, activeSection);
@@ -150,7 +150,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                 href={telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#B8956A] px-6 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-[#030303] shadow-[0_0_15px_rgba(184,149,106,0.2)] hover:bg-[#C9A87C] transition-colors duration-200 whitespace-nowrap"
+                className="bg-[#B8956A] px-6 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-[#121212] shadow-[0_0_15px_rgba(184,149,106,0.2)] hover:bg-[#C9A87C] transition-colors duration-200 whitespace-nowrap"
               >
                 CLIENT ACCESS
               </a>

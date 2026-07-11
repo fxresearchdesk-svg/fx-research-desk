@@ -263,25 +263,25 @@ export default function AdminPage() {
 
   if (!authenticated) {
     return (
-      <main className="min-h-screen bg-[#0a0a0a] text-[#E8E6E3] flex items-center justify-center px-6">
+      <main className="min-h-screen bg-[#1A1A1A] text-[#F5F5F5] flex items-center justify-center px-6">
         <form
           onSubmit={handleLogin}
-          className="w-full max-w-md bg-[#0C0C0C] border border-[#1F1F1F]  p-8"
+          className="w-full max-w-md bg-[#1E1E1E] border border-[#333333]  p-8"
         >
           <h1 className="text-2xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-[#6B6B6B] text-sm mb-6">Enter admin password to continue</p>
+          <p className="text-[#777777] text-sm mb-6">Enter admin password to continue</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Admin password"
-            className="w-full bg-[#030303] border border-[#1F1F1F]  px-4 py-3 mb-4 text-[#E8E6E3]"
+            className="w-full bg-[#121212] border border-[#333333]  px-4 py-3 mb-4 text-[#F5F5F5]"
           />
           {message && <p className="text-red-400 text-sm mb-4">{message}</p>}
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full border border-[#1F1F1F] bg-transparent text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] text-black font-bold py-3  disabled:opacity-50"
+            className="w-full border border-[#333333] bg-transparent text-[#B8956A] hover:bg-[#B8956A] hover:text-[#121212] text-[#121212] font-bold py-3  disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Login"}
           </button>
@@ -298,8 +298,8 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-[#E8E6E3]">
-      <header className="border-b border-[#1F1F1F] bg-[#0a0a0a]/95 backdrop-blur-xl sticky top-0 z-50">
+    <main className="min-h-screen bg-[#1A1A1A] text-[#F5F5F5]">
+      <header className="border-b border-[#333333] bg-[#1A1A1A]/95 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold">FX Research Desk Admin</h1>
@@ -313,13 +313,13 @@ export default function AdminPage() {
 
       <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
         {message && (
-          <div className="bg-[#B8956A] text-[#030303]/10 border border-emerald-500/30 text-[#B8956A] px-4 py-3  text-sm">
+          <div className="bg-[#B8956A] text-[#121212]/10 border border-emerald-500/30 text-[#B8956A] px-4 py-3  text-sm">
             {message}
           </div>
         )}
 
         {/* Stats */}
-        <section className="bg-[#0C0C0C] border border-[#1F1F1F]  p-6">
+        <section className="bg-[#1E1E1E] border border-[#333333]  p-6">
           <h2 className="text-lg font-bold mb-4">Site Stats</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {[
@@ -335,7 +335,7 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setStatsForm((prev) => ({ ...prev, [field.key]: e.target.value }))
                   }
-                  className="w-full bg-[#030303] border border-[#1F1F1F]  px-3 py-2 text-[#E8E6E3]"
+                  className="w-full bg-[#121212] border border-[#333333]  px-3 py-2 text-[#F5F5F5]"
                 />
               </div>
             ))}
@@ -344,7 +344,7 @@ export default function AdminPage() {
             type="button"
             onClick={handlePublishStats}
             disabled={publishing}
-            className="inline-flex items-center gap-2 border border-[#1F1F1F] bg-transparent text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] text-black font-bold px-6 py-2.5  disabled:opacity-50"
+            className="inline-flex items-center gap-2 border border-[#333333] bg-transparent text-[#B8956A] hover:bg-[#B8956A] hover:text-[#121212] text-[#121212] font-bold px-6 py-2.5  disabled:opacity-50"
           >
             {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Publish to Site
@@ -352,14 +352,14 @@ export default function AdminPage() {
         </section>
 
         {/* Signals */}
-        <section className="bg-[#0C0C0C] border border-[#1F1F1F]  p-6">
+        <section className="bg-[#1E1E1E] border border-[#333333]  p-6">
           <h2 className="text-lg font-bold mb-4">Signals</h2>
           <form onSubmit={handleSaveSignal} className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
             <input
               value={signalForm.pair}
               onChange={(e) => setSignalForm((p) => ({ ...p, pair: e.target.value }))}
               placeholder="Pair"
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <select
               value={signalForm.direction}
@@ -369,7 +369,7 @@ export default function AdminPage() {
                   direction: e.target.value as SignalDirection,
                 }))
               }
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             >
               <option value="BUY">BUY</option>
               <option value="SELL">SELL</option>
@@ -378,19 +378,19 @@ export default function AdminPage() {
               value={signalForm.entry_price}
               onChange={(e) => setSignalForm((p) => ({ ...p, entry_price: e.target.value }))}
               placeholder="Entry"
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <input
               value={signalForm.stop_loss}
               onChange={(e) => setSignalForm((p) => ({ ...p, stop_loss: e.target.value }))}
               placeholder="Stop Loss"
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <input
               value={signalForm.take_profit}
               onChange={(e) => setSignalForm((p) => ({ ...p, take_profit: e.target.value }))}
               placeholder="Take Profit"
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <select
               value={signalForm.result}
@@ -400,7 +400,7 @@ export default function AdminPage() {
                   result: e.target.value as SignalResult,
                 }))
               }
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             >
               <option value="PENDING">PENDING</option>
               <option value="WIN">WIN</option>
@@ -410,11 +410,11 @@ export default function AdminPage() {
               value={signalForm.pips}
               onChange={(e) => setSignalForm((p) => ({ ...p, pips: e.target.value }))}
               placeholder="Pips"
-              className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <button
               type="submit"
-              className="bg-[#B8956A] text-[#030303] text-black font-bold  px-4 py-2"
+              className="bg-[#B8956A] text-[#121212] text-[#121212] font-bold  px-4 py-2"
             >
               {editingSignalId ? "Update Signal" : "Add Signal"}
             </button>
@@ -424,10 +424,10 @@ export default function AdminPage() {
             {signals.map((signal) => (
               <div
                 key={signal.id}
-                className="flex flex-wrap items-center justify-between gap-3 bg-[#030303]/50 border border-[#1F1F1F]  px-4 py-3"
+                className="flex flex-wrap items-center justify-between gap-3 bg-[#121212]/50 border border-[#333333]  px-4 py-3"
               >
                 <div className="text-sm">
-                  <span className="font-semibold text-[#E8E6E3]">{signal.pair}</span>{" "}
+                  <span className="font-semibold text-[#F5F5F5]">{signal.pair}</span>{" "}
                   <span className="text-[#B8956A]">{signal.direction}</span> · Entry{" "}
                   {signal.entry_price} · {signal.result ?? "PENDING"}
                   {signal.pips != null && ` (${signal.pips} pips)`}
@@ -466,7 +466,7 @@ export default function AdminPage() {
         </section>
 
         {/* Testimonials */}
-        <section className="bg-[#0C0C0C] border border-[#1F1F1F]  p-6">
+        <section className="bg-[#1E1E1E] border border-[#333333]  p-6">
           <h2 className="text-lg font-bold mb-4">Testimonials</h2>
           <form onSubmit={handleSaveTestimonial} className="space-y-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -474,13 +474,13 @@ export default function AdminPage() {
                 value={testimonialForm.name}
                 onChange={(e) => setTestimonialForm((p) => ({ ...p, name: e.target.value }))}
                 placeholder="Name"
-                className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+                className="bg-[#121212] border border-[#333333]  px-3 py-2"
               />
               <input
                 value={testimonialForm.location}
                 onChange={(e) => setTestimonialForm((p) => ({ ...p, location: e.target.value }))}
                 placeholder="Location"
-                className="bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+                className="bg-[#121212] border border-[#333333]  px-3 py-2"
               />
             </div>
             <textarea
@@ -488,7 +488,7 @@ export default function AdminPage() {
               onChange={(e) => setTestimonialForm((p) => ({ ...p, quote: e.target.value }))}
               placeholder="Quote"
               rows={3}
-              className="w-full bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="w-full bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <input
               value={testimonialForm.member_type}
@@ -496,7 +496,7 @@ export default function AdminPage() {
                 setTestimonialForm((p) => ({ ...p, member_type: e.target.value }))
               }
               placeholder="Member type (e.g. Premium Member • 6 months)"
-              className="w-full bg-[#030303] border border-[#1F1F1F]  px-3 py-2"
+              className="w-full bg-[#121212] border border-[#333333]  px-3 py-2"
             />
             <ImageUpload
               value={testimonialForm.image_url}
@@ -504,7 +504,7 @@ export default function AdminPage() {
             />
             <button
               type="submit"
-              className="bg-[#B8956A] text-[#030303] text-black font-bold  px-6 py-2"
+              className="bg-[#B8956A] text-[#121212] text-[#121212] font-bold  px-6 py-2"
             >
               {editingTestimonialId ? "Update Testimonial" : "Add Testimonial"}
             </button>
@@ -514,11 +514,11 @@ export default function AdminPage() {
             {testimonials.map((t) => (
               <div
                 key={t.id}
-                className="flex flex-wrap items-start justify-between gap-3 bg-[#030303]/50 border border-[#1F1F1F]  px-4 py-3"
+                className="flex flex-wrap items-start justify-between gap-3 bg-[#121212]/50 border border-[#333333]  px-4 py-3"
               >
                 <div className="text-sm max-w-xl">
-                  <p className="text-[#6B6B6B] italic mb-1">&ldquo;{t.quote}&rdquo;</p>
-                  <p className="text-[#E8E6E3] font-semibold">
+                  <p className="text-[#777777] italic mb-1">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="text-[#F5F5F5] font-semibold">
                     {t.name}
                     {t.location && <span className="text-slate-500 font-normal"> · {t.location}</span>}
                   </p>

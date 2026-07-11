@@ -15,7 +15,7 @@ export default function PaymentLayout({
     <Elements stripe={stripePromise}>
       <InstitutionalTicker />
       <SiteNavbar />
-      <main className="min-h-screen bg-[#030303] pt-[104px]">{children}</main>
+      <main className="min-h-screen bg-[#121212] pt-[104px]">{children}</main>
       <SiteFooter />
     </Elements>
   );

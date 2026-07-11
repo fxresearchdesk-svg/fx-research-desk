@@ -84,8 +84,8 @@ export default function TradingPsychologyPage() {
         </ul>
       </section>
 
-      <div className="border border-[#1F1F1F] bg-[#0C0C0C] p-8 mt-16 text-center">
-        <h2 className="font-serif-display text-[24px] text-[#E8E6E3] mb-2">
+      <div className="border border-[#333333] bg-[#1E1E1E] p-8 mt-16 text-center">
+        <h2 className="font-serif-display text-[24px] text-[#F5F5F5] mb-2">
           Ready to Trade With Discipline?
         </h2>
         <p className="mb-6">
@@ -96,7 +96,7 @@ export default function TradingPsychologyPage() {
           href="https://t.me/fxresearchdesk"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block border border-[#1F1F1F] px-6 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#030303] transition-colors duration-200"
+          className="inline-block border border-[#333333] px-6 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-[#121212] transition-colors duration-200"
         >
           REQUEST ACCESS
         </a>

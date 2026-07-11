@@ -13,34 +13,36 @@
 }
 
 :root {
-  --fx-bg: #030303;
-  --fx-surface: #0a0a0a;
-  --fx-border: #2a2a2a;
-  --fx-text: #e8e6e3;
-  --fx-muted: #8a8a8a;
+  --fx-bg: #121212;
+  --fx-surface: #1a1a1a;
+  --fx-card: #1e1e1e;
+  --fx-border: #333333;
+  --fx-text: #f5f5f5;
+  --fx-secondary: #aaaaaa;
+  --fx-muted: #777777;
   --fx-data: #ffffff;
   --fx-gold: #b8956a;
   --fx-gold-hover: #c9a87c;
   --fx-green: #4a7c59;
   --fx-red: #8b3a3a;
-  --background: #030303;
-  --foreground: #e8e6e3;
-  --card: #111111;
-  --card-foreground: #e8e6e3;
-  --border: #2a2a2a;
+  --background: #121212;
+  --foreground: #f5f5f5;
+  --card: #1e1e1e;
+  --card-foreground: #f5f5f5;
+  --border: #333333;
   --radius: 0;
 }
 
 @layer base {
   * {
-    @apply border-[#2A2A2A] outline-[#B8956A]/30;
+    @apply border-[#333333] outline-[#B8956A]/30;
   }
   html {
     @apply scroll-smooth;
     font-family: var(--font-inter), system-ui, sans-serif;
   }
   body {
-    @apply bg-[#030303] text-[#E8E6E3];
+    @apply bg-[#121212] text-[#F5F5F5];
   }
 }
 
@@ -58,7 +60,7 @@
   font-size: 10px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #8a8a8a;
+  color: #777777;
 }
 
 .hero-headline-glow {
@@ -67,7 +69,7 @@
 
 .btn-primary {
   background-color: #b8956a;
-  color: #030303;
+  color: #121212;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -83,7 +85,7 @@
 
 .btn-secondary {
   border: 1px solid rgba(184, 149, 106, 0.4);
-  color: #8a8a8a;
+  color: #aaaaaa;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -98,7 +100,7 @@
 
 .section-rule {
   height: 1px;
-  background-color: #2a2a2a;
+  background-color: #333333;
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
