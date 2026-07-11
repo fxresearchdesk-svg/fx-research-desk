@@ -47,7 +47,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <p className="text-[10px] text-[#9CA3AF] tracking-[0.2em]">
+        <p className="text-[10px] text-[#9A9A9A] tracking-[0.2em]">
           © 2026 FX Research Desk. All Rights Reserved.
         </p>
       </div>

@@ -97,7 +97,7 @@ export default function TechnicalAnalysisPage() {
           href="https://t.me/fxresearchdesk"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block border border-[#B8956A] px-6 py-3 text-[11px] tracking-[0.2em] text-[#B8956A] hover:bg-[#B8956A] hover:text-white transition-colors duration-200"
+          className="inline-block border border-[#1A1A1A] px-6 py-3 text-[11px] tracking-[0.2em] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-colors duration-200"
         >
           REQUEST ACCESS
         </a>
