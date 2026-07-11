@@ -1,81 +1,90 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Check } from "lucide-react";
 
-export default function PaymentSuccessPage() {
+function SuccessContent() {
+  const searchParams = useSearchParams();
+  const plan = searchParams.get("plan") || "standard";
+  const method = searchParams.get("method") || "stripe";
+
   return (
-    <div className="max-w-xl mx-auto px-6 text-center">
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.1 }}
-        className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#00C853] bg-[#00C853]/10"
-      >
-        <motion.div
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+    <div className="max-w-xl mx-auto px-6 py-24 text-center">
+      <div className="w-16 h-16 border-2 border-[#00C853] rounded-full flex items-center justify-center mx-auto mb-8">
+        <svg
+          className="w-8 h-8 text-[#00C853]"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <Check className="h-10 w-10 text-[#00C853]" strokeWidth={2.5} />
-        </motion.div>
-      </motion.div>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      </div>
 
-      <motion.h1
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="font-serif-display mb-4 text-4xl text-white"
-      >
-        Payment Confirmed
-      </motion.h1>
+      <h1 className="text-3xl font-bold text-white mb-4">Payment Confirmed</h1>
+      <p className="text-[#888] mb-2">Welcome to FX Research Desk</p>
+      <p className="text-[#666] text-sm mb-8">
+        Plan:{" "}
+        <span className="text-[#D4AF37] uppercase tracking-widest">{plan}</span> |
+        Paid via {method}
+      </p>
 
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="mb-2 text-xl text-[#D4AF37]"
-      >
-        Welcome to FX Research Desk
-      </motion.p>
+      <div className="bg-[#0A0A0A] border border-[#1A1A1A] p-6 mb-8 text-left">
+        <h3 className="text-[10px] tracking-[0.2em] text-[#D4AF37] uppercase mb-4">
+          What happens next?
+        </h3>
+        <ol className="space-y-3 text-sm text-[#A0A0A0]">
+          <li className="flex gap-3">
+            <span className="text-[#D4AF37] font-bold">1.</span>
+            Check your email for the Telegram channel invite link
+          </li>
+          <li className="flex gap-3">
+            <span className="text-[#D4AF37] font-bold">2.</span>
+            Join the VIP Telegram channel to start receiving signals immediately
+          </li>
+          <li className="flex gap-3">
+            <span className="text-[#D4AF37] font-bold">3.</span>
+            Access the education library from your welcome email
+          </li>
+        </ol>
+      </div>
 
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="mb-8 text-[#A0A0A0] leading-relaxed"
-      >
-        Check your email for Telegram channel access
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        className="mb-10 text-sm text-[#888888]"
-      >
+      <p className="text-[#666] text-xs mb-6">
         Questions? Contact us at{" "}
         <a
           href="mailto:fxresearchdesk@gmail.com"
-          className="text-[#D4AF37] hover:text-white transition-colors"
+          className="text-[#D4AF37] hover:underline"
         >
           fxresearchdesk@gmail.com
         </a>
-      </motion.p>
+      </p>
 
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.7 }}
+      <Link
+        href="/"
+        className="inline-block bg-[#D4AF37] text-black px-8 py-3 text-[11px] tracking-[0.2em] font-bold hover:bg-[#E5C158] transition"
       >
-        <Link
-          href="/"
-          className="inline-block rounded-sm bg-[#D4AF37] px-8 py-3.5 text-xs font-bold uppercase tracking-[0.2em] text-black transition-colors duration-300 hover:bg-[#E5C158]"
-        >
-          Return Home
-        </Link>
-      </motion.div>
+        RETURN TO HOMEPAGE
+      </Link>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-xl mx-auto px-6 py-24 text-center text-[#666] text-sm">
+          Loading...
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }

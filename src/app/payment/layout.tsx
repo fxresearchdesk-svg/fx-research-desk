@@ -1,15 +1,20 @@
-import type { Metadata } from "next";
-import { PaymentShell } from "./payment-shell";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Checkout | FX Research Desk",
-  description: "Secure checkout for FX Research Desk membership plans.",
-};
+import { Elements } from "@stripe/react-stripe-js";
+import { stripePromise } from "@/lib/stripe";
+import { SiteNavbar } from "@/components/site-navbar";
+import { SiteFooter } from "@/components/site-footer";
 
 export default function PaymentLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <PaymentShell>{children}</PaymentShell>;
+  return (
+    <Elements stripe={stripePromise}>
+      <SiteNavbar />
+      <main className="min-h-screen bg-[#050505] pt-[128px]">{children}</main>
+      <SiteFooter />
+    </Elements>
+  );
 }

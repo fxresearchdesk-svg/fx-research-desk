@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { isValidPlan, PLAN_PRICES } from "@/lib/plans";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-06-24.dahlia",
 });
 
+const PLAN_PRICES: Record<string, number> = {
+  standard: 49,
+  professional: 99,
+  elite: 150,
+  permanent: 209,
+};
+
 export async function POST(req: Request) {
   try {
-    const { plan } = (await req.json()) as { plan?: string };
-
-    if (!plan || !isValidPlan(plan)) {
-      return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
-    }
-
-    const amount = PLAN_PRICES[plan];
+    const { plan } = await req.json();
+    const amount = PLAN_PRICES[plan] || 49;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount * 100,
@@ -23,11 +24,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
-    console.error("Payment intent error:", error);
-    return NextResponse.json(
-      { error: "Failed to create payment intent" },
-      { status: 500 }
-    );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Payment failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

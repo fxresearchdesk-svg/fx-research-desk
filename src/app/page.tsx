@@ -15,6 +15,7 @@ import {
   isSupabaseConfigured,
 } from "@/lib/supabase";
 import { navLinks, telegramUrl } from "@/lib/site-config";
+import { PLANS } from "@/lib/plans";
 import type { Signal, Stats, Testimonial } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -52,124 +53,6 @@ const trustIndicators = [
   { value: "30+ Countries", label: "Global client base" },
   { value: "0% Hidden Fees", label: "Transparent pricing structure" },
   { value: "24/7 Desk", label: "London • New York • Singapore" },
-];
-
-const pricingTrustItems = [
-  { label: "SECURE CHECKOUT", detail: "256-bit SSL" },
-  { label: "INSTANT DELIVERY", detail: "Signals in 60s" },
-  { label: "VERIFIED RESULTS", detail: "87.3% Win Rate" },
-  { label: "GLOBAL REACH", detail: "500+ Traders" },
-];
-
-const pricingTiers = [
-  {
-    id: "standard",
-    name: "STANDARD",
-    price: "$49",
-    period: "/month",
-    subtitle: "Monthly billing",
-    savings: null as string | null,
-    equivalent: null as string | null,
-    badge: null as string | null,
-    badgeStyle: "default" as "default" | "gold" | "lifetime",
-    elevated: false,
-    permanent: false,
-    footnote: null as string | null,
-    features: [
-      "Daily 2–4 VIP Signals",
-      "Entry, SL & TP — Every Trade",
-      "Real-Time Telegram Alerts",
-      "Live Modification Updates",
-      "Full Education Library",
-      "VIP Telegram Channel",
-    ],
-    cta: "START NOW",
-    href: "/payment/standard",
-  },
-  {
-    id: "professional",
-    name: "PROFESSIONAL",
-    price: "$99",
-    period: "/quarter",
-    subtitle: null,
-    savings: "SAVE 33%",
-    equivalent: "Equivalent $33/month",
-    badge: "MOST POPULAR",
-    badgeStyle: "gold",
-    elevated: true,
-    permanent: false,
-    footnote: null,
-    features: [
-      "Daily 2–4 VIP Signals",
-      "Entry, SL & TP — Every Trade",
-      "Real-Time Telegram Alerts",
-      "Live Modification Updates",
-      "Full Education Library",
-      "VIP Telegram Channel",
-      "Dedicated Support (24hr)",
-    ],
-    cta: "START NOW",
-    href: "/payment/professional",
-  },
-  {
-    id: "elite",
-    name: "ELITE",
-    price: "$150",
-    period: "/year",
-    subtitle: null,
-    savings: "SAVE 75%",
-    equivalent: "Equivalent $12.50/month",
-    badge: "BEST VALUE",
-    badgeStyle: "gold",
-    elevated: false,
-    permanent: false,
-    footnote: null,
-    features: [
-      "Daily 2–4 VIP Signals",
-      "Entry, SL & TP — Every Trade",
-      "Real-Time Telegram Alerts",
-      "Live Modification Updates",
-      "Full Education Library",
-      "VIP Telegram Channel",
-      "Dedicated Support (24hr)",
-      "Daily 3–6 VIP Signals",
-      "Priority Support (4hr)",
-      "Monthly 1-on-1 Call",
-    ],
-    cta: "START NOW",
-    href: "/payment/elite",
-  },
-  {
-    id: "permanent",
-    name: "PERMANENT",
-    price: "$209",
-    period: "one-time",
-    subtitle: "Never pay again",
-    savings: null,
-    equivalent: null,
-    badge: "LIFETIME ACCESS",
-    badgeStyle: "lifetime",
-    elevated: false,
-    permanent: true,
-    footnote: "Limited spots available",
-    features: [
-      "Daily 2–4 VIP Signals",
-      "Entry, SL & TP — Every Trade",
-      "Real-Time Telegram Alerts",
-      "Live Modification Updates",
-      "Full Education Library",
-      "VIP Telegram Channel",
-      "Dedicated Support (24hr)",
-      "Daily 3–6 VIP Signals",
-      "Priority Support (4hr)",
-      "Monthly 1-on-1 Call",
-      "Direct Line Support",
-      "All Future Updates",
-      "Personal Onboarding",
-    ],
-    cta: "SECURE LIFETIME ACCESS",
-    href: "/payment/permanent",
-  },
 ];
 
 const educationArticles = [
@@ -822,142 +705,105 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[128px] py-24">
-        <div className="w-full border-y border-[#1A1A1A] bg-[#0A0A0A] py-4 mb-16">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
-              {pricingTrustItems.map((item, i) => (
-                <div key={item.label} className="flex items-center">
-                  {i > 0 && (
-                    <span className="hidden md:block w-px h-4 bg-[#1A1A1A] mx-6 shrink-0" />
-                  )}
-                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#888888] whitespace-nowrap">
-                    {item.label}
-                    <span className="text-[#666666]"> | </span>
-                    {item.detail}
-                  </span>
-                </div>
-              ))}
+      <div className="bg-[#0A0A0A] border-y border-[#1A1A1A] py-4">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            ["SECURE CHECKOUT", "256-bit SSL Encryption"],
+            ["INSTANT DELIVERY", "Signals in 60 Seconds"],
+            ["VERIFIED RESULTS", "87.3% Win Rate Since 2015"],
+            ["GLOBAL REACH", "500+ Traders | 30+ Countries"],
+          ].map(([title, sub]) => (
+            <div key={title} className="text-center">
+              <p className="text-[10px] tracking-[0.25em] text-[#888]">{title}</p>
+              <p className="text-[10px] text-[#555] mt-1">{sub}</p>
             </div>
-          </div>
+          ))}
         </div>
+      </div>
 
+      <section id="pricing" className="scroll-mt-[128px] py-24 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-center mb-16"
-          >
-            <SectionLabel>MEMBERSHIP</SectionLabel>
-            <h2 className="font-serif-display headline-glow text-4xl text-white">
-              Select Your Level of Access
-            </h2>
-          </motion.div>
+          <p className="text-[10px] tracking-[0.35em] text-[#D4AF37] text-center uppercase mb-4">
+            Membership Access
+          </p>
+          <h2 className="text-4xl md:text-5xl text-white text-center font-serif mb-3">
+            Choose Your Level of Market Intelligence
+          </h2>
+          <p className="text-sm text-[#666] text-center mb-8">
+            Institutional-grade signals. Retail pricing.
+          </p>
+          <div className="w-16 h-px bg-[#D4AF37]/20 mx-auto mb-16" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-            {pricingTiers.map((tier, i) => (
-              <motion.div
-                key={tier.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
-                className={cn(
-                  "relative flex flex-col rounded-sm p-8 min-h-full transition-colors duration-500",
-                  tier.elevated && "-translate-y-3",
-                  tier.permanent
-                    ? "border-2 border-[#D4AF37] bg-[#0A0A0A] shadow-gold"
-                    : tier.elevated
-                      ? "bg-[#0A0A0A] border border-[#D4AF37]/40 shadow-gold"
-                      : "border border-[#1A1A1A] bg-[#0A0A0A] hover:border-[#D4AF37]/20"
-                )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Object.values(PLANS).map((plan) => (
+              <div
+                key={plan.id}
+                className={`relative bg-[#0A0A0A] border p-8 transition-all duration-400 hover:-translate-y-1 ${
+                  plan.id === "permanent"
+                    ? "border-2 border-[#D4AF37] shadow-[0_0_40px_rgba(212,175,55,0.12)]"
+                    : plan.id === "professional"
+                      ? "border-[#D4AF37]/40 -translate-y-3 shadow-[0_0_30px_rgba(212,175,55,0.08)]"
+                      : "border-[#1A1A1A] hover:border-[#D4AF37]/20"
+                }`}
               >
-                {tier.badge && (
-                  <span
-                    className={cn(
-                      "absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 whitespace-nowrap",
-                      tier.badgeStyle === "gold" || tier.badgeStyle === "lifetime"
+                {plan.badge && (
+                  <div
+                    className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[9px] font-bold tracking-[0.2em] ${
+                      plan.id === "professional"
                         ? "bg-[#D4AF37] text-black"
-                        : "bg-[#D4AF37]/10 text-[#D4AF37]"
-                    )}
+                        : "bg-[#0A0A0A] border border-[#D4AF37]/40 text-[#D4AF37]"
+                    }`}
                   >
-                    {tier.badge}
-                  </span>
+                    {plan.badge}
+                  </div>
                 )}
 
-                <h3 className="label-caps text-[#F5F5F5] mb-4 mt-2">{tier.name}</h3>
-                <div className="mb-2">
-                  <span className="font-serif-display text-4xl text-[#F5F5F5] tabular-nums">
-                    {tier.price}
-                  </span>
-                  <span className="text-sm text-[#A0A0A0] ml-1">{tier.period}</span>
+                <p className="text-[10px] tracking-[0.3em] text-[#888] mb-4">{plan.name}</p>
+                <p className="text-xl text-white font-semibold mb-2">{plan.headline}</p>
+
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-5xl font-bold text-white">${plan.price}</span>
+                  <span className="text-sm text-[#666]">/{plan.period}</span>
                 </div>
-                {tier.subtitle && (
-                  <p className="text-xs text-[#A0A0A0] mb-2">{tier.subtitle}</p>
-                )}
-                {tier.savings && (
-                  <p className="text-xs font-medium text-[#00C853] mb-1">{tier.savings}</p>
-                )}
-                {tier.equivalent && (
-                  <p className="text-xs text-[#888888] mb-4">{tier.equivalent}</p>
-                )}
-                {!tier.subtitle && !tier.savings && !tier.equivalent && (
-                  <div className="mb-4" />
-                )}
-                {tier.subtitle && !tier.savings && <div className="mb-4" />}
+                <p className="text-[10px] text-[#00C853] tracking-widest mb-6">{plan.billing}</p>
 
-                <ul className="space-y-3 mb-8 flex-1 min-w-0">
-                  {tier.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2 text-sm text-[#A0A0A0] leading-relaxed break-words"
-                    >
-                      <span className="mt-0.5 shrink-0 text-[#00C853]">✓</span>
-                      <span>{f}</span>
+                <div className="h-px bg-[#1A1A1A] mb-6" />
+
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-[#A0A0A0]">
+                      <span className="text-[#00C853] mt-0.5 shrink-0">✓</span>
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                {tier.footnote && (
-                  <p className="mb-4 text-[10px] uppercase tracking-[0.15em] text-[#FF3D00]">
-                    {tier.footnote}
+                {plan.id === "permanent" && (
+                  <p className="text-[10px] text-[#FF3D00] tracking-widest text-center mb-4">
+                    Limited spots available
                   </p>
                 )}
 
-                <Link
-                  href={tier.href}
-                  className={cn(
-                    "label-caps text-center py-3.5 px-4 transition-colors duration-300 whitespace-nowrap",
-                    tier.permanent || tier.elevated
-                      ? "bg-[#D4AF37] text-black hover:bg-[#E0C060]"
-                      : "border border-[#D4AF37]/20 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
-                  )}
+                <a
+                  href={plan.href}
+                  className={`block text-center py-3 text-[11px] tracking-[0.2em] font-bold transition ${
+                    plan.id === "professional" || plan.id === "permanent"
+                      ? "bg-[#D4AF37] text-black hover:bg-[#E5C158]"
+                      : "border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
+                  }`}
                 >
-                  {tier.cta}
-                </Link>
-              </motion.div>
+                  {plan.cta}
+                </a>
+              </div>
             ))}
           </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            className="mt-12 text-center"
-          >
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#666666] mb-3">
-              We Accept
+          <div className="mt-16 text-center">
+            <p className="text-[10px] tracking-[0.3em] text-[#555] mb-4">We Accept</p>
+            <p className="text-[10px] tracking-[0.2em] text-[#444]">
+              VISA • MASTERCARD • STRIPE • BITCOIN • ETHEREUM • USDT • SKRILL • NETELLER
             </p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#888888]">
-              VISA • MASTERCARD • STRIPE • BTC • ETH • USDT • SKRILL • NETELLER
-            </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
