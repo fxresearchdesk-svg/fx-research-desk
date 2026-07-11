@@ -416,7 +416,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/news?pageSize=3")
+    fetch("/api/news?pageSize=6")
       .then((r) => r.json())
       .then((data) => {
         setNewsArticles(data.articles || []);
@@ -681,8 +681,8 @@ export default function Home() {
           </h2>
 
           {newsLoading ? (
-            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {[1, 2, 3].map((i) => (
+            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
                   key={i}
                   className="h-[320px] animate-pulse border border-[#E5E7EB] bg-white"
@@ -690,8 +690,8 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {newsArticles.slice(0, 3).map((article, i) => (
+            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {newsArticles.slice(0, 6).map((article, i) => (
                 <NewsArticleCard key={`${article.url}-${i}`} article={article} />
               ))}
             </div>
