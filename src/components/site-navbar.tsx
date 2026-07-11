@@ -18,6 +18,26 @@ function isNavLinkActive(href: string, pathname: string, activeSection?: string)
   return pathname === "/" && activeSection === sectionId;
 }
 
+function handleNavClick(
+  e: React.MouseEvent<HTMLAnchorElement>,
+  href: string,
+  pathname: string,
+  onNavigate?: () => void
+) {
+  if (!href.startsWith("/#")) return;
+
+  const sectionId = href.replace("/#", "");
+  if (pathname === "/") {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    window.history.pushState(null, "", href);
+    onNavigate?.();
+  }
+}
+
 export function SiteNavbar({ activeSection }: SiteNavbarProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,6 +90,7 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href, pathname)}
                   className={cn(
                     "group relative pb-2 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-300",
                     active ? "text-white" : "text-[#D4AF37] hover:text-white"
@@ -133,7 +154,9 @@ export function SiteNavbar({ activeSection }: SiteNavbarProps) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) =>
+                      handleNavClick(e, link.href, pathname, () => setMenuOpen(false))
+                    }
                     className="text-xs font-medium uppercase tracking-[0.2em] text-[#D4AF37] hover:text-white transition-colors duration-300"
                   >
                     {link.label}

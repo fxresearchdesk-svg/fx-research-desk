@@ -319,3 +319,7 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.shadow-gold {
+  box-shadow: 0 4px 24px rgba(212, 175, 55, 0.25);
+}

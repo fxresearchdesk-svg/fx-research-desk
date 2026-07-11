@@ -54,70 +54,121 @@ const trustIndicators = [
   { value: "24/7 Desk", label: "London • New York • Singapore" },
 ];
 
+const pricingTrustItems = [
+  { label: "SECURE CHECKOUT", detail: "256-bit SSL" },
+  { label: "INSTANT DELIVERY", detail: "Signals in 60s" },
+  { label: "VERIFIED RESULTS", detail: "87.3% Win Rate" },
+  { label: "GLOBAL REACH", detail: "500+ Traders" },
+];
+
 const pricingTiers = [
   {
+    id: "standard",
     name: "STANDARD",
     price: "$49",
-    period: "/ month",
-    subtitle: "Monthly commitment",
+    period: "/month",
+    subtitle: "Monthly billing",
+    savings: null as string | null,
+    equivalent: null as string | null,
     badge: null as string | null,
-    highlighted: false,
+    badgeStyle: "default" as "default" | "gold" | "lifetime",
+    elevated: false,
+    permanent: false,
+    footnote: null as string | null,
     features: [
-      "10–15 signals per week",
-      "Telegram delivery",
-      "Basic commentary",
-      "Community access",
+      "Daily 2–4 VIP Signals",
+      "Entry, SL & TP — Every Trade",
+      "Real-Time Telegram Alerts",
+      "Live Modification Updates",
+      "Full Education Library",
+      "VIP Telegram Channel",
     ],
-    cta: "SELECT",
-    ctaPrimary: false,
+    cta: "START NOW",
+    href: "/payment/standard",
   },
   {
+    id: "professional",
     name: "PROFESSIONAL",
     price: "$99",
-    period: "/ quarter",
+    period: "/quarter",
     subtitle: null,
-    badge: "SAVE 33%",
-    highlighted: false,
+    savings: "SAVE 33%",
+    equivalent: "Equivalent $33/month",
+    badge: "MOST POPULAR",
+    badgeStyle: "gold",
+    elevated: true,
+    permanent: false,
+    footnote: null,
     features: [
-      "20–25 signals per week",
-      "Advanced analysis",
-      "Risk framework",
-      "Priority support",
+      "Daily 2–4 VIP Signals",
+      "Entry, SL & TP — Every Trade",
+      "Real-Time Telegram Alerts",
+      "Live Modification Updates",
+      "Full Education Library",
+      "VIP Telegram Channel",
+      "Dedicated Support (24hr)",
     ],
-    cta: "SELECT",
-    ctaPrimary: true,
+    cta: "START NOW",
+    href: "/payment/professional",
   },
   {
+    id: "elite",
     name: "ELITE",
     price: "$150",
-    period: "/ year",
+    period: "/year",
     subtitle: null,
-    badge: "SAVE 75%",
-    highlighted: false,
+    savings: "SAVE 75%",
+    equivalent: "Equivalent $12.50/month",
+    badge: "BEST VALUE",
+    badgeStyle: "gold",
+    elevated: false,
+    permanent: false,
+    footnote: null,
     features: [
-      "Unlimited signals",
-      "Monthly consultation",
-      "Custom risk profile",
-      "Direct support line",
+      "Daily 2–4 VIP Signals",
+      "Entry, SL & TP — Every Trade",
+      "Real-Time Telegram Alerts",
+      "Live Modification Updates",
+      "Full Education Library",
+      "VIP Telegram Channel",
+      "Dedicated Support (24hr)",
+      "Daily 3–6 VIP Signals",
+      "Priority Support (4hr)",
+      "Monthly 1-on-1 Call",
     ],
-    cta: "SELECT",
-    ctaPrimary: true,
+    cta: "START NOW",
+    href: "/payment/elite",
   },
   {
+    id: "permanent",
     name: "PERMANENT",
     price: "$209",
     period: "one-time",
-    subtitle: null,
+    subtitle: "Never pay again",
+    savings: null,
+    equivalent: null,
     badge: "LIFETIME ACCESS",
-    highlighted: true,
+    badgeStyle: "lifetime",
+    elevated: false,
+    permanent: true,
+    footnote: "Limited spots available",
     features: [
-      "Lifetime signal access",
-      "Lifetime education",
-      "All future updates",
-      "Personal onboarding",
+      "Daily 2–4 VIP Signals",
+      "Entry, SL & TP — Every Trade",
+      "Real-Time Telegram Alerts",
+      "Live Modification Updates",
+      "Full Education Library",
+      "VIP Telegram Channel",
+      "Dedicated Support (24hr)",
+      "Daily 3–6 VIP Signals",
+      "Priority Support (4hr)",
+      "Monthly 1-on-1 Call",
+      "Direct Line Support",
+      "All Future Updates",
+      "Personal Onboarding",
     ],
-    cta: "SECURE ACCESS",
-    ctaPrimary: true,
+    cta: "SECURE LIFETIME ACCESS",
+    href: "/payment/permanent",
   },
 ];
 
@@ -771,8 +822,27 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="scroll-mt-[128px] py-24 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section id="pricing" className="scroll-mt-[128px] py-24">
+        <div className="w-full border-y border-[#1A1A1A] bg-[#0A0A0A] py-4 mb-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
+              {pricingTrustItems.map((item, i) => (
+                <div key={item.label} className="flex items-center">
+                  {i > 0 && (
+                    <span className="hidden md:block w-px h-4 bg-[#1A1A1A] mx-6 shrink-0" />
+                  )}
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#888888] whitespace-nowrap">
+                    {item.label}
+                    <span className="text-[#666666]"> | </span>
+                    {item.detail}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -787,33 +857,39 @@ export default function Home() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-[#1A1A1A]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
             {pricingTiers.map((tier, i) => (
               <motion.div
-                key={tier.name}
+                key={tier.id}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeIn}
                 transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
                 className={cn(
-                  "flex flex-col bg-[#0A0A0A] p-8 min-h-full border border-[#D4AF37]/20 hover:border-[#D4AF37]/40 transition-colors duration-500",
-                  tier.highlighted && "border-2 border-[#D4AF37]"
+                  "relative flex flex-col rounded-sm p-8 min-h-full transition-colors duration-500",
+                  tier.elevated && "-translate-y-3",
+                  tier.permanent
+                    ? "border-2 border-[#D4AF37] bg-[#0A0A0A] shadow-gold"
+                    : tier.elevated
+                      ? "bg-[#0A0A0A] border border-[#D4AF37]/40 shadow-gold"
+                      : "border border-[#1A1A1A] bg-[#0A0A0A] hover:border-[#D4AF37]/20"
                 )}
               >
                 {tier.badge && (
                   <span
                     className={cn(
-                      "label-caps inline-block w-fit mb-4 text-[10px]",
-                      tier.highlighted
-                        ? "bg-[#D4AF37] text-black font-bold px-2 py-1"
-                        : "bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1"
+                      "absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 whitespace-nowrap",
+                      tier.badgeStyle === "gold" || tier.badgeStyle === "lifetime"
+                        ? "bg-[#D4AF37] text-black"
+                        : "bg-[#D4AF37]/10 text-[#D4AF37]"
                     )}
                   >
                     {tier.badge}
                   </span>
                 )}
-                <h3 className="label-caps text-[#F5F5F5] mb-4">{tier.name}</h3>
+
+                <h3 className="label-caps text-[#F5F5F5] mb-4 mt-2">{tier.name}</h3>
                 <div className="mb-2">
                   <span className="font-serif-display text-4xl text-[#F5F5F5] tabular-nums">
                     {tier.price}
@@ -821,32 +897,67 @@ export default function Home() {
                   <span className="text-sm text-[#A0A0A0] ml-1">{tier.period}</span>
                 </div>
                 {tier.subtitle && (
-                  <p className="text-xs text-[#A0A0A0] mb-6">{tier.subtitle}</p>
+                  <p className="text-xs text-[#A0A0A0] mb-2">{tier.subtitle}</p>
                 )}
-                {!tier.subtitle && <div className="mb-6" />}
+                {tier.savings && (
+                  <p className="text-xs font-medium text-[#00C853] mb-1">{tier.savings}</p>
+                )}
+                {tier.equivalent && (
+                  <p className="text-xs text-[#888888] mb-4">{tier.equivalent}</p>
+                )}
+                {!tier.subtitle && !tier.savings && !tier.equivalent && (
+                  <div className="mb-4" />
+                )}
+                {tier.subtitle && !tier.savings && <div className="mb-4" />}
+
                 <ul className="space-y-3 mb-8 flex-1 min-w-0">
                   {tier.features.map((f) => (
-                    <li key={f} className="text-sm text-[#A0A0A0] leading-relaxed break-words">
-                      {f}
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm text-[#A0A0A0] leading-relaxed break-words"
+                    >
+                      <span className="mt-0.5 shrink-0 text-[#00C853]">✓</span>
+                      <span>{f}</span>
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={telegramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+
+                {tier.footnote && (
+                  <p className="mb-4 text-[10px] uppercase tracking-[0.15em] text-[#FF3D00]">
+                    {tier.footnote}
+                  </p>
+                )}
+
+                <Link
+                  href={tier.href}
                   className={cn(
                     "label-caps text-center py-3.5 px-4 transition-colors duration-300 whitespace-nowrap",
-                    tier.ctaPrimary
+                    tier.permanent || tier.elevated
                       ? "bg-[#D4AF37] text-black hover:bg-[#E0C060]"
                       : "border border-[#D4AF37]/20 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
                   )}
                 >
                   {tier.cta}
-                </a>
+                </Link>
               </motion.div>
             ))}
           </div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            className="mt-12 text-center"
+          >
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#666666] mb-3">
+              We Accept
+            </p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#888888]">
+              VISA • MASTERCARD • STRIPE • BTC • ETH • USDT • SKRILL • NETELLER
+            </p>
+          </motion.div>
         </div>
       </section>
 
