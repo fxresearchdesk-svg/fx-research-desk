@@ -1,8 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { HeroFadedCandlesticks } from "@/components/home/hero-faded-candlesticks";
 
 type SwissBankHeroProps = {
   winRate: string;
@@ -17,8 +14,6 @@ export function SwissBankHero({
   members,
   loading,
 }: SwissBankHeroProps) {
-  const [logoSrc, setLogoSrc] = useState("/logo.png.jpeg");
-
   return (
     <section className="bg-white pt-[100px]">
       <div className="mx-auto grid h-[600px] max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
@@ -64,28 +59,7 @@ export function SwissBankHero({
           </div>
         </div>
 
-        <div className="flex h-full min-h-[280px] items-center justify-center lg:min-h-0">
-          <div className="opacity-10 transition-opacity duration-500 ease-in-out hover:opacity-20">
-            <Image
-              src={logoSrc}
-              alt="FX Research Desk"
-              width={360}
-              height={140}
-              className="h-auto w-full min-w-[300px] max-w-[360px] object-contain"
-              onError={() =>
-                setLogoSrc((prev) =>
-                  prev === "/logo.png.jpeg"
-                    ? "/logo.png"
-                    : prev === "/logo.png"
-                      ? "/logo.svg"
-                      : "/logo.svg"
-                )
-              }
-              priority
-              unoptimized
-            />
-          </div>
-        </div>
+        <HeroFadedCandlesticks />
       </div>
     </section>
   );
