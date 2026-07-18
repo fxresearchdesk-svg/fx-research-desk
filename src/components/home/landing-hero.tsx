@@ -1,73 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-
-type TradeTicketProps = {
-  pair: string;
-  direction: "BUY" | "SELL";
-  entry: string;
-  stopLoss: string;
-  takeProfit: string;
-  className?: string;
-};
-
-function TradeTicket({
-  pair,
-  direction,
-  entry,
-  stopLoss,
-  takeProfit,
-  className,
-}: TradeTicketProps) {
-  const isBuy = direction === "BUY";
-
-  return (
-    <div
-      className={cn(
-        "w-[min(100%,340px)] border border-[#E7E3D8] bg-white p-[22px_24px] shadow-[0_30px_60px_-20px_rgba(14,15,19,0.25)]",
-        className
-      )}
-    >
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <span className="text-[16px] font-extrabold tracking-wide text-[#0E0F13]">
-          {pair}
-        </span>
-        <span
-          className={cn(
-            "px-2.5 py-1 text-[11px] font-extrabold tracking-[0.12em] text-white",
-            isBuy ? "bg-[#3C7A5C]" : "bg-[#A6483C]"
-          )}
-        >
-          {direction}
-        </span>
-      </div>
-
-      <div className="font-data text-[13.5px]">
-        <div className="flex justify-between border-b border-dashed border-[#E7E3D8] py-1.5">
-          <span className="text-[11.5px] font-semibold tracking-[0.08em] text-[#4A463C]">
-            ENTRY
-          </span>
-          <span className="font-bold tabular-nums text-[#0E0F13]">{entry}</span>
-        </div>
-        <div className="flex justify-between border-b border-dashed border-[#E7E3D8] py-1.5">
-          <span className="text-[11.5px] font-semibold tracking-[0.08em] text-[#4A463C]">
-            STOP LOSS
-          </span>
-          <span className="font-bold tabular-nums text-[#0E0F13]">{stopLoss}</span>
-        </div>
-        <div className="flex justify-between py-1.5">
-          <span className="text-[11.5px] font-semibold tracking-[0.08em] text-[#4A463C]">
-            TAKE PROFIT
-          </span>
-          <span className="font-bold tabular-nums text-[#3C7A5C]">{takeProfit}</span>
-        </div>
-      </div>
-
-      <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A9488]">
-        Sample Signal Format
-      </p>
-    </div>
-  );
-}
+import { HeroTicketCarousel } from "@/components/home/hero-ticket-carousel";
 
 export function LandingHero() {
   return (
@@ -113,37 +45,7 @@ export function LandingHero() {
           </div>
         </div>
 
-        <div className="relative mx-auto hidden h-[420px] w-full max-w-[420px] lg:mx-0 lg:ml-auto lg:block">
-          <p className="absolute right-10 top-8 z-20 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C6A15B]">
-            Sample Signal Format
-          </p>
-          <TradeTicket
-            pair="GBP/USD"
-            direction="SELL"
-            entry="1.3462"
-            stopLoss="1.3498"
-            takeProfit="1.3390"
-            className="absolute right-[-10px] top-2 rotate-[4deg] opacity-55 grayscale-[0.3]"
-          />
-          <TradeTicket
-            pair="EUR/USD"
-            direction="BUY"
-            entry="1.0842"
-            stopLoss="1.0810"
-            takeProfit="1.0910"
-            className="absolute right-10 top-[60px] rotate-[-3deg]"
-          />
-        </div>
-
-        <div className="mx-auto w-full max-w-[340px] lg:hidden">
-          <TradeTicket
-            pair="EUR/USD"
-            direction="BUY"
-            entry="1.0842"
-            stopLoss="1.0810"
-            takeProfit="1.0910"
-          />
-        </div>
+        <HeroTicketCarousel />
       </div>
     </section>
   );
