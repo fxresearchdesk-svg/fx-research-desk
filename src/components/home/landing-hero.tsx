@@ -92,13 +92,13 @@ export function LandingHero() {
 
           <div className="mb-[34px] flex flex-wrap gap-[26px]">
             <p className="text-[13.5px] font-bold text-[#0E0F13]">
-              <span className="font-extrabold text-[#C6A15B]">9,600+</span> Members
-            </p>
-            <p className="text-[13.5px] font-bold text-[#0E0F13]">
               <span className="font-extrabold text-[#C6A15B]">5–10</span> Daily Signals
             </p>
             <p className="text-[13.5px] font-bold text-[#0E0F13]">
               <span className="font-extrabold text-[#C6A15B]">24/7</span> Desk Support
+            </p>
+            <p className="text-[13.5px] font-bold text-[#0E0F13]">
+              <span className="font-extrabold text-[#C6A15B]">1–2%</span> Risk Per Setup
             </p>
           </div>
 
@@ -107,7 +107,7 @@ export function LandingHero() {
               href="/payment/standard"
               className="landing-focus inline-block bg-[#0E0F13] px-[30px] py-[17px] text-center text-[13px] font-bold tracking-[0.12em] text-white transition-all hover:-translate-y-px hover:bg-[#1c1e26]"
             >
-              JOIN 9,600+ TRADERS — $49/MO
+              GET STARTED — $49/MO
             </Link>
             <Link
               href="/pricing"

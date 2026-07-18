@@ -1,7 +1,7 @@
 const TRUST_ITEMS = [
-  { value: "9,600+", label: "ACTIVE MEMBERS" },
   { value: "5–10", label: "SIGNALS DAILY" },
   { value: "24/7", label: "LIVE DESK SUPPORT" },
+  { value: "1–2%", label: "RISK PER SETUP" },
   { value: "100%", label: "RISK-MANAGED SETUPS" },
 ];
 

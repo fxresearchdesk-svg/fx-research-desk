@@ -98,7 +98,7 @@ export function LandingPricing() {
             Choose Your Plan
           </h2>
           <p className="mt-3 text-[15.5px] font-medium text-[#4A463C]">
-            Institutional-grade FX research trusted by 9,600+ traders.
+            Institutional-grade FX research with defined risk on every setup.
           </p>
         </header>
 

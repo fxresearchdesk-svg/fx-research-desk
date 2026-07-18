@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { InstitutionalTicker } from "@/components/institutional-ticker";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteNavbar } from "@/components/site-navbar";
+import { SiteShell } from "@/components/site-shell";
 
 const FEATURED = {
   title: "The Complete Guide to Risk Management",
@@ -12,17 +10,23 @@ const FEATURED = {
   href: "/education/risk-management",
 };
 
-const ARTICLES = [
+type EducationArticle = {
+  title: string;
+  excerpt: string;
+  href?: string;
+  comingSoon?: boolean;
+};
+
+const ARTICLES: EducationArticle[] = [
   {
     title: "Technical Analysis Fundamentals",
-    excerpt:
-      "Support, resistance, trendlines, and chart patterns explained.",
+    excerpt: "Support, resistance, trendlines, and chart patterns explained.",
     href: "/education/technical-analysis",
   },
   {
     title: "Understanding Forex Correlations",
     excerpt: "How EUR/USD, GBP/USD, and USD/JPY move together and apart.",
-    href: "/education",
+    comingSoon: true,
   },
   {
     title: "The Psychology of Winning Traders",
@@ -32,56 +36,53 @@ const ARTICLES = [
   {
     title: "Central Bank Policy & FX Markets",
     excerpt: "How Fed, ECB, and BoJ decisions move currency prices.",
-    href: "/education",
+    comingSoon: true,
   },
   {
     title: "Building a Trading Journal",
     excerpt: "Track, review, and improve every trade with data-driven analysis.",
-    href: "/education",
+    comingSoon: true,
   },
   {
     title: "Gold (XAU/USD) Trading Strategy",
     excerpt: "Safe-haven flows, dollar inverse, and key technical levels.",
-    href: "/education",
+    comingSoon: true,
   },
 ];
 
 export function EducationPageClient() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white text-[#4A4A4A]">
-      <InstitutionalTicker />
-      <SiteNavbar />
-
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-[100px]">
+    <SiteShell>
+      <div className="mx-auto max-w-[1240px] px-6 pb-24 pt-14 lg:px-10">
         <header className="mb-12">
-          <p className="mb-4 text-[10px] uppercase tracking-[0.3em] text-[#B8956A]">
+          <p className="mb-3 text-[12.5px] font-extrabold tracking-[0.32em] text-[#C6A15B]">
             KNOWLEDGE CENTER
           </p>
-          <h1 className="font-serif-display text-[42px] text-[#1A1A1A]">
+          <h1 className="font-landing-serif text-[42px] font-bold text-[#0E0F13]">
             Master the Markets
           </h1>
         </header>
 
-        <section className="mb-14 border border-[#E5E7EB] bg-white p-8 md:p-10">
+        <section className="mb-14 border border-[#E7E3D8] bg-white p-8 md:p-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_280px]">
             <div>
-              <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#B8956A]">
+              <p className="mb-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C6A15B]">
                 Featured Guide
               </p>
-              <h2 className="font-serif-display mb-4 text-3xl text-[#1A1A1A]">
+              <h2 className="font-landing-serif mb-4 text-3xl font-bold text-[#0E0F13]">
                 {FEATURED.title}
               </h2>
-              <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6B7280]">
+              <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#4A463C]">
                 {FEATURED.excerpt}
               </p>
               <Link
                 href={FEATURED.href}
-                className="text-xs font-semibold uppercase tracking-[0.2em] text-[#B8956A] transition-colors duration-200 hover:text-[#C9A87C]"
+                className="landing-focus text-xs font-bold uppercase tracking-[0.2em] text-[#C6A15B] transition-colors hover:text-[#E8C173]"
               >
                 READ GUIDE →
               </Link>
             </div>
-            <div className="h-48 border border-[#E5E7EB] bg-[#F9FAFB] lg:h-auto" aria-hidden />
+            <div className="h-48 border border-[#E7E3D8] bg-[#F1EEE5] lg:h-auto" aria-hidden />
           </div>
         </section>
 
@@ -89,27 +90,38 @@ export function EducationPageClient() {
           {ARTICLES.map((article) => (
             <article
               key={article.title}
-              className="flex flex-col border border-[#E5E7EB] bg-white"
+              className="relative flex flex-col border border-[#E7E3D8] bg-white"
             >
-              <div className="h-40 border-b border-[#E5E7EB] bg-[#F9FAFB]" aria-hidden />
+              {article.comingSoon && (
+                <span className="absolute right-0 top-0 bg-[#0E0F13] px-3 py-1.5 text-[10px] font-extrabold tracking-[0.12em] text-white">
+                  COMING SOON
+                </span>
+              )}
+              <div className="h-40 border-b border-[#E7E3D8] bg-[#F1EEE5]" aria-hidden />
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="mb-3 text-lg text-[#1A1A1A]">{article.title}</h3>
-                <p className="mb-6 flex-1 text-sm leading-relaxed text-[#6B7280]">
+                <h3 className="mb-3 text-lg font-semibold text-[#0E0F13]">
+                  {article.title}
+                </h3>
+                <p className="mb-6 flex-1 text-sm leading-relaxed text-[#4A463C]">
                   {article.excerpt}
                 </p>
-                <Link
-                  href={article.href}
-                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B8956A] transition-colors duration-200 hover:text-[#C9A87C]"
-                >
-                  READ →
-                </Link>
+                {article.comingSoon || !article.href ? (
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#9A9488]">
+                    Coming Soon
+                  </span>
+                ) : (
+                  <Link
+                    href={article.href}
+                    className="landing-focus text-[11px] font-bold uppercase tracking-[0.2em] text-[#C6A15B] transition-colors hover:text-[#E8C173]"
+                  >
+                    READ →
+                  </Link>
+                )}
               </div>
             </article>
           ))}
         </div>
       </div>
-
-      <SiteFooter />
-    </main>
+    </SiteShell>
   );
 }
