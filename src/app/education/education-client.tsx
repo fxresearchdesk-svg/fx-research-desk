@@ -10,14 +10,7 @@ const FEATURED = {
   href: "/education/risk-management",
 };
 
-type EducationArticle = {
-  title: string;
-  excerpt: string;
-  href?: string;
-  comingSoon?: boolean;
-};
-
-const ARTICLES: EducationArticle[] = [
+const ARTICLES = [
   {
     title: "Technical Analysis Fundamentals",
     excerpt: "Support, resistance, trendlines, and chart patterns explained.",
@@ -26,7 +19,7 @@ const ARTICLES: EducationArticle[] = [
   {
     title: "Understanding Forex Correlations",
     excerpt: "How EUR/USD, GBP/USD, and USD/JPY move together and apart.",
-    comingSoon: true,
+    href: "/education/forex-correlations",
   },
   {
     title: "The Psychology of Winning Traders",
@@ -36,17 +29,17 @@ const ARTICLES: EducationArticle[] = [
   {
     title: "Central Bank Policy & FX Markets",
     excerpt: "How Fed, ECB, and BoJ decisions move currency prices.",
-    comingSoon: true,
+    href: "/education/central-bank-policy",
   },
   {
     title: "Building a Trading Journal",
     excerpt: "Track, review, and improve every trade with data-driven analysis.",
-    comingSoon: true,
+    href: "/education/trading-journal",
   },
   {
     title: "Gold (XAU/USD) Trading Strategy",
     excerpt: "Safe-haven flows, dollar inverse, and key technical levels.",
-    comingSoon: true,
+    href: "/education/gold-strategy",
   },
 ];
 
@@ -90,13 +83,8 @@ export function EducationPageClient() {
           {ARTICLES.map((article) => (
             <article
               key={article.title}
-              className="relative flex flex-col border border-[#E7E3D8] bg-white"
+              className="flex flex-col border border-[#E7E3D8] bg-white"
             >
-              {article.comingSoon && (
-                <span className="absolute right-0 top-0 bg-[#0E0F13] px-3 py-1.5 text-[10px] font-extrabold tracking-[0.12em] text-white">
-                  COMING SOON
-                </span>
-              )}
               <div className="h-40 border-b border-[#E7E3D8] bg-[#F1EEE5]" aria-hidden />
               <div className="flex flex-1 flex-col p-6">
                 <h3 className="mb-3 text-lg font-semibold text-[#0E0F13]">
@@ -105,18 +93,12 @@ export function EducationPageClient() {
                 <p className="mb-6 flex-1 text-sm leading-relaxed text-[#4A463C]">
                   {article.excerpt}
                 </p>
-                {article.comingSoon || !article.href ? (
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#9A9488]">
-                    Coming Soon
-                  </span>
-                ) : (
-                  <Link
-                    href={article.href}
-                    className="landing-focus text-[11px] font-bold uppercase tracking-[0.2em] text-[#C6A15B] transition-colors hover:text-[#E8C173]"
-                  >
-                    READ →
-                  </Link>
-                )}
+                <Link
+                  href={article.href}
+                  className="landing-focus text-[11px] font-bold uppercase tracking-[0.2em] text-[#C6A15B] transition-colors hover:text-[#E8C173]"
+                >
+                  READ →
+                </Link>
               </div>
             </article>
           ))}

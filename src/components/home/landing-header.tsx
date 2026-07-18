@@ -19,7 +19,7 @@ export function LandingHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-[#E7E3D8] bg-white">
+      <header className="sticky top-9 z-50 border-b border-[#E7E3D8] bg-white">
         <nav className="mx-auto flex h-[78px] max-w-[1240px] items-center justify-between gap-4 px-6 lg:px-10">
           <Link href="/" className="landing-focus flex shrink-0 items-center gap-3.5">
             <span

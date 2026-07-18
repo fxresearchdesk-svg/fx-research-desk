@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LandingFooter } from "@/components/home/landing-footer";
-import { LandingHeader } from "@/components/home/landing-header";
 import { LandingHero } from "@/components/home/landing-hero";
 import { LandingHowItWorks } from "@/components/home/landing-how-it-works";
 import { LandingPricing } from "@/components/home/landing-pricing";
 import { LandingTestimonial } from "@/components/home/landing-testimonial";
 import { LandingTrustStrip } from "@/components/home/landing-trust-strip";
-import { LandingUtilityBar } from "@/components/home/landing-utility-bar";
 import { LandingWhatYouReceive } from "@/components/home/landing-what-you-receive";
+import { SiteShell } from "@/components/site-shell";
 import {
   fetchTestimonials,
   isSupabaseConfigured,
@@ -45,9 +43,7 @@ export default function Home() {
     : FEATURED_TESTIMONIAL;
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#FAF9F6] text-[#0E0F13]">
-      <LandingUtilityBar />
-      <LandingHeader />
+    <SiteShell>
       <LandingHero />
       <LandingTrustStrip />
       <LandingHowItWorks />
@@ -59,7 +55,6 @@ export default function Home() {
         location={featured.location}
         memberSince={featured.memberSince}
       />
-      <LandingFooter />
-    </main>
+    </SiteShell>
   );
 }

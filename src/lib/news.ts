@@ -90,6 +90,25 @@ export function filterBlockedArticles(articles: NewsArticle[]): NewsArticle[] {
   });
 }
 
+/** Keep only articles published within the last `maxAgeDays` days. */
+export function filterFreshArticles(
+  articles: NewsArticle[],
+  maxAgeDays = 7
+): NewsArticle[] {
+  const cutoff = Date.now() - maxAgeDays * 24 * 60 * 60 * 1000;
+
+  return articles.filter((article) => {
+    const published = Date.parse(article.publishedAt);
+    return Number.isFinite(published) && published >= cutoff;
+  });
+}
+
+export function sortArticlesNewestFirst(articles: NewsArticle[]): NewsArticle[] {
+  return [...articles].sort(
+    (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
+  );
+}
+
 export function filterArticlesByCategory(
   articles: NewsArticle[],
   category: NewsCategoryId

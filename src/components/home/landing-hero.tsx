@@ -7,7 +7,6 @@ type TradeTicketProps = {
   entry: string;
   stopLoss: string;
   takeProfit: string;
-  live?: boolean;
   className?: string;
 };
 
@@ -17,7 +16,6 @@ function TradeTicket({
   entry,
   stopLoss,
   takeProfit,
-  live,
   className,
 }: TradeTicketProps) {
   const isBuy = direction === "BUY";
@@ -64,19 +62,16 @@ function TradeTicket({
         </div>
       </div>
 
-      {live && (
-        <div className="mt-4 flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] text-[#3C7A5C]">
-          <span className="live-pulse-dot" aria-hidden />
-          LIVE — MANAGED BY DESK
-        </div>
-      )}
+      <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A9488]">
+        Sample Signal Format
+      </p>
     </div>
   );
 }
 
 export function LandingHero() {
   return (
-    <section className="bg-[#FAF9F6] pb-[70px] pt-[88px]">
+    <section className="bg-[#FAF9F6] pb-[70px] pt-16 lg:pt-[72px]">
       <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-[60px] px-6 lg:grid-cols-[1fr_0.86fr] lg:px-10">
         <div>
           <p className="mb-[18px] text-[12.5px] font-extrabold tracking-[0.32em] text-[#C6A15B]">
@@ -119,6 +114,9 @@ export function LandingHero() {
         </div>
 
         <div className="relative mx-auto hidden h-[420px] w-full max-w-[420px] lg:mx-0 lg:ml-auto lg:block">
+          <p className="absolute right-10 top-8 z-20 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C6A15B]">
+            Sample Signal Format
+          </p>
           <TradeTicket
             pair="GBP/USD"
             direction="SELL"
@@ -133,12 +131,10 @@ export function LandingHero() {
             entry="1.0842"
             stopLoss="1.0810"
             takeProfit="1.0910"
-            live
             className="absolute right-10 top-[60px] rotate-[-3deg]"
           />
         </div>
 
-        {/* Mobile / tablet: single front ticket */}
         <div className="mx-auto w-full max-w-[340px] lg:hidden">
           <TradeTicket
             pair="EUR/USD"
@@ -146,7 +142,6 @@ export function LandingHero() {
             entry="1.0842"
             stopLoss="1.0810"
             takeProfit="1.0910"
-            live
           />
         </div>
       </div>

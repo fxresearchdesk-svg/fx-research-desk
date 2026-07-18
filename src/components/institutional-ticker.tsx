@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const POLL_INTERVAL_MS = 5 * 60 * 1000;
+const POLL_INTERVAL_MS = 60 * 1000;
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;
 const MIN_PAIRS_TO_DISPLAY = 5;
@@ -77,28 +77,25 @@ function TickerItem({
   item: TickerPair;
   showSeparator?: boolean;
 }) {
+  const priceColor =
+    item.direction === "up"
+      ? "text-[#3C7A5C]"
+      : item.direction === "down"
+        ? "text-[#A6483C]"
+        : "text-[#FAF9F6]/80";
+
   return (
     <>
-      <span className="inline-flex items-center gap-1.5 font-data text-[12px] tabular-nums whitespace-nowrap px-1">
-        <span className="text-[#B8956A]">{item.pair}</span>
-        <span className="text-[#F5F5F5]">{formatPrice(item.price, item.pair)}</span>
-        {item.change !== null && (
-          <span
-            className={cn(
-              item.direction === "up" && "text-[#4A7C59]",
-              item.direction === "down" && "text-[#8B3A3A]",
-              item.direction === "flat" && "text-[#9CA3AF]"
-            )}
-          >
-            {item.direction === "up" && "▲ "}
-            {item.direction === "down" && "▼ "}
-            {item.change > 0 ? "+" : ""}
-            {item.change.toFixed(2)}%
-          </span>
-        )}
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap px-1 font-data text-[12px] tabular-nums">
+        <span className="text-[#C6A15B]">{item.pair}</span>
+        <span className={cn("font-medium", priceColor)}>
+          {item.direction === "up" && "▲ "}
+          {item.direction === "down" && "▼ "}
+          {formatPrice(item.price, item.pair)}
+        </span>
       </span>
       {showSeparator && (
-        <span className="text-[#333333] whitespace-nowrap px-1"> • </span>
+        <span className="whitespace-nowrap px-1 text-[#3E4048]"> • </span>
       )}
     </>
   );
@@ -107,15 +104,10 @@ function TickerItem({
 export function InstitutionalTicker() {
   const [pairs, setPairs] = useState<TickerPair[]>([]);
   const [status, setStatus] = useState<TickerStatus>("loading");
-  const previousPricesRef = useRef<Record<string, number>>({});
+  const sessionOpenRef = useRef<Record<string, number>>({});
   const statusRef = useRef<TickerStatus>("loading");
 
   const load = useCallback(async () => {
-    if (statusRef.current !== "ready") {
-      setStatus("loading");
-      statusRef.current = "loading";
-    }
-
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
         const [res, gold, silver] = await Promise.all([
@@ -132,25 +124,24 @@ export function InstitutionalTicker() {
           const raw = getPrice(data.rates, gold, silver);
           if (!isValidPrice(raw)) continue;
 
-          const prev = previousPricesRef.current[pair];
-          const change =
-            prev && prev > 0 ? ((raw - prev) / prev) * 100 : null;
+          if (!sessionOpenRef.current[pair]) {
+            sessionOpenRef.current[pair] = raw;
+          }
+
+          const open = sessionOpenRef.current[pair];
+          const change = open > 0 ? ((raw - open) / open) * 100 : null;
 
           validPairs.push({
             pair,
             price: raw,
             change,
             direction:
-              change === null
+              change === null || Math.abs(change) < 0.0001
                 ? "flat"
                 : change > 0
                   ? "up"
-                  : change < 0
-                    ? "down"
-                    : "flat",
+                  : "down",
           });
-
-          previousPricesRef.current[pair] = raw;
         }
 
         if (validPairs.length >= MIN_PAIRS_TO_DISPLAY) {
@@ -186,26 +177,33 @@ export function InstitutionalTicker() {
   }, [load]);
 
   const displayPairs =
-    status === "ready" && pairs.length >= MIN_PAIRS_TO_DISPLAY ? pairs : [];
+    (status === "ready" || status === "insufficient") && pairs.length > 0
+      ? pairs
+      : [];
 
   const marqueeItems =
     displayPairs.length > 0 ? [...displayPairs, ...displayPairs] : [];
 
-  const centerMessage =
-    status === "unavailable"
-      ? "Market data temporarily unavailable"
-      : status === "loading" || status === "insufficient"
-        ? "Loading market data..."
-        : null;
-
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-9 border-b border-[#333333] bg-[#1A1A1A]">
-      <div className="h-full flex items-center overflow-hidden">
-        {centerMessage && (
-          <span className="w-full text-center font-data text-[12px] text-[#9CA3AF] px-4">
-            {centerMessage}
+    <div className="fixed left-0 right-0 top-0 z-[60] h-9 border-b border-white/10 bg-[#0E0F13]">
+      <div className="flex h-full items-center overflow-hidden">
+        {status === "loading" && marqueeItems.length === 0 && (
+          <div className="flex w-full items-center gap-6 px-4" aria-hidden>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span
+                key={i}
+                className="h-3 w-28 shrink-0 animate-pulse rounded-sm bg-white/10"
+              />
+            ))}
+          </div>
+        )}
+
+        {status === "unavailable" && marqueeItems.length === 0 && (
+          <span className="w-full px-4 text-center font-data text-[12px] text-[#9A9488]">
+            Market data temporarily unavailable
           </span>
         )}
+
         {marqueeItems.length > 0 && (
           <div className="ticker-marquee">
             {marqueeItems.map((item, i) => (

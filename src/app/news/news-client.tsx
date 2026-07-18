@@ -6,7 +6,9 @@ import { SiteShell } from "@/components/site-shell";
 import {
   dedupeArticles,
   filterArticlesByCategory,
+  filterFreshArticles,
   NEWS_CATEGORIES,
+  sortArticlesNewestFirst,
   type NewsCategoryId,
 } from "@/lib/news";
 import { cn } from "@/lib/utils";
@@ -33,7 +35,12 @@ export function NewsPageClient() {
     const incoming = (data.articles ?? []) as NewsArticle[];
 
     setArticles((prev) =>
-      dedupeArticles(append ? [...prev, ...incoming] : incoming)
+      sortArticlesNewestFirst(
+        filterFreshArticles(
+          dedupeArticles(append ? [...prev, ...incoming] : incoming),
+          7
+        )
+      )
     );
     setPage(pageNum);
     setHasMore(Boolean(data.hasMore));
