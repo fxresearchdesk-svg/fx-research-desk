@@ -120,28 +120,28 @@ export default function PaymentPage() {
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-[#E5E5E5]">
+          <div className="mt-8 border border-[#E7E3D8] bg-[#F1EEE5] px-6 py-8">
             <p className="label-institutional mb-4 text-center">
               Other Payment Methods
             </p>
-            <p className="text-[13px] text-[#4A4A4A] text-center mb-4">
-              Bitcoin, Ethereum, USDT, Skrill, Neteller, or Wise
+            <p className="mb-4 text-center text-[13px] text-[#4A463C]">
+              PayPal, All Crypto, Skrill, Neteller, or Wise
             </p>
-            <p className="text-[13px] text-[#4A4A4A] text-center mb-4">
+            <p className="mb-4 text-center text-[13px] text-[#4A463C]">
               Email us at{" "}
               <a
                 href="mailto:fxresearchdesk@gmail.com"
-                className="text-[#B8956A] hover:text-[#C9A87C] transition-colors"
+                className="text-[#C6A15B] transition-colors hover:text-[#E8C173]"
               >
                 fxresearchdesk@gmail.com
               </a>{" "}
-              with your plan choice. We reply within 15 minutes.
+              with your plan choice. Immediate response.
             </p>
             <a
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-center border border-[#1A1A1A] py-3 text-[11px] tracking-[0.2em] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-colors duration-200"
+              className="block border border-[#0E0F13] bg-white py-3 text-center text-[11px] tracking-[0.2em] text-[#0E0F13] transition-colors duration-200 hover:bg-[#0E0F13] hover:text-white"
             >
               CONTACT ON TELEGRAM
             </a>
