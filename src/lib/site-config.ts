@@ -1,4 +1,6 @@
 export const telegramUrl = "https://t.me/fxresearchdesk";
+export const telegramHandle = "@fxresearchdesk";
+export const contactEmail = "fxresearchdesk@gmail.com";
 
 export const navLinks = [
   { href: "/charts", label: "CHARTS" },

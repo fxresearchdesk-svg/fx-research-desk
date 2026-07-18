@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FX Research Desk | Institutional Forex Intelligence</title>
+<style>
+  :root {
+    --ink: #0E0F13;
+    --ink-soft: #4A463C;
+    --paper: #FAF9F6;
+    --panel: #FFFFFF;
+    --gold: #C6A15B;
+    --gold-bright: #E8C173;
+    --line: #E7E3D8;
+    --buy: #3C7A5C;
+    --sell: #A6483C;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    font-family: 'Poppins', sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration:none; color:inherit; }
+  ul { list-style:none; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  /* ============ utility bar ============ */
+  .utility {
+    background: var(--ink);
+    color: #B9B4A4;
+    font-size: 12.5px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .utility .wrap { display:flex; justify-content:space-between; align-items:center; height:38px; }
+  .utility .right { display:flex; gap:22px; align-items:center; }
+  .utility .right b { color: var(--gold-bright); font-weight:700; }
+  .utility .sep { color:#3E4048; }
+
+  /* ============ header ============ */
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top:0; z-index:50;
+  }
+  header .wrap { display:flex; align-items:center; justify-content:space-between; height:78px; }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand .mark {
+    width:42px; height:42px; background:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Lora',serif; font-style:italic; font-weight:700; font-size:19px; color:var(--gold-bright);
+  }
+  .brand .word { font-size:14px; letter-spacing:3px; font-weight:800; }
+  nav ul { display:flex; gap:36px; }
+  nav a { font-size:12.5px; letter-spacing:1.8px; font-weight:700; color:var(--ink-soft); transition:color .15s; }
+  nav a:hover { color: var(--gold); }
+  .btn-access {
+    background:var(--ink); color:#fff; font-size:12px; letter-spacing:1.5px; font-weight:700;
+    padding:12px 22px;
+  }
+  .btn-access:hover { background:#1c1e26; }
+
+  /* ============ hero ============ */
+  .hero { padding: 88px 0 70px 0; }
+  .hero .wrap { display:grid; grid-template-columns: 1fr 0.86fr; gap:60px; align-items:center; }
+  .eyebrow { font-size:12.5px; letter-spacing:4px; color:var(--gold); font-weight:800; margin-bottom:18px; }
+  .hero h1 {
+    font-family:'Lora',serif; font-weight:700; font-size:54px; line-height:1.12; color:var(--ink);
+    margin-bottom:22px;
+  }
+  .hero h1 em { font-style:italic; color:var(--gold); }
+  .hero p.lede { font-size:17px; line-height:1.6; color:var(--ink-soft); max-width:480px; margin-bottom:28px; font-weight:500; }
+  .stat-row { display:flex; gap:26px; margin-bottom:34px; flex-wrap:wrap; }
+  .stat-row .stat { font-size:13.5px; font-weight:700; color:var(--ink); }
+  .stat-row .stat span { color:var(--gold); font-weight:800; }
+  .cta-row { display:flex; gap:14px; }
+  .btn-primary {
+    background:var(--ink); color:#fff; font-size:13px; letter-spacing:1.5px; font-weight:700;
+    padding:17px 30px; display:inline-block; transition:transform .15s, background .15s;
+  }
+  .btn-primary:hover { background:#1c1e26; transform:translateY(-1px); }
+  .btn-secondary {
+    border:1.5px solid var(--ink); color:var(--ink); font-size:13px; letter-spacing:1.5px; font-weight:700;
+    padding:16px 28px; display:inline-block; transition: background .15s;
+  }
+  .btn-secondary:hover { background:var(--ink); color:#fff; }
+
+  /* signature: signal ticket stack */
+  .ticket-stack { position:relative; height:420px; }
+  .ticket {
+    position:absolute; width:340px; background:var(--panel); border:1px solid var(--line);
+    box-shadow: 0 30px 60px -20px rgba(14,15,19,0.25);
+    padding:22px 24px;
+    font-family:'DejaVu Sans Mono', monospace;
+  }
+  .ticket.back {
+    top:8px; right:-10px; transform:rotate(4deg); opacity:0.55; filter:grayscale(0.3);
+  }
+  .ticket.front {
+    top:60px; right:40px; transform:rotate(-3deg);
+  }
+  .ticket-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; font-family:'Poppins',sans-serif; }
+  .ticket-pair { font-size:16px; font-weight:800; letter-spacing:0.5px; }
+  .ticket-dir { font-size:11px; font-weight:800; letter-spacing:1.5px; padding:5px 10px; color:#fff; }
+  .ticket-dir.buy { background:var(--buy); }
+  .ticket-dir.sell { background:var(--sell); }
+  .ticket-row { display:flex; justify-content:space-between; font-size:13.5px; padding:6px 0; border-bottom:1px dashed var(--line); }
+  .ticket-row .k { color:var(--ink-soft); font-family:'Poppins',sans-serif; font-size:11.5px; letter-spacing:1px; font-weight:600; }
+  .ticket-row .v { font-weight:700; }
+  .ticket-row .v.pos { color:var(--buy); }
+  .ticket-status { display:flex; align-items:center; gap:8px; margin-top:16px; font-family:'Poppins',sans-serif; font-size:11px; letter-spacing:1.5px; font-weight:700; color:var(--buy); }
+  .pulse { width:8px; height:8px; border-radius:50%; background:var(--buy); position:relative; }
+  .pulse::after {
+    content:''; position:absolute; inset:-4px; border-radius:50%; border:1.5px solid var(--buy);
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse { 0%{ transform:scale(0.6); opacity:1; } 100%{ transform:scale(1.8); opacity:0; } }
+
+  /* ============ trust strip ============ */
+  .trust { background:var(--ink); padding:26px 0; }
+  .trust .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+  .trust .item { display:flex; align-items:center; gap:12px; color:#E8E4D8; }
+  .trust .item .n { font-family:'Lora',serif; font-size:22px; font-weight:700; color:var(--gold-bright); }
+  .trust .item .l { font-size:11.5px; letter-spacing:1.2px; font-weight:600; color:#9A9488; }
+
+  /* ============ section shared ============ */
+  section.block { padding:96px 0; }
+  .section-head { text-align:center; max-width:600px; margin:0 auto 56px auto; }
+  .section-head .eyebrow { margin-bottom:12px; }
+  .section-head h2 { font-family:'Lora',serif; font-weight:700; font-size:36px; }
+  .section-head p { margin-top:12px; color:var(--ink-soft); font-size:15.5px; font-weight:500; }
+
+  /* ============ how it works ============ */
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; }
+  .step { border-top:2px solid var(--ink); padding-top:22px; }
+  .step .num { font-family:'DejaVu Sans Mono',monospace; font-size:13px; color:var(--gold); font-weight:700; margin-bottom:14px; }
+  .step h3 { font-family:'Lora',serif; font-size:21px; font-weight:700; margin-bottom:10px; }
+  .step p { font-size:14.5px; color:var(--ink-soft); line-height:1.55; font-weight:500; }
+
+  /* ============ sample signal (telegram mock) ============ */
+  .sample { background:#F1EEE5; }
+  .sample .wrap { display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px; align-items:center; }
+  .sample h2 { font-family:'Lora',serif; font-size:34px; font-weight:700; margin-bottom:18px; }
+  .sample p { color:var(--ink-soft); font-size:15.5px; line-height:1.6; font-weight:500; margin-bottom:22px; max-width:440px; }
+  .sample ul li { font-size:14.5px; font-weight:600; padding:7px 0; padding-left:22px; position:relative; }
+  .sample ul li::before { content:"—"; position:absolute; left:0; color:var(--gold); font-weight:800; }
+
+  .tg-phone {
+    background:#0E0F13; border-radius:26px; padding:14px; width:340px; margin:0 auto;
+    box-shadow:0 40px 70px -25px rgba(14,15,19,0.4);
+  }
+  .tg-screen { background:#131c26; border-radius:16px; padding:18px 14px; }
+  .tg-header { display:flex; align-items:center; gap:10px; padding-bottom:14px; border-bottom:1px solid #1F2A36; margin-bottom:14px; }
+  .tg-avatar { width:34px; height:34px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-family:'Lora',serif; font-weight:700; color:var(--ink); font-size:14px; }
+  .tg-name { color:#fff; font-size:13px; font-weight:700; }
+  .tg-sub { color:#7C8CA0; font-size:10.5px; }
+  .tg-bubble {
+    background:#1B2733; border-radius:12px; padding:14px 16px; font-family:'DejaVu Sans Mono',monospace;
+    font-size:12.5px; color:#E8ECF1; line-height:1.7;
+  }
+  .tg-bubble .h { font-family:'Poppins',sans-serif; font-weight:800; color:var(--gold-bright); font-size:12.5px; margin-bottom:8px; letter-spacing:0.5px; }
+  .tg-bubble .row-buy { color:#6FCF97; font-weight:700; }
+  .tg-time { text-align:right; font-size:9.5px; color:#5B6B7E; margin-top:8px; font-family:'Poppins',sans-serif; }
+
+  /* ============ pricing ============ */
+  .pricing { background:var(--paper); }
+  .plans { display:flex; gap:22px; }
+  .plan { flex:1; background:var(--panel); border:1px solid var(--line); position:relative; display:flex; flex-direction:column; }
+  .plan.featured { border-color:var(--gold); border-width:2px; }
+  .badge { position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px; letter-spacing:1.6px; font-weight:800; padding:9px 14px; }
+  .plan .inner { padding:30px 26px; display:flex; flex-direction:column; flex:1; }
+  .plan .tier { font-size:12.5px; letter-spacing:3px; color:var(--gold); font-weight:800; margin-bottom:10px; }
+  .plan .tagline { font-family:'Lora',serif; font-weight:700; font-size:21px; margin-bottom:16px; min-height:28px; }
+  .plan .price { display:flex; align-items:baseline; gap:6px; margin-bottom:20px; padding-bottom:18px; border-bottom:2px solid #EEEBE1; }
+  .plan .price .amt { font-family:'Lora',serif; font-size:44px; font-weight:800; }
+  .plan .price .per { font-size:14px; color:var(--ink-soft); font-weight:700; }
+  .plan .features { list-style:none; flex:1; }
+  .plan .features li { font-size:14px; font-weight:600; padding:6px 0; padding-left:24px; position:relative; }
+  .plan .features li::before { content:"✓"; position:absolute; left:0; color:var(--buy); font-weight:900; }
+  .plan .features li.plus { color:var(--ink-soft); font-size:12.5px; font-style:italic; font-weight:600; padding-left:0; }
+  .plan .features li.plus::before { content:""; }
+  .plan .cta { margin-top:22px; text-align:center; border:1.5px solid var(--ink); padding:14px 0; font-size:12.5px; letter-spacing:2px; font-weight:800; transition: background .15s, color .15s; }
+  .plan.featured .cta { background:var(--ink); color:#fff; }
+  .plan .cta:hover { background:var(--ink); color:#fff; }
+
+  .paymentband { margin-top:26px; background:var(--ink); padding:18px 30px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .paymentband .lbl { font-size:12px; letter-spacing:2.5px; color:var(--gold-bright); font-weight:800; margin-right:8px; }
+  .paymentband .pill { background:#fff; color:var(--ink); font-size:12.5px; font-weight:800; padding:7px 16px; border-radius:20px; }
+
+  /* ============ testimonial ============ */
+  .testimonial { background:#F1EEE5; }
+  .testimonial .wrap { max-width:760px; text-align:center; }
+  .testimonial blockquote { font-family:'Lora',serif; font-style:italic; font-size:26px; line-height:1.5; color:var(--ink); margin-bottom:20px; }
+  .testimonial cite { font-style:normal; font-size:13.5px; font-weight:700; color:var(--ink-soft); }
+
+  /* ============ footer ============ */
+  footer { background:var(--ink); color:#9A9488; padding:60px 0 30px 0; }
+  .foot-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+  .foot-brand .brand .word { color:#fff; }
+  .foot-brand p { margin-top:14px; font-size:13.5px; line-height:1.6; max-width:320px; }
+  footer h4 { color:#fff; font-size:12px; letter-spacing:2px; margin-bottom:16px; }
+  footer ul li { margin-bottom:10px; font-size:13.5px; }
+  footer a:hover { color:var(--gold-bright); }
+  .foot-bottom { border-top:1px solid #23252E; padding-top:24px; display:flex; justify-content:space-between; font-size:12px; flex-wrap:wrap; gap:10px; }
+  .disclaimer { font-size:11px; line-height:1.6; max-width:900px; margin-top:14px; color:#5F5B4F; }
+
+  @media (max-width: 900px) {
+    .hero .wrap, .sample .wrap { grid-template-columns:1fr; }
+    .ticket-stack { display:none; }
+    nav { display:none; }
+    .steps, .plans, .foot-grid { grid-template-columns:1fr; }
+    .plans { flex-direction:column; }
+    .hero h1 { font-size:38px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="utility">
+    <div class="wrap">
+      <div>INSTITUTIONAL-GRADE FX RESEARCH &amp; SIGNALS</div>
+      <div class="right">
+        <span><b>✉</b> fxresearchdesk@gmail.com</span>
+        <span class="sep">|</span>
+        <span><b>Telegram</b> @fxresearchdesk</span>
+        <span class="sep">|</span>
+        <span>Desk Response &lt;15 Min</span>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="mark">Fx</div>
+        <div class="word">FX RESEARCH DESK</div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">CHARTS</a></li>
+          <li><a href="#">PERFORMANCE</a></li>
+          <li><a href="#pricing">PRICING</a></li>
+          <li><a href="#">EDUCATION</a></li>
+          <li><a href="#">INSIGHTS</a></li>
+          <li><a href="#">NEWS</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="btn-access">CLIENT ACCESS</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">FX RESEARCH DESK</div>
+        <h1>Forex Signals Built for <em>Serious Traders</em></h1>
+        <p class="lede">Daily entry, stop-loss, and take-profit levels — filtered through technical and macro analysis, delivered to Telegram in real time.</p>
+        <div class="stat-row">
+          <div class="stat"><span>9,600+</span> Members</div>
+          <div class="stat"><span>5–10</span> Daily Signals</div>
+          <div class="stat"><span>24/7</span> Desk Support</div>
+        </div>
+        <div class="cta-row">
+          <a href="#pricing" class="btn-primary">JOIN 9,600+ TRADERS — $49/MO</a>
+          <a href="#pricing" class="btn-secondary">VIEW PRICING</a>
+        </div>
+      </div>
+      <div class="ticket-stack">
+        <div class="ticket back">
+          <div class="ticket-top">
+            <div class="ticket-pair">GBP/USD</div>
+            <div class="ticket-dir sell">SELL</div>
+          </div>
+          <div class="ticket-row"><span class="k">ENTRY</span><span class="v">1.3462</span></div>
+          <div class="ticket-row"><span class="k">STOP LOSS</span><span class="v">1.3498</span></div>
+          <div class="ticket-row"><span class="k">TAKE PROFIT</span><span class="v pos">1.3390</span></div>
+        </div>
+        <div class="ticket front">
+          <div class="ticket-top">
+            <div class="ticket-pair">EUR/USD</div>
+            <div class="ticket-dir buy">BUY</div>
+          </div>
+          <div class="ticket-row"><span class="k">ENTRY</span><span class="v">1.0842</span></div>
+          <div class="ticket-row"><span class="k">STOP LOSS</span><span class="v">1.0810</span></div>
+          <div class="ticket-row"><span class="k">TAKE PROFIT</span><span class="v pos">1.0910</span></div>
+          <div class="ticket-status"><span class="pulse"></span> LIVE — MANAGED BY DESK</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust">
+    <div class="wrap">
+      <div class="item"><span class="n">9,600+</span><span class="l">ACTIVE MEMBERS</span></div>
+      <div class="item"><span class="n">5–10</span><span class="l">SIGNALS DAILY</span></div>
+      <div class="item"><span class="n">24/7</span><span class="l">LIVE DESK SUPPORT</span></div>
+      <div class="item"><span class="n">100%</span><span class="l">RISK-MANAGED SETUPS</span></div>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">PROCESS</div>
+        <h2>How It Works</h2>
+        <p>From signup to execution in three steps.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">01 / SUBSCRIBE</div>
+          <h3>Choose a plan</h3>
+          <p>Select the membership that fits your trading style and get instant access to our secure Telegram channel.</p>
+        </div>
+        <div class="step">
+          <div class="num">02 / RECEIVE</div>
+          <h3>Get the signal</h3>
+          <p>Daily trade alerts with entry, stop-loss, and take-profit levels — delivered in real time, every one chart-annotated.</p>
+        </div>
+        <div class="step">
+          <div class="num">03 / EXECUTE</div>
+          <h3>Manage the trade</h3>
+          <p>Apply institutional-grade setups with clear risk parameters on your own broker. We tell you exactly when to close.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block sample">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">WHAT YOU RECEIVE</div>
+        <h2>Every signal, fully annotated</h2>
+        <p>No vague calls. Every alert includes exact entry, stop-loss, and take-profit levels, plus the reasoning behind the trade — sent straight to your phone the moment it's live.</p>
+        <ul>
+          <li>Entry, stop-loss &amp; take-profit on every trade</li>
+          <li>Technical &amp; fundamental context included</li>
+          <li>Live updates when we modify or close</li>
+          <li>Delivered instantly — no delay, no queue</li>
+        </ul>
+      </div>
+      <div class="tg-phone">
+        <div class="tg-screen">
+          <div class="tg-header">
+            <div class="tg-avatar">Fx</div>
+            <div>
+              <div class="tg-name">FX Research Desk</div>
+              <div class="tg-sub">VIP Signals Channel</div>
+            </div>
+          </div>
+          <div class="tg-bubble">
+            <div class="h">NEW SIGNAL — EUR/USD</div>
+            <div class="row-buy">BUY @ 1.0842</div>
+            SL: 1.0810<br>
+            TP: 1.0910<br>
+            Bias: USD softness into CPI print
+            <div class="tg-time">10:42 AM ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block pricing" id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">MEMBERSHIP</div>
+        <h2>Choose Your Plan</h2>
+        <p>Institutional-grade FX research trusted by 9,600+ traders.</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <div class="inner">
+            <div class="tier">STANDARD</div>
+            <div class="tagline">Start Your Edge</div>
+            <div class="price"><span class="amt">$49</span><span class="per">/ mo</span></div>
+            <ul class="features">
+              <li>Daily 2–4 VIP signals</li>
+              <li>Entry, SL &amp; TP — every trade</li>
+              <li>Real-time Telegram alerts</li>
+              <li>Live modification &amp; closing updates</li>
+            </ul>
+            <a href="#" class="cta">SELECT — $49</a>
+          </div>
+        </div>
+
+        <div class="plan featured">
+          <div class="badge">MOST POPULAR</div>
+          <div class="inner">
+            <div class="tier">PROFESSIONAL</div>
+            <div class="tagline">Accelerate Returns</div>
+            <div class="price"><span class="amt">$99</span><span class="per">/ qtr</span></div>
+            <ul class="features">
+              <li class="plus">All Standard features, plus:</li>
+              <li>Dedicated support</li>
+              <li>Extended technical breakdowns</li>
+            </ul>
+            <a href="#" class="cta">SELECT — $99</a>
+          </div>
+        </div>
+
+        <div class="plan">
+          <div class="badge">BEST VALUE</div>
+          <div class="inner">
+            <div class="tier">ELITE</div>
+            <div class="tagline">Trade Like an Institution</div>
+            <div class="price"><span class="amt">$150</span><span class="per">/ yr</span></div>
+            <ul class="features">
+              <li class="plus">All Professional features, plus:</li>
+              <li>Daily 3–6 VIP signals</li>
+              <li>Priority support</li>
+            </ul>
+            <a href="#" class="cta">SELECT — $150</a>
+          </div>
+        </div>
+
+        <div class="plan">
+          <div class="badge">LIFETIME</div>
+          <div class="inner">
+            <div class="tier">PERMANENT</div>
+            <div class="tagline">Own Your Edge Forever</div>
+            <div class="price"><span class="amt">$209</span><span class="per">once</span></div>
+            <ul class="features">
+              <li class="plus">All Elite features, plus:</li>
+              <li>Direct line support</li>
+              <li>Lifetime signal access</li>
+            </ul>
+            <a href="#" class="cta">SELECT — $209</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="paymentband">
+        <span class="lbl">SECURE PAYMENT</span>
+        <span class="pill">VISA</span>
+        <span class="pill">MASTERCARD</span>
+        <span class="pill">PAYPAL</span>
+        <span class="pill">STRIPE</span>
+        <span class="pill">ALL CRYPTO ACCEPTED</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block testimonial">
+    <div class="wrap">
+      <blockquote>"The precision of these signals transformed my trading. This is not retail — this is institutional execution."</blockquote>
+      <cite>Ahmed K., Dubai — Member since 2024</cite>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="brand"><div class="mark">Fx</div><div class="word">FX RESEARCH DESK</div></div>
+          <p>Institutional-grade forex signals and market intelligence for serious traders.</p>
+        </div>
+        <div>
+          <h4>NAVIGATION</h4>
+          <ul>
+            <li><a href="#">Charts</a></li>
+            <li><a href="#">Performance</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Education</a></li>
+            <li><a href="#">Insights</a></li>
+            <li><a href="#">News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>CONTACT</h4>
+          <ul>
+            <li><a href="#">Telegram — @fxresearchdesk</a></li>
+            <li><a href="#">fxresearchdesk@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <div>© 2026 FX Research Desk</div>
+        <div>Research · Analyse · Execute</div>
+      </div>
+      <div class="disclaimer">Trading foreign exchange carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. Signals and analysis are provided for informational purposes only and do not constitute financial advice.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
