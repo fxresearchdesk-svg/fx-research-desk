@@ -243,20 +243,6 @@
   animation-play-state: paused;
 }
 
-.tv-widget-host .tradingview-widget-copyright,
-.tv-widget-host .tradingview-widget-container__copyright,
-.tv-widget-host > a[href*="tradingview.com"],
-.tv-widget-host [class*="tv-logo"],
-.tv-widget-host [class*="tradingview-logo"],
-.tv-widget-host [class*="copyright"],
-.tv-widget-host iframe[src*="tradingview"] + a {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-}
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

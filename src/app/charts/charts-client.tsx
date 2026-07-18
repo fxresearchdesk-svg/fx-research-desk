@@ -5,8 +5,8 @@ import { SiteShell } from "@/components/site-shell";
 import {
   TradingViewAdvancedChart,
   TradingViewMarketOverview,
-  TradingViewTechnicalAnalysis,
 } from "@/components/tradingview-widgets";
+import { TechnicalAnalysisWidget } from "@/components/technical-analysis-widget";
 import { chartPairs } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -112,8 +112,8 @@ export function ChartsPageClient() {
                 Technical Analysis
               </h2>
             </div>
-            <div className="h-[420px]">
-              <TradingViewTechnicalAnalysis symbol={symbol} />
+            <div className="p-2 sm:p-3">
+              <TechnicalAnalysisWidget key={symbol} symbol={symbol} />
             </div>
           </section>
         </div>

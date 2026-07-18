@@ -1,5 +1,6 @@
 "use client";
 
+import { EconomicCalendarWidget } from "@/components/economic-calendar-widget";
 import { SiteShell } from "@/components/site-shell";
 import { cn } from "@/lib/utils";
 
@@ -82,16 +83,16 @@ export function InsightsPageClient() {
           </div>
         </section>
 
-        <section className="mb-14 border border-[#E7E3D8] bg-white p-8">
+        <section className="mb-14 border border-[#E7E3D8] bg-white p-6 sm:p-8">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <h2 className="font-landing-serif text-2xl font-bold text-[#0E0F13]">
               This Week in FX
             </h2>
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4A463C]">
-              Week of July 7, 2026
+              Desk highlights
             </p>
           </div>
-          <ul className="space-y-3">
+          <ul className="mb-10 space-y-3">
             {WEEKLY_EVENTS.map((event) => (
               <li
                 key={event}
@@ -102,6 +103,13 @@ export function InsightsPageClient() {
               </li>
             ))}
           </ul>
+
+          <div>
+            <h3 className="mb-4 text-[10px] font-extrabold uppercase tracking-[0.3em] text-[#C6A15B]">
+              Live Economic Calendar
+            </h3>
+            <EconomicCalendarWidget />
+          </div>
         </section>
 
         <section>
