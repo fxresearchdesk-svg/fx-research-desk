@@ -28,6 +28,8 @@ async function measure(page) {
       ".hero-phones__phone--front .hero-phones__screen"
     );
     const priceEl = document.querySelector("[data-live-price]");
+    const chart = document.querySelector("[data-chart]");
+    const spark = document.querySelector(".hero-phones__spark");
     const vw = window.innerWidth;
 
     function box(el) {
@@ -93,7 +95,20 @@ async function measure(page) {
       animation: style ? style.animationName : null,
       island,
       bezel,
-      frameBg: style ? style.backgroundImage.slice(0, 80) : null,
+      frameBg: style ? style.backgroundImage.slice(0, 120) : null,
+      hasChart: Boolean(chart),
+      chartBox: box(chart),
+      sparkBox: box(spark),
+      chartOverflowsScreen: (() => {
+        if (!chart || !screenBox) return null;
+        const c = chart.getBoundingClientRect();
+        return (
+          c.left < screenBox.left - 1 ||
+          c.right > screenBox.right + 1 ||
+          c.top < screenBox.top - 1 ||
+          c.bottom > screenBox.bottom + 1
+        );
+      })(),
     };
   });
 }

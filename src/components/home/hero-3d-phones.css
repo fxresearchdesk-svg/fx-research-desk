@@ -1,16 +1,16 @@
 /* Fluid dual-phone hero — all sizing relative to --pw / percentages */
 
 .hero-phones {
-  --pw: clamp(130px, 19vw, 258px);
+  --pw: clamp(110px, 17vw, 225px);
   --pr: calc(var(--pw) * 0.175);
   --pad: calc(var(--pw) * 0.055);
   --bezel: calc(var(--pw) * 0.024);
   --screen-r: calc(var(--pw) * 0.15);
-  --fs-pair: clamp(0.65rem, calc(var(--pw) * 0.048), 0.875rem);
-  --fs-price: clamp(0.95rem, calc(var(--pw) * 0.09), 1.55rem);
-  --fs-row: clamp(0.55rem, calc(var(--pw) * 0.042), 0.75rem);
-  --fs-label: clamp(0.5rem, calc(var(--pw) * 0.036), 0.65rem);
-  --fs-badge: clamp(0.5rem, calc(var(--pw) * 0.038), 0.68rem);
+  --fs-pair: clamp(0.55rem, calc(var(--pw) * 0.048), 0.8rem);
+  --fs-price: clamp(0.7rem, calc(var(--pw) * 0.085), 1.35rem);
+  --fs-row: clamp(0.48rem, calc(var(--pw) * 0.042), 0.7rem);
+  --fs-label: clamp(0.42rem, calc(var(--pw) * 0.036), 0.6rem);
+  --fs-badge: clamp(0.42rem, calc(var(--pw) * 0.038), 0.62rem);
 
   width: 100%;
   max-width: 100%;
@@ -37,16 +37,16 @@
   border-radius: var(--pr);
   background: linear-gradient(
     165deg,
-    #8f8d87 0%,
-    #524f4a 12%,
-    #2b2a28 40%,
-    #171615 75%,
-    #0a0a09 100%
+    #c9c7c0 0%,
+    #9d9b93 22%,
+    #78766f 48%,
+    #56544f 72%,
+    #3a3936 100%
   );
   box-shadow:
-    0 calc(var(--pw) * 0.08) calc(var(--pw) * 0.22) rgba(14, 15, 19, 0.35),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    0 calc(var(--pw) * 0.08) calc(var(--pw) * 0.22) rgba(14, 15, 19, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   padding: var(--bezel);
   box-sizing: border-box;
   transform-style: preserve-3d;
@@ -125,16 +125,18 @@
   display: flex;
   flex-direction: column;
   padding: calc(var(--pad) * 2.2) var(--pad) var(--pad);
-  gap: calc(var(--pw) * 0.04);
+  gap: calc(var(--pw) * 0.028);
   min-height: 0;
+  overflow: hidden;
 }
 
 .hero-phones__header {
   display: flex;
   align-items: center;
   gap: calc(var(--pw) * 0.035);
-  padding-bottom: calc(var(--pw) * 0.035);
+  padding-bottom: calc(var(--pw) * 0.028);
   border-bottom: 1px solid #1f2a36;
+  flex-shrink: 0;
 }
 
 .hero-phones__avatar {
@@ -174,14 +176,30 @@
 }
 
 .hero-phones__card {
-  flex: 1;
-  min-height: 0;
   border-radius: calc(var(--pw) * 0.055);
   background: #1b2733;
-  padding: calc(var(--pw) * 0.05);
+  padding: calc(var(--pw) * 0.045);
   display: flex;
   flex-direction: column;
-  gap: calc(var(--pw) * 0.035);
+  gap: calc(var(--pw) * 0.028);
+  min-height: 0;
+  flex-shrink: 0;
+}
+
+.hero-phones__card--signal {
+  flex: 1 1 auto;
+  gap: calc(var(--pw) * 0.025);
+}
+
+.hero-phones__card--chart {
+  flex: 0 0 auto;
+  gap: calc(var(--pw) * 0.018);
+}
+
+.hero-phones__card--watch {
+  flex: 0 0 auto;
+  gap: calc(var(--pw) * 0.014);
+  padding-block: calc(var(--pw) * 0.035);
 }
 
 .hero-phones__pair-row {
@@ -258,7 +276,7 @@
 .hero-phones__rows {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--pw) * 0.022);
+  gap: calc(var(--pw) * 0.018);
   margin-top: auto;
 }
 
@@ -283,12 +301,73 @@
   font-variant-numeric: tabular-nums;
 }
 
+.hero-phones__chart-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--pw) * 0.03);
+}
+
+.hero-phones__chart-label {
+  margin: 0;
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5b6b7e;
+}
+
+.hero-phones__chart-value {
+  margin: 0;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--fs-row);
+  font-weight: 700;
+  color: #6fcf97;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-phones__spark {
+  display: block;
+  width: 100%;
+  height: calc(var(--pw) * 0.18);
+  overflow: visible;
+}
+
+.hero-phones__watch-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--pw) * 0.03);
+  font-size: var(--fs-row);
+  line-height: 1.25;
+}
+
+.hero-phones__watch-pair {
+  color: #e8ecf1;
+  font-weight: 700;
+}
+
+.hero-phones__watch-chg {
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-phones__watch-chg.is-up {
+  color: #6fcf97;
+}
+
+.hero-phones__watch-chg.is-down {
+  color: #e08a7e;
+}
+
 .hero-phones__footnote {
   margin: 0;
   font-size: var(--fs-label);
   color: #5b6b7e;
   text-align: center;
   line-height: 1.3;
+  flex-shrink: 0;
 }
 
 @keyframes hero-phone-float {

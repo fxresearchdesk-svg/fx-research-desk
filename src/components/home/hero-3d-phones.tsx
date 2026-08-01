@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import {
   calcChangePercent,
   fetchUsdRates,
@@ -38,14 +38,84 @@ const BACK: PhoneSignal = {
   note: "VIP Signals Channel",
 };
 
+const WATCHLIST = [
+  { pair: "GBP/USD", change: "+0.08%", up: true },
+  { pair: "USD/JPY", change: "−0.12%", up: false },
+  { pair: "XAU/USD", change: "+0.21%", up: true },
+] as const;
+
+const SPARK_LINE =
+  "M0 26 L10 24 L20 25 L30 20 L40 22 L50 16 L60 18 L70 12 L80 14 L90 9 L100 7";
+const SPARK_AREA = `${SPARK_LINE} L100 36 L0 36 Z`;
+
+function PerformanceChart() {
+  const reactId = useId();
+  const fillId = `spark-fill-${reactId.replace(/:/g, "")}`;
+
+  return (
+    <div className="hero-phones__card hero-phones__card--chart" data-chart>
+      <div className="hero-phones__chart-head">
+        <p className="hero-phones__chart-label">24H Performance</p>
+        <p className="hero-phones__chart-value">+0.14%</p>
+      </div>
+      <svg
+        className="hero-phones__spark"
+        viewBox="0 0 100 36"
+        preserveAspectRatio="none"
+        aria-hidden
+      >
+        <defs>
+          <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#6FCF97" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#6FCF97" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={SPARK_AREA} fill={`url(#${fillId})`} />
+        <path
+          d={SPARK_LINE}
+          fill="none"
+          stroke="#6FCF97"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function Watchlist() {
+  return (
+    <div className="hero-phones__card hero-phones__card--watch">
+      {WATCHLIST.map((row) => (
+        <div key={row.pair} className="hero-phones__watch-row">
+          <span className="hero-phones__watch-pair">{row.pair}</span>
+          <span
+            className={
+              row.up
+                ? "hero-phones__watch-chg is-up"
+                : "hero-phones__watch-chg is-down"
+            }
+          >
+            {row.change}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function PhoneFace({
   signal,
   livePrice,
   change,
+  showExtras = false,
 }: {
   signal: PhoneSignal;
   livePrice?: string | null;
   change?: number | null;
+  showExtras?: boolean;
 }) {
   const changeClass =
     change == null || change === 0
@@ -71,7 +141,7 @@ function PhoneFace({
             </div>
           </div>
 
-          <div className="hero-phones__card">
+          <div className="hero-phones__card hero-phones__card--signal">
             <div className="hero-phones__pair-row">
               <p className="hero-phones__pair">{signal.pair}</p>
               <span
@@ -112,6 +182,13 @@ function PhoneFace({
               </div>
             </div>
           </div>
+
+          {showExtras && (
+            <>
+              <PerformanceChart />
+              <Watchlist />
+            </>
+          )}
 
           <p className="hero-phones__footnote">{signal.note}</p>
         </div>
@@ -157,7 +234,12 @@ export function Hero3dPhones() {
           <PhoneFace signal={BACK} />
         </div>
         <div className="hero-phones__phone hero-phones__phone--front">
-          <PhoneFace signal={FRONT} livePrice={livePrice} change={change} />
+          <PhoneFace
+            signal={FRONT}
+            livePrice={livePrice}
+            change={change}
+            showExtras
+          />
         </div>
       </div>
     </div>
