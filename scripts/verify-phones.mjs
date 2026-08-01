@@ -21,6 +21,12 @@ async function measure(page) {
     const stage = document.querySelector(".hero-phones__stage");
     const front = document.querySelector(".hero-phones__phone--front");
     const back = document.querySelector(".hero-phones__phone--back");
+    const notch = document.querySelector(
+      ".hero-phones__phone--front .hero-phones__notch"
+    );
+    const screen = document.querySelector(
+      ".hero-phones__phone--front .hero-phones__screen"
+    );
     const priceEl = document.querySelector("[data-live-price]");
     const vw = window.innerWidth;
 
@@ -39,11 +45,36 @@ async function measure(page) {
 
     const frontBox = box(front);
     const backBox = box(back);
+    const notchBox = box(notch);
+    const screenBox = box(screen);
     const clipped =
       (frontBox && (frontBox.left < -1 || frontBox.right > vw + 1)) ||
       (backBox && (backBox.left < -1 || backBox.right > vw + 1));
 
     const style = front ? getComputedStyle(front) : null;
+    const inner = front
+      ? front.querySelector(".hero-phones__phone-inner")
+      : null;
+    const innerBox = box(inner);
+
+    let island = null;
+    if (notchBox && innerBox && innerBox.width > 0 && innerBox.height > 0) {
+      island = {
+        widthPct: Math.round((notchBox.width / innerBox.width) * 1000) / 10,
+        heightPct: Math.round((notchBox.height / innerBox.height) * 1000) / 10,
+      };
+    }
+
+    let bezel = null;
+    if (frontBox && screenBox) {
+      bezel = {
+        leftPx: Math.round((screenBox.left - frontBox.left) * 100) / 100,
+        topPx: Math.round((screenBox.top - frontBox.top) * 100) / 100,
+        bezelCss: style ? style.paddingTop : null,
+        frameRadius: style ? style.borderRadius : null,
+        screenRadius: screen ? getComputedStyle(screen).borderRadius : null,
+      };
+    }
 
     return {
       vw,
@@ -60,6 +91,9 @@ async function measure(page) {
         ? getComputedStyle(phones).getPropertyValue("--pw").trim()
         : null,
       animation: style ? style.animationName : null,
+      island,
+      bezel,
+      frameBg: style ? style.backgroundImage.slice(0, 80) : null,
     };
   });
 }
