@@ -4,7 +4,7 @@
   --pw: clamp(110px, 17vw, 225px);
   --pr: calc(var(--pw) * 0.175);
   --pad: calc(var(--pw) * 0.055);
-  --bezel: calc(var(--pw) * 0.024);
+  --bezel: calc(var(--pw) * 0.052);
   --screen-r: calc(var(--pw) * 0.15);
   --fs-pair: clamp(0.55rem, calc(var(--pw) * 0.048), 0.8rem);
   --fs-price: clamp(0.7rem, calc(var(--pw) * 0.085), 1.35rem);
@@ -22,9 +22,10 @@
 
 .hero-phones__stage {
   position: relative;
-  width: min(100%, calc(var(--pw) * 1.72));
-  height: calc(var(--pw) * (610 / 300) * 1.08);
-  perspective: calc(var(--pw) * 4);
+  /* Extra room for dramatic rotateY / translateZ projection */
+  width: min(100%, calc(var(--pw) * 2.35));
+  height: calc(var(--pw) * (610 / 300) * 1.22);
+  perspective: 1400px;
   transform-style: preserve-3d;
 }
 
@@ -37,21 +38,19 @@
   border-radius: var(--pr);
   background: linear-gradient(
     165deg,
-    #c9c7c0 0%,
-    #9d9b93 22%,
-    #78766f 48%,
-    #56544f 72%,
-    #3a3936 100%
+    #edebe3 0%,
+    #c4c2ba 20%,
+    #98968e 45%,
+    #6c6a63 70%,
+    #48463f 100%
   );
   box-shadow:
-    0 calc(var(--pw) * 0.08) calc(var(--pw) * 0.22) rgba(14, 15, 19, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 calc(var(--pw) * 0.1) calc(var(--pw) * 0.28) rgba(14, 15, 19, 0.32),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
   padding: var(--bezel);
   box-sizing: border-box;
   transform-style: preserve-3d;
-  /* Base centering — percentage of self, scales with --pw */
-  transform: translate(-50%, -50%);
   overflow: hidden;
 }
 
@@ -63,13 +62,13 @@
   border-radius: inherit;
   background: repeating-linear-gradient(
     125deg,
-    rgba(255, 255, 255, 0.07) 0px,
-    rgba(255, 255, 255, 0.07) 1px,
+    rgba(255, 255, 255, 0.1) 0px,
+    rgba(255, 255, 255, 0.1) 1px,
     transparent 1px,
     transparent 3px
   );
   mix-blend-mode: overlay;
-  opacity: 0.55;
+  opacity: 0.65;
   pointer-events: none;
   z-index: 0;
 }
@@ -83,17 +82,21 @@
 
 .hero-phones__phone--back {
   z-index: 1;
-  /* Offsets are % of phone size — fluid, not fixed px margins */
-  transform: translate(-50%, -50%) translate(-30%, 5%) rotateY(16deg) rotateZ(-3.5deg)
-    scale(0.9);
-  opacity: 0.88;
-  filter: brightness(0.92);
+  left: 34%;
+  top: 72%;
+  transform: translate(-6%, -62%) rotateY(-38deg) rotateX(7deg) rotateZ(4deg)
+    translateZ(-140px);
+  animation: floatBack 5.4s ease-in-out infinite;
+  opacity: 0.94;
 }
 
 .hero-phones__phone--front {
   z-index: 2;
-  transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg);
-  animation: hero-phone-float 4.8s ease-in-out infinite;
+  left: 58%;
+  top: 52%;
+  transform: translate(-50%, -50%) rotateY(24deg) rotateX(-5deg) rotateZ(-6deg)
+    translateZ(90px);
+  animation: floatFront 4.8s ease-in-out infinite;
 }
 
 .hero-phones__screen {
@@ -326,11 +329,67 @@
   font-variant-numeric: tabular-nums;
 }
 
+.hero-phones__chart-value--gold {
+  color: #d7b36a;
+}
+
 .hero-phones__spark {
   display: block;
   width: 100%;
   height: calc(var(--pw) * 0.18);
   overflow: visible;
+}
+
+.hero-phones__bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--pw) * 0.025);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hero-phones__bubble {
+  border-radius: calc(var(--pw) * 0.045);
+  background: #1b2733;
+  padding: calc(var(--pw) * 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--pw) * 0.012);
+  flex-shrink: 0;
+}
+
+.hero-phones__bubble-title {
+  margin: 0;
+  font-size: var(--fs-label);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #e8c173;
+}
+
+.hero-phones__bubble-line {
+  margin: 0;
+  font-size: var(--fs-row);
+  font-weight: 700;
+  color: #e8ecf1;
+  line-height: 1.35;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.hero-phones__bubble-line--buy {
+  color: #6fcf97;
+}
+
+.hero-phones__bubble-line--sell {
+  color: #e08a7e;
+}
+
+.hero-phones__bubble-meta {
+  margin: 0;
+  font-size: var(--fs-label);
+  color: #5b6b7e;
+  text-align: right;
 }
 
 .hero-phones__watch-row {
@@ -370,20 +429,33 @@
   flex-shrink: 0;
 }
 
-@keyframes hero-phone-float {
+@keyframes floatFront {
   0%,
   100% {
-    transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg)
-      translateY(0);
+    transform: translate(-50%, -50%) rotateY(24deg) rotateX(-5deg) rotateZ(-6deg)
+      translateZ(90px) translateY(0);
   }
   50% {
-    transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg)
-      translateY(calc(var(--pw) * -0.04));
+    transform: translate(-50%, -50%) rotateY(24deg) rotateX(-5deg) rotateZ(-6deg)
+      translateZ(90px) translateY(calc(var(--pw) * -0.045));
+  }
+}
+
+@keyframes floatBack {
+  0%,
+  100% {
+    transform: translate(-6%, -62%) rotateY(-38deg) rotateX(7deg) rotateZ(4deg)
+      translateZ(-140px) translateY(0);
+  }
+  50% {
+    transform: translate(-6%, -62%) rotateY(-38deg) rotateX(7deg) rotateZ(4deg)
+      translateZ(-140px) translateY(calc(var(--pw) * 0.035));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-phones__phone--front {
+  .hero-phones__phone--front,
+  .hero-phones__phone--back {
     animation: none;
   }
 }

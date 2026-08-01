@@ -28,8 +28,10 @@ async function measure(page) {
       ".hero-phones__phone--front .hero-phones__screen"
     );
     const priceEl = document.querySelector("[data-live-price]");
-    const chart = document.querySelector("[data-chart]");
-    const spark = document.querySelector(".hero-phones__spark");
+    const charts = document.querySelectorAll("[data-chart]");
+    const spark = document.querySelector(
+      ".hero-phones__phone--front .hero-phones__spark"
+    );
     const vw = window.innerWidth;
 
     function box(el) {
@@ -96,18 +98,40 @@ async function measure(page) {
       island,
       bezel,
       frameBg: style ? style.backgroundImage.slice(0, 120) : null,
-      hasChart: Boolean(chart),
-      chartBox: box(chart),
+      hasChart: charts.length > 0,
+      chartCount: charts.length,
+      chartBox: box(charts[0] || null),
       sparkBox: box(spark),
       chartOverflowsScreen: (() => {
-        if (!chart || !screenBox) return null;
-        const c = chart.getBoundingClientRect();
-        return (
-          c.left < screenBox.left - 1 ||
-          c.right > screenBox.right + 1 ||
-          c.top < screenBox.top - 1 ||
-          c.bottom > screenBox.bottom + 1
-        );
+        const pairs = [
+          [
+            ".hero-phones__phone--front .hero-phones__screen",
+            ".hero-phones__phone--front [data-chart]",
+          ],
+          [
+            ".hero-phones__phone--back .hero-phones__screen",
+            ".hero-phones__phone--back [data-chart]",
+          ],
+        ];
+        return pairs.some(([screenSel, chartSel]) => {
+          const screenEl = document.querySelector(screenSel);
+          const chartEl = document.querySelector(chartSel);
+          if (!screenEl || !chartEl) return false;
+          const c = chartEl.getBoundingClientRect();
+          const s = screenEl.getBoundingClientRect();
+          return (
+            c.left < s.left - 2 ||
+            c.right > s.right + 2 ||
+            c.top < s.top - 2 ||
+            c.bottom > s.bottom + 2
+          );
+        });
+      })(),
+      frameSample: (() => {
+        const bg = style ? style.backgroundImage : "";
+        return /rgb\(\s*237\s*,\s*235\s*,\s*227\s*\)|#edebe3/i.test(bg)
+          ? "light-silver"
+          : bg.slice(0, 80);
       })(),
     };
   });

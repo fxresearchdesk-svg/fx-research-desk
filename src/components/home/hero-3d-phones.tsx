@@ -29,34 +29,60 @@ const FRONT: PhoneSignal = {
   note: "Illustrative setup · live market price",
 };
 
-const BACK: PhoneSignal = {
-  pair: "GBP/USD",
-  direction: "SELL",
-  entry: "1.3462",
-  stopLoss: "1.3498",
-  takeProfit: "1.3390",
-  note: "VIP Signals Channel",
-};
-
 const WATCHLIST = [
   { pair: "GBP/USD", change: "+0.08%", up: true },
   { pair: "USD/JPY", change: "−0.12%", up: false },
   { pair: "XAU/USD", change: "+0.21%", up: true },
 ] as const;
 
+const TELEGRAM_BUBBLES = [
+  {
+    title: "NEW SIGNAL — EUR/USD",
+    action: "BUY @ 1.0842",
+    tone: "buy" as const,
+    detail: "SL 1.0810 · TP 1.0910",
+    time: "10:42",
+  },
+  {
+    title: "NEW SIGNAL — GBP/USD",
+    action: "SELL @ 1.3462",
+    tone: "sell" as const,
+    detail: "SL 1.3498 · TP 1.3390",
+    time: "11:08",
+  },
+];
+
 const SPARK_LINE =
   "M0 26 L10 24 L20 25 L30 20 L40 22 L50 16 L60 18 L70 12 L80 14 L90 9 L100 7";
 const SPARK_AREA = `${SPARK_LINE} L100 36 L0 36 Z`;
 
-function PerformanceChart() {
+function MiniChart({
+  label,
+  value,
+  color,
+  valueClassName,
+}: {
+  label: string;
+  value: string;
+  color: string;
+  valueClassName?: string;
+}) {
   const reactId = useId();
   const fillId = `spark-fill-${reactId.replace(/:/g, "")}`;
 
   return (
     <div className="hero-phones__card hero-phones__card--chart" data-chart>
       <div className="hero-phones__chart-head">
-        <p className="hero-phones__chart-label">24H Performance</p>
-        <p className="hero-phones__chart-value">+0.14%</p>
+        <p className="hero-phones__chart-label">{label}</p>
+        <p
+          className={
+            valueClassName
+              ? `hero-phones__chart-value ${valueClassName}`
+              : "hero-phones__chart-value"
+          }
+        >
+          {value}
+        </p>
       </div>
       <svg
         className="hero-phones__spark"
@@ -66,15 +92,15 @@ function PerformanceChart() {
       >
         <defs>
           <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6FCF97" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#6FCF97" stopOpacity="0" />
+            <stop offset="0%" stopColor={color} stopOpacity="0.4" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={SPARK_AREA} fill={`url(#${fillId})`} />
         <path
           d={SPARK_LINE}
           fill="none"
-          stroke="#6FCF97"
+          stroke={color}
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -106,16 +132,12 @@ function Watchlist() {
   );
 }
 
-function PhoneFace({
-  signal,
+function FrontPhoneFace({
   livePrice,
   change,
-  showExtras = false,
 }: {
-  signal: PhoneSignal;
-  livePrice?: string | null;
-  change?: number | null;
-  showExtras?: boolean;
+  livePrice: string | null;
+  change: number | null;
 }) {
   const changeClass =
     change == null || change === 0
@@ -143,54 +165,86 @@ function PhoneFace({
 
           <div className="hero-phones__card hero-phones__card--signal">
             <div className="hero-phones__pair-row">
-              <p className="hero-phones__pair">{signal.pair}</p>
-              <span
-                className={
-                  signal.direction === "BUY"
-                    ? "hero-phones__badge hero-phones__badge--buy"
-                    : "hero-phones__badge hero-phones__badge--sell"
-                }
-              >
-                {signal.direction}
+              <p className="hero-phones__pair">{FRONT.pair}</p>
+              <span className="hero-phones__badge hero-phones__badge--buy">
+                {FRONT.direction}
               </span>
             </div>
-
-            {livePrice !== undefined && (
-              <>
-                <p className="hero-phones__live-label">Live price</p>
-                <p className="hero-phones__price" data-live-price>
-                  {livePrice ?? "—"}
-                </p>
-                <p className={`hero-phones__price-meta ${changeClass}`}>
-                  {changeText}
-                </p>
-              </>
-            )}
-
+            <p className="hero-phones__live-label">Live price</p>
+            <p className="hero-phones__price" data-live-price>
+              {livePrice ?? "—"}
+            </p>
+            <p className={`hero-phones__price-meta ${changeClass}`}>
+              {changeText}
+            </p>
             <div className="hero-phones__rows">
               <div className="hero-phones__row">
                 <span className="hero-phones__row-k">Entry</span>
-                <span className="hero-phones__row-v">{signal.entry}</span>
+                <span className="hero-phones__row-v">{FRONT.entry}</span>
               </div>
               <div className="hero-phones__row">
                 <span className="hero-phones__row-k">SL</span>
-                <span className="hero-phones__row-v">{signal.stopLoss}</span>
+                <span className="hero-phones__row-v">{FRONT.stopLoss}</span>
               </div>
               <div className="hero-phones__row">
                 <span className="hero-phones__row-k">TP</span>
-                <span className="hero-phones__row-v">{signal.takeProfit}</span>
+                <span className="hero-phones__row-v">{FRONT.takeProfit}</span>
               </div>
             </div>
           </div>
 
-          {showExtras && (
-            <>
-              <PerformanceChart />
-              <Watchlist />
-            </>
-          )}
+          <MiniChart
+            label="24H Performance"
+            value="+0.14%"
+            color="#6FCF97"
+          />
+          <Watchlist />
+          <p className="hero-phones__footnote">{FRONT.note}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-          <p className="hero-phones__footnote">{signal.note}</p>
+function BackPhoneFace() {
+  return (
+    <div className="hero-phones__phone-inner">
+      <div className="hero-phones__notch" aria-hidden />
+      <div className="hero-phones__screen">
+        <div className="hero-phones__body">
+          <div className="hero-phones__header">
+            <div className="hero-phones__avatar">Fx</div>
+            <div className="hero-phones__channel">
+              <p className="hero-phones__channel-name">FX Research Desk</p>
+              <p className="hero-phones__channel-sub">VIP Signals Channel</p>
+            </div>
+          </div>
+
+          <div className="hero-phones__bubbles">
+            {TELEGRAM_BUBBLES.map((bubble) => (
+              <div key={bubble.title} className="hero-phones__bubble">
+                <p className="hero-phones__bubble-title">{bubble.title}</p>
+                <p
+                  className={
+                    bubble.tone === "buy"
+                      ? "hero-phones__bubble-line hero-phones__bubble-line--buy"
+                      : "hero-phones__bubble-line hero-phones__bubble-line--sell"
+                  }
+                >
+                  {bubble.action}
+                </p>
+                <p className="hero-phones__bubble-line">{bubble.detail}</p>
+                <p className="hero-phones__bubble-meta">{bubble.time} ✓✓</p>
+              </div>
+            ))}
+          </div>
+
+          <MiniChart
+            label="Weekly Pips"
+            value="+410"
+            color="#D7B36A"
+            valueClassName="hero-phones__chart-value--gold"
+          />
         </div>
       </div>
     </div>
@@ -231,15 +285,10 @@ export function Hero3dPhones() {
           className="hero-phones__phone hero-phones__phone--back"
           aria-hidden
         >
-          <PhoneFace signal={BACK} />
+          <BackPhoneFace />
         </div>
         <div className="hero-phones__phone hero-phones__phone--front">
-          <PhoneFace
-            signal={FRONT}
-            livePrice={livePrice}
-            change={change}
-            showExtras
-          />
+          <FrontPhoneFace livePrice={livePrice} change={change} />
         </div>
       </div>
     </div>
