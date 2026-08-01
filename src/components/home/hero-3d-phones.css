@@ -1,0 +1,282 @@
+/* Fluid dual-phone hero — all sizing relative to --pw / percentages */
+
+.hero-phones {
+  --pw: clamp(150px, 22vw, 300px);
+  --pr: calc(var(--pw) * 0.14);
+  --notch-w: calc(var(--pw) * 0.38);
+  --notch-h: calc(var(--pw) * 0.055);
+  --pad: calc(var(--pw) * 0.055);
+  --bezel: calc(var(--pw) * 0.028);
+  --screen-r: calc(var(--pw) * 0.1);
+  --fs-pair: clamp(0.65rem, calc(var(--pw) * 0.048), 0.875rem);
+  --fs-price: clamp(0.95rem, calc(var(--pw) * 0.09), 1.55rem);
+  --fs-row: clamp(0.55rem, calc(var(--pw) * 0.042), 0.75rem);
+  --fs-label: clamp(0.5rem, calc(var(--pw) * 0.036), 0.65rem);
+  --fs-badge: clamp(0.5rem, calc(var(--pw) * 0.038), 0.68rem);
+
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+.hero-phones__stage {
+  position: relative;
+  width: min(100%, calc(var(--pw) * 1.72));
+  height: calc(var(--pw) * (610 / 300) * 1.08);
+  perspective: calc(var(--pw) * 4);
+  transform-style: preserve-3d;
+}
+
+.hero-phones__phone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--pw);
+  aspect-ratio: 300 / 610;
+  border-radius: var(--pr);
+  background: linear-gradient(160deg, #1a1c22 0%, #0e0f13 55%, #16181e 100%);
+  box-shadow:
+    0 calc(var(--pw) * 0.08) calc(var(--pw) * 0.22) rgba(14, 15, 19, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  padding: var(--bezel);
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  /* Base centering — percentage of self, scales with --pw */
+  transform: translate(-50%, -50%);
+}
+
+.hero-phones__phone-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-phones__phone--back {
+  z-index: 1;
+  /* Offsets are % of phone size — fluid, not fixed px margins */
+  transform: translate(-50%, -50%) translate(-30%, 5%) rotateY(16deg) rotateZ(-3.5deg)
+    scale(0.9);
+  opacity: 0.88;
+  filter: brightness(0.92);
+}
+
+.hero-phones__phone--front {
+  z-index: 2;
+  transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg);
+  animation: hero-phone-float 4.8s ease-in-out infinite;
+}
+
+.hero-phones__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--screen-r);
+  background: #131c26;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-phones__notch {
+  position: absolute;
+  top: calc(var(--pw) * 0.028);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--notch-w);
+  height: var(--notch-h);
+  border-radius: 999px;
+  background: #0e0f13;
+  z-index: 3;
+}
+
+.hero-phones__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--pad) * 2.2) var(--pad) var(--pad);
+  gap: calc(var(--pw) * 0.04);
+  min-height: 0;
+}
+
+.hero-phones__header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pw) * 0.035);
+  padding-bottom: calc(var(--pw) * 0.035);
+  border-bottom: 1px solid #1f2a36;
+}
+
+.hero-phones__avatar {
+  flex-shrink: 0;
+  width: calc(var(--pw) * 0.12);
+  height: calc(var(--pw) * 0.12);
+  border-radius: 50%;
+  background: #c6a15b;
+  color: #0e0f13;
+  font-family: var(--font-lora), Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: var(--fs-row);
+  display: grid;
+  place-items: center;
+}
+
+.hero-phones__channel {
+  min-width: 0;
+}
+
+.hero-phones__channel-name {
+  margin: 0;
+  font-size: var(--fs-row);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-phones__channel-sub {
+  margin: 0;
+  font-size: var(--fs-label);
+  color: #7c8ca0;
+  line-height: 1.3;
+}
+
+.hero-phones__card {
+  flex: 1;
+  min-height: 0;
+  border-radius: calc(var(--pw) * 0.055);
+  background: #1b2733;
+  padding: calc(var(--pw) * 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--pw) * 0.035);
+}
+
+.hero-phones__pair-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--pw) * 0.03);
+}
+
+.hero-phones__pair {
+  margin: 0;
+  font-size: var(--fs-pair);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #e8c173;
+  line-height: 1.2;
+}
+
+.hero-phones__badge {
+  flex-shrink: 0;
+  font-size: var(--fs-badge);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: calc(var(--pw) * 0.018) calc(var(--pw) * 0.035);
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.hero-phones__badge--buy {
+  background: rgba(60, 122, 92, 0.25);
+  color: #6fcf97;
+}
+
+.hero-phones__badge--sell {
+  background: rgba(166, 72, 60, 0.25);
+  color: #e08a7e;
+}
+
+.hero-phones__live-label {
+  margin: 0;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5b6b7e;
+}
+
+.hero-phones__price {
+  margin: 0;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--fs-price);
+  font-weight: 700;
+  color: #e8ecf1;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-phones__price-meta {
+  margin: 0;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--fs-label);
+  color: #7c8ca0;
+}
+
+.hero-phones__price-meta.is-up {
+  color: #6fcf97;
+}
+
+.hero-phones__price-meta.is-down {
+  color: #e08a7e;
+}
+
+.hero-phones__rows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--pw) * 0.022);
+  margin-top: auto;
+}
+
+.hero-phones__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--pw) * 0.03);
+  font-size: var(--fs-row);
+  line-height: 1.3;
+}
+
+.hero-phones__row-k {
+  color: #7c8ca0;
+  font-weight: 600;
+}
+
+.hero-phones__row-v {
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  color: #e8ecf1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-phones__footnote {
+  margin: 0;
+  font-size: var(--fs-label);
+  color: #5b6b7e;
+  text-align: center;
+  line-height: 1.3;
+}
+
+@keyframes hero-phone-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg)
+      translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(26%, -3%) rotateY(-11deg) rotateZ(2deg)
+      translateY(calc(var(--pw) * -0.04));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-phones__phone--front {
+    animation: none;
+  }
+}

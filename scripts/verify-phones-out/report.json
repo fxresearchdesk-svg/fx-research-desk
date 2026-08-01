@@ -1,0 +1,272 @@
+[
+  {
+    "width": 320,
+    "vw": 320,
+    "scrollW": 320,
+    "clientW": 320,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 121.3,
+      "right": 281.01,
+      "top": 868.7,
+      "bottom": 1181.01,
+      "width": 159.71,
+      "height": 312.31
+    },
+    "backBox": {
+      "left": 37.93,
+      "right": 186.88,
+      "top": 912.71,
+      "bottom": 1195.97,
+      "width": 148.95,
+      "height": 283.26
+    },
+    "stageBox": {
+      "left": 31,
+      "right": 289,
+      "top": 870.56,
+      "bottom": 1199.95,
+      "width": 258,
+      "height": 329.39
+    },
+    "phonesBox": {
+      "left": 24,
+      "right": 296,
+      "top": 870.56,
+      "bottom": 1199.95,
+      "width": 272,
+      "height": 329.39
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-320.png"
+  },
+  {
+    "width": 375,
+    "vw": 375,
+    "scrollW": 375,
+    "clientW": 375,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 148.82,
+      "right": 308.54,
+      "top": 795.94,
+      "bottom": 1108.25,
+      "width": 159.71,
+      "height": 312.31
+    },
+    "backBox": {
+      "left": 65.43,
+      "right": 214.38,
+      "top": 840.72,
+      "bottom": 1123.99,
+      "width": 148.95,
+      "height": 283.26
+    },
+    "stageBox": {
+      "left": 58.5,
+      "right": 316.5,
+      "top": 798.58,
+      "bottom": 1127.97,
+      "width": 258,
+      "height": 329.39
+    },
+    "phonesBox": {
+      "left": 24,
+      "right": 351,
+      "top": 798.58,
+      "bottom": 1127.97,
+      "width": 327,
+      "height": 329.39
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-375.png"
+  },
+  {
+    "width": 414,
+    "vw": 414,
+    "scrollW": 414,
+    "clientW": 414,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 168.34,
+      "right": 328.05,
+      "top": 723.57,
+      "bottom": 1035.88,
+      "width": 159.71,
+      "height": 312.31
+    },
+    "backBox": {
+      "left": 84.93,
+      "right": 233.88,
+      "top": 768.74,
+      "bottom": 1052,
+      "width": 148.95,
+      "height": 283.26
+    },
+    "stageBox": {
+      "left": 78,
+      "right": 336,
+      "top": 726.59,
+      "bottom": 1055.98,
+      "width": 258,
+      "height": 329.39
+    },
+    "phonesBox": {
+      "left": 24,
+      "right": 390,
+      "top": 726.59,
+      "bottom": 1055.98,
+      "width": 366,
+      "height": 329.39
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-414.png"
+  },
+  {
+    "width": 768,
+    "vw": 768,
+    "scrollW": 768,
+    "clientW": 768,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 340.39,
+      "right": 520.28,
+      "top": 639.05,
+      "bottom": 990.8,
+      "width": 179.89,
+      "height": 351.76
+    },
+    "backBox": {
+      "left": 246.49,
+      "right": 414.26,
+      "top": 688.37,
+      "bottom": 1007.42,
+      "width": 167.77,
+      "height": 319.05
+    },
+    "stageBox": {
+      "left": 238.69,
+      "right": 529.3,
+      "top": 640.88,
+      "bottom": 1011.91,
+      "width": 290.61,
+      "height": 371.03
+    },
+    "phonesBox": {
+      "left": 24,
+      "right": 744,
+      "top": 640.88,
+      "bottom": 1011.91,
+      "width": 720,
+      "height": 371.03
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-768.png"
+  },
+  {
+    "width": 1024,
+    "vw": 1024,
+    "scrollW": 1024,
+    "clientW": 1024,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 721.54,
+      "right": 961.4,
+      "top": 183.06,
+      "bottom": 652.07,
+      "width": 239.85,
+      "height": 469.01
+    },
+    "backBox": {
+      "left": 596.31,
+      "right": 820,
+      "top": 250.31,
+      "bottom": 675.7,
+      "width": 223.69,
+      "height": 425.39
+    },
+    "stageBox": {
+      "left": 585.89,
+      "right": 973.36,
+      "top": 187,
+      "bottom": 681.7,
+      "width": 387.47,
+      "height": 494.7
+    },
+    "phonesBox": {
+      "left": 575.27,
+      "right": 983.98,
+      "top": 187,
+      "bottom": 681.7,
+      "width": 408.72,
+      "height": 494.7
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-1024.png"
+  },
+  {
+    "width": 1440,
+    "vw": 1440,
+    "scrollW": 1440,
+    "clientW": 1440,
+    "hasHorizontalScrollbar": false,
+    "clipped": false,
+    "frontBox": {
+      "left": 968.35,
+      "right": 1287.78,
+      "top": 181.21,
+      "bottom": 805.84,
+      "width": 319.43,
+      "height": 624.63
+    },
+    "backBox": {
+      "left": 801.55,
+      "right": 1099.45,
+      "top": 271.3,
+      "bottom": 837.83,
+      "width": 297.9,
+      "height": 566.53
+    },
+    "stageBox": {
+      "left": 791.39,
+      "right": 1299.98,
+      "top": 187,
+      "bottom": 845.8,
+      "width": 508.59,
+      "height": 658.8
+    },
+    "phonesBox": {
+      "left": 791.39,
+      "right": 1299.98,
+      "top": 187,
+      "bottom": 845.8,
+      "width": 508.59,
+      "height": 658.8
+    },
+    "livePrice": "1.1531",
+    "pw": "clamp(150px, 22vw, 300px)",
+    "animation": "hero-phone-float",
+    "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-1440.png"
+  },
+  {
+    "width": "375-reduced-motion",
+    "ok": true,
+    "animationName": "none",
+    "animationDuration": "0s"
+  }
+]

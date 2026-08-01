@@ -1,0 +1,128 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { chromium } from "playwright-core";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const URL = process.env.VERIFY_URL || "http://127.0.0.1:3456/";
+const WIDTHS = [320, 375, 414, 768, 1024, 1440];
+const OUT = path.join(__dirname, "verify-phones-out");
+const CHROME =
+  process.env.CHROME_PATH ||
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+
+async function measure(page) {
+  return page.evaluate(() => {
+    const doc = document.documentElement;
+    const body = document.body;
+    const scrollW = Math.max(doc.scrollWidth, body.scrollWidth);
+    const clientW = doc.clientWidth;
+    const phones = document.querySelector(".hero-phones");
+    const stage = document.querySelector(".hero-phones__stage");
+    const front = document.querySelector(".hero-phones__phone--front");
+    const back = document.querySelector(".hero-phones__phone--back");
+    const priceEl = document.querySelector("[data-live-price]");
+    const vw = window.innerWidth;
+
+    function box(el) {
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        left: Math.round(r.left * 100) / 100,
+        right: Math.round(r.right * 100) / 100,
+        top: Math.round(r.top * 100) / 100,
+        bottom: Math.round(r.bottom * 100) / 100,
+        width: Math.round(r.width * 100) / 100,
+        height: Math.round(r.height * 100) / 100,
+      };
+    }
+
+    const frontBox = box(front);
+    const backBox = box(back);
+    const clipped =
+      (frontBox && (frontBox.left < -1 || frontBox.right > vw + 1)) ||
+      (backBox && (backBox.left < -1 || backBox.right > vw + 1));
+
+    const style = front ? getComputedStyle(front) : null;
+
+    return {
+      vw,
+      scrollW,
+      clientW,
+      hasHorizontalScrollbar: scrollW > clientW + 1,
+      clipped,
+      frontBox,
+      backBox,
+      stageBox: box(stage),
+      phonesBox: box(phones),
+      livePrice: priceEl ? priceEl.textContent.trim() : null,
+      pw: phones
+        ? getComputedStyle(phones).getPropertyValue("--pw").trim()
+        : null,
+      animation: style ? style.animationName : null,
+    };
+  });
+}
+
+async function main() {
+  fs.mkdirSync(OUT, { recursive: true });
+  const browser = await chromium.launch({
+    executablePath: CHROME,
+    headless: true,
+  });
+
+  const report = [];
+
+  for (const width of WIDTHS) {
+    const page = await browser.newPage({
+      viewport: { width, height: 900 },
+    });
+    await page.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
+    await page.waitForTimeout(2500);
+    try {
+      await page.waitForFunction(
+        () => {
+          const el = document.querySelector("[data-live-price]");
+          return el && el.textContent && el.textContent.trim() !== "—";
+        },
+        { timeout: 8000 }
+      );
+    } catch {
+      /* price may still be loading */
+    }
+
+    const m = await measure(page);
+    const shot = path.join(OUT, `phones-${width}.png`);
+    await page.locator(".hero-phones").screenshot({ path: shot });
+    report.push({ width, ...m, screenshot: shot });
+    await page.close();
+  }
+
+  const pageRm = await browser.newPage({
+    viewport: { width: 375, height: 900 },
+    reducedMotion: "reduce",
+  });
+  await pageRm.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
+  await pageRm.waitForTimeout(1000);
+  const rm = await pageRm.evaluate(() => {
+    const front = document.querySelector(".hero-phones__phone--front");
+    if (!front) return { ok: false };
+    const s = getComputedStyle(front);
+    return {
+      ok: true,
+      animationName: s.animationName,
+      animationDuration: s.animationDuration,
+    };
+  });
+  report.push({ width: "375-reduced-motion", ...rm });
+  await pageRm.close();
+
+  await browser.close();
+  fs.writeFileSync(path.join(OUT, "report.json"), JSON.stringify(report, null, 2));
+  console.log(JSON.stringify(report, null, 2));
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

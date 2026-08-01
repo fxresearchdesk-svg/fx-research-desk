@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { HeroTicketCarousel } from "@/components/home/hero-ticket-carousel";
+import { Hero3dPhones } from "@/components/home/hero-3d-phones";
 
 export function LandingHero() {
   return (
-    <section className="bg-[#FAF9F6] pb-[70px] pt-16 lg:pt-[72px]">
+    <section className="overflow-x-clip bg-[#FAF9F6] pb-[70px] pt-16 lg:pt-[72px]">
       <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-[60px] px-6 lg:grid-cols-[1fr_0.86fr] lg:px-10">
         <div>
           <p className="mb-[18px] text-[12.5px] font-extrabold tracking-[0.32em] text-[#C6A15B]">
@@ -45,7 +45,9 @@ export function LandingHero() {
           </div>
         </div>
 
-        <HeroTicketCarousel />
+        <div className="min-w-0 w-full justify-self-center lg:justify-self-end">
+          <Hero3dPhones />
+        </div>
       </div>
     </section>
   );
