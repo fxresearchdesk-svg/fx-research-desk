@@ -7,20 +7,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 159.92,
-      "right": 277.71,
-      "top": 892.8,
-      "bottom": 1140.55,
-      "width": 117.79,
-      "height": 247.75
+      "left": 197.41,
+      "right": 313.23,
+      "top": 1005.14,
+      "bottom": 1254.29,
+      "width": 115.82,
+      "height": 249.16
     },
     "backBox": {
-      "left": 191.53,
-      "right": 301.37,
-      "top": 952.25,
-      "bottom": 1167.54,
-      "width": 109.84,
-      "height": 215.28
+      "left": 173.97,
+      "right": 275.51,
+      "top": 908.69,
+      "bottom": 1098.93,
+      "width": 101.54,
+      "height": 190.24
     },
     "stageBox": {
       "left": 30.75,
@@ -38,41 +38,47 @@
       "width": 272,
       "height": 272.86
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.6,
-      "heightPct": 4.4
+      "widthPct": 23.8,
+      "heightPct": 4.7
     },
     "bezel": {
-      "leftPx": 6.06,
-      "topPx": 6.48,
-      "bezelCss": "5.72px",
+      "leftPx": 4.82,
+      "topPx": 5.33,
+      "bezelCss": "4.62px",
       "frameRadius": "19.25px",
       "screenRadius": "16.5px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 201.46,
-      "right": 272.26,
-      "top": 1103.72,
-      "bottom": 1154.86,
-      "width": 70.8,
-      "height": 51.15
+      "left": 182.81,
+      "right": 254.63,
+      "top": 1046.06,
+      "bottom": 1089.18,
+      "width": 71.82,
+      "height": 43.12
     },
     "sparkBox": {
-      "left": 184.31,
-      "right": 258.15,
-      "top": 1024.21,
-      "bottom": 1054.15,
-      "width": 73.84,
-      "height": 29.94
+      "left": 220.17,
+      "right": 295.18,
+      "top": 1136.82,
+      "bottom": 1169.51,
+      "width": 75.01,
+      "height": 32.69
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 23.4,
+      "dy": 96.4
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-320.png"
   },
   {
@@ -83,20 +89,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 187.42,
-      "right": 305.21,
-      "top": 820.81,
-      "bottom": 1068.57,
-      "width": 117.79,
-      "height": 247.75
+      "left": 224.91,
+      "right": 340.73,
+      "top": 933.15,
+      "bottom": 1182.31,
+      "width": 115.82,
+      "height": 249.16
     },
     "backBox": {
-      "left": 219.03,
-      "right": 328.87,
-      "top": 880.26,
-      "bottom": 1095.54,
-      "width": 109.84,
-      "height": 215.28
+      "left": 201.51,
+      "right": 303.03,
+      "top": 836.66,
+      "bottom": 1026.89,
+      "width": 101.52,
+      "height": 190.23
     },
     "stageBox": {
       "left": 58.25,
@@ -114,41 +120,47 @@
       "width": 327,
       "height": 272.86
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.6,
-      "heightPct": 4.4
+      "widthPct": 23.8,
+      "heightPct": 4.7
     },
     "bezel": {
-      "leftPx": 6.06,
-      "topPx": 6.49,
-      "bezelCss": "5.72px",
+      "leftPx": 4.82,
+      "topPx": 5.33,
+      "bezelCss": "4.62px",
       "frameRadius": "19.25px",
       "screenRadius": "16.5px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 228.97,
-      "right": 299.77,
-      "top": 1031.72,
-      "bottom": 1082.87,
-      "width": 70.8,
-      "height": 51.15
+      "left": 210.34,
+      "right": 282.15,
+      "top": 974.02,
+      "bottom": 1017.14,
+      "width": 71.81,
+      "height": 43.12
     },
     "sparkBox": {
-      "left": 211.81,
-      "right": 285.65,
-      "top": 952.23,
-      "bottom": 982.17,
-      "width": 73.84,
-      "height": 29.94
+      "left": 247.67,
+      "right": 322.68,
+      "top": 1064.83,
+      "bottom": 1097.52,
+      "width": 75.01,
+      "height": 32.69
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 23.4,
+      "dy": 96.5
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-375.png"
   },
   {
@@ -159,20 +171,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 206.93,
-      "right": 324.72,
-      "top": 748.95,
-      "bottom": 996.71,
-      "width": 117.78,
-      "height": 247.75
+      "left": 244.41,
+      "right": 360.24,
+      "top": 861.19,
+      "bottom": 1110.35,
+      "width": 115.82,
+      "height": 249.16
     },
     "backBox": {
-      "left": 238.56,
-      "right": 348.4,
-      "top": 808.07,
-      "bottom": 1023.34,
-      "width": 109.84,
-      "height": 215.27
+      "left": 220.91,
+      "right": 322.48,
+      "top": 764.81,
+      "bottom": 955.07,
+      "width": 101.57,
+      "height": 190.26
     },
     "stageBox": {
       "left": 77.75,
@@ -190,41 +202,47 @@
       "width": 366,
       "height": 272.86
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.6,
-      "heightPct": 4.4
+      "widthPct": 23.8,
+      "heightPct": 4.7
     },
     "bezel": {
-      "leftPx": 6.06,
-      "topPx": 6.49,
-      "bezelCss": "5.72px",
+      "leftPx": 4.82,
+      "topPx": 5.33,
+      "bezelCss": "4.62px",
       "frameRadius": "19.25px",
       "screenRadius": "16.5px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 248.49,
-      "right": 319.29,
-      "top": 959.53,
-      "bottom": 1010.67,
-      "width": 70.8,
-      "height": 51.14
+      "left": 229.75,
+      "right": 301.58,
+      "top": 902.18,
+      "bottom": 945.32,
+      "width": 71.83,
+      "height": 43.14
     },
     "sparkBox": {
-      "left": 231.31,
-      "right": 305.15,
-      "top": 880.37,
-      "bottom": 910.31,
-      "width": 73.84,
-      "height": 29.94
+      "left": 267.17,
+      "right": 342.18,
+      "top": 992.87,
+      "bottom": 1025.56,
+      "width": 75.01,
+      "height": 32.69
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 23.5,
+      "dy": 96.4
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-414.png"
   },
   {
@@ -235,20 +253,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 376.44,
-      "right": 516.02,
-      "top": 665.99,
-      "bottom": 960.05,
-      "width": 139.58,
-      "height": 294.07
+      "left": 421.15,
+      "right": 557.97,
+      "top": 799.07,
+      "bottom": 1095.12,
+      "width": 136.82,
+      "height": 296.05
     },
     "backBox": {
-      "left": 406.82,
-      "right": 537.25,
-      "top": 735.11,
-      "bottom": 991.09,
-      "width": 130.43,
-      "height": 255.97
+      "left": 395.3,
+      "right": 515.95,
+      "top": 683.39,
+      "bottom": 909.03,
+      "width": 120.66,
+      "height": 225.65
     },
     "stageBox": {
       "left": 230.59,
@@ -266,41 +284,47 @@
       "width": 720,
       "height": 323.88
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.7,
-      "heightPct": 4.3
+      "widthPct": 23.8,
+      "heightPct": 4.7
     },
     "bezel": {
-      "leftPx": 7.24,
-      "topPx": 7.65,
-      "bezelCss": "6.78912px",
+      "leftPx": 5.75,
+      "topPx": 6.32,
+      "bezelCss": "5.48352px",
       "frameRadius": "22.848px",
       "screenRadius": "19.584px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 418.53,
-      "right": 502.32,
-      "top": 916.35,
-      "bottom": 975.82,
-      "width": 83.79,
-      "height": 59.47
+      "left": 405.75,
+      "right": 490.97,
+      "top": 847.92,
+      "bottom": 897.39,
+      "width": 85.22,
+      "height": 49.47
     },
     "sparkBox": {
-      "left": 406.13,
-      "right": 493.52,
-      "top": 830.75,
-      "bottom": 866.59,
-      "width": 87.4,
-      "height": 35.84
+      "left": 448.74,
+      "right": 537.31,
+      "top": 963.87,
+      "bottom": 1003.52,
+      "width": 88.57,
+      "height": 39.65
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 25.8,
+      "dy": 115.7
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-768.png"
   },
   {
@@ -311,20 +335,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 755.89,
-      "right": 941.47,
-      "top": 233.27,
-      "bottom": 625.49,
-      "width": 185.58,
-      "height": 392.22
+      "left": 816.23,
+      "right": 996.89,
+      "top": 410.51,
+      "bottom": 806.24,
+      "width": 180.66,
+      "height": 395.74
     },
     "backBox": {
-      "left": 784.17,
-      "right": 958.31,
-      "top": 323.88,
-      "bottom": 666.64,
-      "width": 174.15,
-      "height": 342.76
+      "left": 785.07,
+      "right": 946.54,
+      "top": 254.61,
+      "bottom": 555.23,
+      "width": 161.46,
+      "height": 300.62
     },
     "stageBox": {
       "left": 575.27,
@@ -342,41 +366,47 @@
       "width": 408.72,
       "height": 431.83
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.8,
-      "heightPct": 4.2
+      "widthPct": 24,
+      "heightPct": 4.7
     },
     "bezel": {
-      "leftPx": 9.82,
-      "topPx": 10.1,
-      "bezelCss": "9.05216px",
+      "leftPx": 7.75,
+      "topPx": 8.41,
+      "bezelCss": "7.31136px",
       "frameRadius": "30.464px",
       "screenRadius": "26.112px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 799.57,
-      "right": 910.88,
-      "top": 567.54,
-      "bottom": 645.58,
-      "width": 111.31,
-      "height": 78.04
+      "left": 798.96,
+      "right": 912.77,
+      "top": 476.33,
+      "bottom": 539.49,
+      "width": 113.81,
+      "height": 63.15
     },
     "sparkBox": {
-      "left": 797.62,
-      "right": 913.41,
-      "top": 477.22,
-      "bottom": 526.1,
-      "width": 115.79,
-      "height": 48.89
+      "left": 854.59,
+      "right": 971.34,
+      "top": 653.57,
+      "bottom": 709.1,
+      "width": 116.75,
+      "height": 55.53
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 31.2,
+      "dy": 155.9
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-1024.png"
   },
   {
@@ -387,20 +417,20 @@
     "hasHorizontalScrollbar": false,
     "clipped": false,
     "frontBox": {
-      "left": 1000.85,
-      "right": 1240.13,
-      "top": 225.3,
-      "bottom": 732.41,
-      "width": 239.29,
-      "height": 507.11
+      "left": 1081.96,
+      "right": 1312.69,
+      "top": 458.97,
+      "bottom": 971.85,
+      "width": 230.73,
+      "height": 512.88
     },
     "backBox": {
-      "left": 1031.98,
-      "right": 1257.65,
-      "top": 341.23,
-      "bottom": 786.54,
-      "width": 225.68,
-      "height": 445.31
+      "left": 1046.27,
+      "right": 1254.38,
+      "top": 249.69,
+      "bottom": 636.95,
+      "width": 208.11,
+      "height": 387.25
     },
     "stageBox": {
       "left": 791.39,
@@ -418,41 +448,47 @@
       "width": 508.59,
       "height": 558.14
     },
-    "livePrice": "1.1530",
+    "livePrice": "1.1531",
     "pw": "clamp(110px, 17vw, 225px)",
     "animation": "floatFront",
     "island": {
-      "widthPct": 23.9,
-      "heightPct": 4.1
+      "widthPct": 24.2,
+      "heightPct": 4.8
     },
     "bezel": {
-      "leftPx": 12.94,
-      "topPx": 12.88,
-      "bezelCss": "11.7px",
+      "leftPx": 10.13,
+      "topPx": 10.85,
+      "bezelCss": "9.45px",
       "frameRadius": "39.375px",
       "screenRadius": "33.75px"
     },
-    "frameBg": "linear-gradient(165deg, rgb(237, 235, 227) 0%, rgb(196, 194, 186) 20%, rgb(152, 150, 142) 45%, rgb(108, 106, 99) 70%, rg",
+    "frameBg": "linear-gradient(165deg, rgb(182, 180, 172) 0%, rgb(147, 145, 138) 20%, rgb(110, 108, 101) 45%, rgb(76, 74, 68) 70%, rgb(",
     "hasChart": true,
     "chartCount": 2,
     "chartBox": {
-      "left": 1051.61,
-      "right": 1195.68,
-      "top": 654.47,
-      "bottom": 758.21,
-      "width": 144.07,
-      "height": 103.74
+      "left": 1064.04,
+      "right": 1211.17,
+      "top": 535.17,
+      "bottom": 616.28,
+      "width": 147.13,
+      "height": 81.11
     },
     "sparkBox": {
-      "left": 1055.99,
-      "right": 1204.89,
-      "top": 542.06,
-      "bottom": 606.19,
-      "width": 148.89,
-      "height": 64.13
+      "left": 1131.9,
+      "right": 1280.97,
+      "top": 773.38,
+      "bottom": 848.6,
+      "width": 149.07,
+      "height": 75.22
     },
     "chartOverflowsScreen": false,
-    "frameSample": "light-silver",
+    "frameSample": "gray-metal",
+    "separation": {
+      "backLeftOfFront": true,
+      "backAboveFront": true,
+      "dx": 35.7,
+      "dy": 209.3
+    },
     "screenshot": "C:\\Users\\SAMSUNG\\OneDrive\\fx-research-desk\\scripts\\verify-phones-out\\phones-1440.png"
   },
   {

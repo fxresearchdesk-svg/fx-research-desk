@@ -129,9 +129,18 @@ async function measure(page) {
       })(),
       frameSample: (() => {
         const bg = style ? style.backgroundImage : "";
-        return /rgb\(\s*237\s*,\s*235\s*,\s*227\s*\)|#edebe3/i.test(bg)
-          ? "light-silver"
+        return /rgb\(\s*182\s*,\s*180\s*,\s*172\s*\)|#b6b4ac/i.test(bg)
+          ? "gray-metal"
           : bg.slice(0, 80);
+      })(),
+      separation: (() => {
+        if (!frontBox || !backBox) return null;
+        return {
+          backLeftOfFront: backBox.left < frontBox.left - 4,
+          backAboveFront: backBox.top < frontBox.top - 4,
+          dx: Math.round((frontBox.left - backBox.left) * 10) / 10,
+          dy: Math.round((frontBox.top - backBox.top) * 10) / 10,
+        };
       })(),
     };
   });
