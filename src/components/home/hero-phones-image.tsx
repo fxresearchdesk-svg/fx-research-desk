@@ -50,15 +50,16 @@ export function HeroPhonesImage() {
       )}
     >
       <div className="hero-phones-image__float">
-        <Image
-          src="/hero/phones-mockup.png"
-          alt="Illustrative FX Research Desk signal phones"
-          width={1295}
-          height={1214}
-          priority
-          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 48vw"
-          className="h-auto w-full"
-        />
+        <div className="hero-phones-image__crop">
+          <Image
+            src="/hero/phones-mockup.png"
+            alt="Illustrative FX Research Desk signal phones"
+            fill
+            priority
+            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 48vw"
+            className="hero-phones-image__img"
+          />
+        </div>
       </div>
     </div>
   );

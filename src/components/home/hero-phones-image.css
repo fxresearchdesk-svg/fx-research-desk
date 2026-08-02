@@ -1,10 +1,9 @@
-/* Static photorealistic hero phones — entrance + gentle float */
+/* Static photorealistic hero phones — cropped canvas + float */
 
 .hero-phones-image {
   width: 100%;
   max-width: min(100%, 560px);
   margin-inline: auto;
-  padding-block: 8px;
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -15,8 +14,6 @@
 @media (min-width: 1024px) {
   .hero-phones-image {
     max-width: none;
-    padding-block: 12px;
-    padding-inline: 4px;
   }
 }
 
@@ -34,6 +31,22 @@
 
 .hero-phones-image__float {
   will-change: transform;
+}
+
+/* Matches cropped asset (997×971) */
+.hero-phones-image__crop {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 997 / 971;
+  overflow: hidden;
+  background: transparent;
+}
+
+.hero-phones-image__img {
+  object-fit: cover;
+  object-position: center 48%;
+  transform: scale(1.05);
+  transform-origin: center 48%;
 }
 
 .hero-phones-image.is-visible:not(.reduce-motion) .hero-phones-image__float {
