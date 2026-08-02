@@ -17,22 +17,11 @@ async function measure(page) {
     const body = document.body;
     const scrollW = Math.max(doc.scrollWidth, body.scrollWidth);
     const clientW = doc.clientWidth;
-    const phones = document.querySelector(".hero-phones");
-    const stage = document.querySelector(".hero-phones__stage");
-    const front = document.querySelector(".hero-phones__phone--front");
-    const back = document.querySelector(".hero-phones__phone--back");
-    const notch = document.querySelector(
-      ".hero-phones__phone--front .hero-phones__notch"
-    );
-    const screen = document.querySelector(
-      ".hero-phones__phone--front .hero-phones__screen"
-    );
-    const priceEl = document.querySelector("[data-live-price]");
-    const charts = document.querySelectorAll("[data-chart]");
-    const spark = document.querySelector(
-      ".hero-phones__phone--front .hero-phones__spark"
-    );
     const vw = window.innerWidth;
+    const heroImg = document.querySelector(".hero-phones-image");
+    const img = document.querySelector(".hero-phones-image img");
+    const ticker = document.querySelector("[data-ticker], .ticker-marquee, .institutional-ticker");
+    const floatEl = document.querySelector(".hero-phones-image__float");
 
     function box(el) {
       if (!el) return null;
@@ -47,38 +36,14 @@ async function measure(page) {
       };
     }
 
-    const frontBox = box(front);
-    const backBox = box(back);
-    const notchBox = box(notch);
-    const screenBox = box(screen);
+    const imgBox = box(img);
+    const heroBox = box(heroImg);
     const clipped =
-      (frontBox && (frontBox.left < -1 || frontBox.right > vw + 1)) ||
-      (backBox && (backBox.left < -1 || backBox.right > vw + 1));
+      imgBox && (imgBox.left < -2 || imgBox.right > vw + 2);
 
-    const style = front ? getComputedStyle(front) : null;
-    const inner = front
-      ? front.querySelector(".hero-phones__phone-inner")
-      : null;
-    const innerBox = box(inner);
-
-    let island = null;
-    if (notchBox && innerBox && innerBox.width > 0 && innerBox.height > 0) {
-      island = {
-        widthPct: Math.round((notchBox.width / innerBox.width) * 1000) / 10,
-        heightPct: Math.round((notchBox.height / innerBox.height) * 1000) / 10,
-      };
-    }
-
-    let bezel = null;
-    if (frontBox && screenBox) {
-      bezel = {
-        leftPx: Math.round((screenBox.left - frontBox.left) * 100) / 100,
-        topPx: Math.round((screenBox.top - frontBox.top) * 100) / 100,
-        bezelCss: style ? style.paddingTop : null,
-        frameRadius: style ? style.borderRadius : null,
-        screenRadius: screen ? getComputedStyle(screen).borderRadius : null,
-      };
-    }
+    const cs = img ? getComputedStyle(img) : null;
+    const floatCs = floatEl ? getComputedStyle(floatEl) : null;
+    const wrapCs = heroImg ? getComputedStyle(heroImg) : null;
 
     return {
       vw,
@@ -86,62 +51,23 @@ async function measure(page) {
       clientW,
       hasHorizontalScrollbar: scrollW > clientW + 1,
       clipped,
-      frontBox,
-      backBox,
-      stageBox: box(stage),
-      phonesBox: box(phones),
-      livePrice: priceEl ? priceEl.textContent.trim() : null,
-      pw: phones
-        ? getComputedStyle(phones).getPropertyValue("--pw").trim()
-        : null,
-      animation: style ? style.animationName : null,
-      island,
-      bezel,
-      frameBg: style ? style.backgroundImage.slice(0, 120) : null,
-      hasChart: charts.length > 0,
-      chartCount: charts.length,
-      chartBox: box(charts[0] || null),
-      sparkBox: box(spark),
-      chartOverflowsScreen: (() => {
-        const pairs = [
-          [
-            ".hero-phones__phone--front .hero-phones__screen",
-            ".hero-phones__phone--front [data-chart]",
-          ],
-          [
-            ".hero-phones__phone--back .hero-phones__screen",
-            ".hero-phones__phone--back [data-chart]",
-          ],
-        ];
-        return pairs.some(([screenSel, chartSel]) => {
-          const screenEl = document.querySelector(screenSel);
-          const chartEl = document.querySelector(chartSel);
-          if (!screenEl || !chartEl) return false;
-          const c = chartEl.getBoundingClientRect();
-          const s = screenEl.getBoundingClientRect();
-          return (
-            c.left < s.left - 2 ||
-            c.right > s.right + 2 ||
-            c.top < s.top - 2 ||
-            c.bottom > s.bottom + 2
-          );
-        });
-      })(),
-      frameSample: (() => {
-        const bg = style ? style.backgroundImage : "";
-        return /rgb\(\s*182\s*,\s*180\s*,\s*172\s*\)|#b6b4ac/i.test(bg)
-          ? "gray-metal"
-          : bg.slice(0, 80);
-      })(),
-      separation: (() => {
-        if (!frontBox || !backBox) return null;
-        return {
-          backLeftOfFront: backBox.left < frontBox.left - 4,
-          backAboveFront: backBox.top < frontBox.top - 4,
-          dx: Math.round((frontBox.left - backBox.left) * 10) / 10,
-          dy: Math.round((frontBox.top - backBox.top) * 10) / 10,
-        };
-      })(),
+      imgBox,
+      heroBox,
+      naturalW: img?.naturalWidth || null,
+      naturalH: img?.naturalHeight || null,
+      objectFit: cs?.objectFit || null,
+      aspectApprox:
+        imgBox && imgBox.height > 0
+          ? Math.round((imgBox.width / imgBox.height) * 1000) / 1000
+          : null,
+      nativeAspect: 1295 / 1214,
+      floatAnimation: floatCs?.animationName || null,
+      wrapOpacity: wrapCs?.opacity || null,
+      tickerPresent: Boolean(
+        document.querySelector(".ticker-marquee") ||
+          document.querySelector("[class*='ticker']")
+      ),
+      oldCssPhonesGone: !document.querySelector(".hero-phones__phone"),
     };
   });
 }
@@ -160,22 +86,18 @@ async function main() {
       viewport: { width, height: 900 },
     });
     await page.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
-    await page.waitForTimeout(2500);
-    try {
-      await page.waitForFunction(
-        () => {
-          const el = document.querySelector("[data-live-price]");
-          return el && el.textContent && el.textContent.trim() !== "—";
-        },
-        { timeout: 8000 }
-      );
-    } catch {
-      /* price may still be loading */
-    }
+    await page.waitForSelector(".hero-phones-image img", { timeout: 15000 });
+    await page.waitForTimeout(1200);
+
+    // force visible state for measurement (IO may already have fired)
+    await page.evaluate(() => {
+      document.querySelector(".hero-phones-image")?.classList.add("is-visible");
+    });
+    await page.waitForTimeout(900);
 
     const m = await measure(page);
-    const shot = path.join(OUT, `phones-${width}.png`);
-    await page.locator(".hero-phones").screenshot({ path: shot });
+    const shot = path.join(OUT, `hero-img-${width}.png`);
+    await page.locator("section").first().screenshot({ path: shot });
     report.push({ width, ...m, screenshot: shot });
     await page.close();
   }
@@ -185,18 +107,25 @@ async function main() {
     reducedMotion: "reduce",
   });
   await pageRm.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
-  await pageRm.waitForTimeout(1000);
+  await pageRm.waitForSelector(".hero-phones-image img", { timeout: 15000 });
+  await pageRm.waitForTimeout(800);
   const rm = await pageRm.evaluate(() => {
-    const front = document.querySelector(".hero-phones__phone--front");
-    if (!front) return { ok: false };
-    const s = getComputedStyle(front);
+    const wrap = document.querySelector(".hero-phones-image");
+    const floatEl = document.querySelector(".hero-phones-image__float");
+    const w = wrap ? getComputedStyle(wrap) : null;
+    const f = floatEl ? getComputedStyle(floatEl) : null;
     return {
       ok: true,
-      animationName: s.animationName,
-      animationDuration: s.animationDuration,
+      wrapTransition: w?.transitionProperty,
+      wrapOpacity: w?.opacity,
+      floatAnimation: f?.animationName,
+      floatDuration: f?.animationDuration,
     };
   });
   report.push({ width: "375-reduced-motion", ...rm });
+  await pageRm.screenshot({
+    path: path.join(OUT, "hero-img-375-reduced-motion.png"),
+  });
   await pageRm.close();
 
   await browser.close();
